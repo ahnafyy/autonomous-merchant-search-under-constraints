@@ -1,0 +1,69 @@
+{
+  "authors": [
+    {
+      "affiliations": [
+        "TODO: Affiliation"
+      ],
+      "name": "TODO: Author Name",
+      "orcid": null
+    }
+  ],
+  "claims": [
+    {
+      "detail": "Absolute difference 0 <= tolerance 1e-12.",
+      "expected": 3.310546875,
+      "id": "EXAMPLE-COMPUTATION-001",
+      "limitations": [
+        "The choices are independent and uniformly distributed."
+      ],
+      "observed": 3.310546875,
+      "passed": true,
+      "scope": "Template fixture only; not a public research contribution.",
+      "site_visible": false,
+      "statement": "For four independent uniform choices among eight options, the expected number of distinct choices is 3.310546875.",
+      "status": "exact-computational"
+    }
+  ],
+  "initialized": false,
+  "licenses": {
+    "code": "MIT",
+    "content": "CC-BY-4.0"
+  },
+  "links": {
+    "repository": "https://github.com/OWNER/REPOSITORY",
+    "site": "https://OWNER.github.io/REPOSITORY/"
+  },
+  "packages": {
+    "javascript": {
+      "name": "@example/example-study"
+    },
+    "python": {
+      "distribution": "example-study",
+      "import_name": "example_study"
+    }
+  },
+  "project": {
+    "abstract": "TODO: State the problem, method, result, and contribution.",
+    "arxiv_categories": [
+      "cs.AI"
+    ],
+    "keywords": [
+      "TODO"
+    ],
+    "slug": "paper-project",
+    "subtitle": "TODO: One-sentence contribution",
+    "title": "TODO: Research title"
+  },
+  "release": {
+    "version": "0.1.0"
+  },
+  "results": {
+    "choices": 4,
+    "expected_distinct": 3.310546875,
+    "expected_distinct_denominator": 512,
+    "expected_distinct_numerator": 1695,
+    "options": 8,
+    "random_seed": 20260723
+  },
+  "schema_version": 1
+}

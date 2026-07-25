@@ -1,0 +1,32 @@
+schema_version: 1
+initialized: false
+project:
+  title: "TODO: Research title"
+  subtitle: "TODO: One-sentence contribution"
+  slug: "paper-project"
+  abstract: "TODO: State the problem, method, result, and contribution."
+  keywords:
+    - "TODO"
+  arxiv_categories:
+    - "cs.AI"
+authors:
+  - name: "TODO: Author Name"
+    orcid: null
+    affiliations:
+      - "TODO: Affiliation"
+links:
+  repository: "https://github.com/OWNER/REPOSITORY"
+  site: "https://OWNER.github.io/REPOSITORY/"
+research:
+  random_seed: 20260723
+release:
+  version: "0.1.0"
+packages:
+  python:
+    distribution: "example-study"
+    import_name: "example_study"
+  javascript:
+    name: "@example/example-study"
+licenses:
+  code: "MIT"
+  content: "CC-BY-4.0"

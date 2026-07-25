@@ -1,0 +1,37 @@
+\documentclass[11pt]{article}
+
+\input{preamble}
+\input{generated/project_metadata}
+\input{generated/result_macros}
+
+\title{\textbf{\PaperTitle}\\[0.35em]\large \PaperSubtitle}
+\author{\PaperAuthors}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\PaperAbstract
+\end{abstract}
+
+\noindent\textbf{Keywords:} \PaperKeywords\\
+\textbf{Suggested arXiv categories:} \PaperArxivCategories
+
+\input{sections/01_introduction}
+\input{sections/02_benchmark}
+\input{sections/03_model}
+\input{sections/04_results}
+\input{sections/05_robustness}
+\input{sections/06_related_work}
+\input{sections/07_implications}
+\input{sections/08_limitations}
+\input{sections/09_conclusion}
+
+\appendix
+\input{sections/a_proofs}
+\input{sections/b_computational_verification}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

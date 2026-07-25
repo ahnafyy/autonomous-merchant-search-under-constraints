@@ -1,0 +1,11 @@
+schema_version: 1
+avenues:
+  - id: "AVENUE-001"
+    title: "TODO: Candidate research question"
+    status: candidate
+    mechanism: "TODO: What mechanism could produce the surprising behavior?"
+    minimal_model: "TODO: Smallest inspectable model that isolates the mechanism."
+    novelty_hypothesis: "TODO: What might be new relative to the closest literature?"
+    decisive_calculation: "TODO: Cheapest calculation that could reject this avenue."
+    expected_value: "TODO: Why the answer would matter even if the hypothesis fails."
+    rejection_reason: null

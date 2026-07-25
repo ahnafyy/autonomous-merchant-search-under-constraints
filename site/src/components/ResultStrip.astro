@@ -1,0 +1,24 @@
+---
+interface Result {
+  label: string;
+  value: string;
+  note: string;
+  tone: "coral" | "teal" | "gold";
+}
+
+interface Props {
+  results: Result[];
+}
+
+const { results } = Astro.props;
+---
+
+<dl class="result-strip" aria-label="Primary verified quantities">
+  {results.map((result) => (
+    <div class={`result result--${result.tone}`}>
+      <dt>{result.label}</dt>
+      <dd>{result.value}</dd>
+      <dd class="result__note">{result.note}</dd>
+    </div>
+  ))}
+</dl>

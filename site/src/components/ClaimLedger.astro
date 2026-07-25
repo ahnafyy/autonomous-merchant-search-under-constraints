@@ -1,0 +1,53 @@
+---
+interface Claim {
+  id: string;
+  statement: string;
+  status: string;
+  scope: string;
+  passed: boolean;
+  detail: string;
+  site_visible: boolean;
+  limitations: string[];
+}
+
+interface Props {
+  claims: Claim[];
+}
+
+const { claims } = Astro.props;
+---
+
+<div class="claim-table-wrap" role="region" aria-label="Scrollable claim ledger" tabindex="0">
+  <table class="claim-table">
+    <caption>Registered claims and current evidence status</caption>
+    <thead>
+      <tr>
+        <th scope="col">Claim</th>
+        <th scope="col">Type</th>
+        <th scope="col">Check</th>
+        <th scope="col">Scope</th>
+      </tr>
+    </thead>
+    <tbody>
+      {claims.map((claim) => (
+        <tr>
+          <th scope="row">
+            <span class="claim-id">{claim.id}</span>
+            <span>{claim.statement}</span>
+          </th>
+          <td data-label="Type"><span class="status-label">{claim.status}</span></td>
+          <td data-label="Check">
+            <span class:list={["check-label", { "check-label--pass": claim.passed }]}>
+              {claim.passed ? "passed" : "review"}
+            </span>
+            <small>{claim.detail}</small>
+          </td>
+          <td data-label="Scope">
+            {claim.scope}
+            {claim.limitations.length > 0 && <small>{claim.limitations.join(" ")}</small>}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

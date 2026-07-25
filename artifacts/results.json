@@ -1,0 +1,8 @@
+{
+  "choices": 4,
+  "expected_distinct": 3.310546875,
+  "expected_distinct_denominator": 512,
+  "expected_distinct_numerator": 1695,
+  "options": 8,
+  "random_seed": 20260723
+}

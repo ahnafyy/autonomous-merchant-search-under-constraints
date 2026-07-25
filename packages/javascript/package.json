@@ -1,0 +1,29 @@
+{
+  "name": "@example/example-study",
+  "version": "0.1.0",
+  "description": "Exact occupancy calculations accompanying the template research paper",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js"
+    }
+  },
+  "files": ["src", "README.md"],
+  "scripts": {
+    "test": "node --test",
+    "pack:check": "npm pack --dry-run"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OWNER/REPOSITORY.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

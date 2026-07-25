@@ -1,0 +1,168 @@
+---
+import ClaimLedger from "../components/ClaimLedger.astro";
+import OccupancyDemo from "../components/OccupancyDemo.astro";
+import ResultStrip from "../components/ResultStrip.astro";
+import ResearchLayout from "../layouts/ResearchLayout.astro";
+import data from "../generated/site-data.json";
+
+const { project, authors, links, licenses, release, packages, results, claims, initialized } = data;
+const authorNames = authors.map((author) => author.name).join(", ");
+const affiliations = [...new Set(authors.flatMap((author) => author.affiliations))].join(" · ");
+const expected = Number(results.expected_distinct);
+const displayedClaims = initialized ? claims.filter((claim) => claim.site_visible) : claims;
+const resultStrip = [
+  {
+    label: "Options",
+    value: String(results.options),
+    note: "equally likely states",
+    tone: "gold" as const,
+  },
+  {
+    label: "Independent choices",
+    value: String(results.choices),
+    note: "one action per draw",
+    tone: "coral" as const,
+  },
+  {
+    label: "Expected distinct",
+    value: expected.toFixed(6),
+    note: "exact finite calculation",
+    tone: "teal" as const,
+  },
+];
+---
+
+<ResearchLayout title={project.title} description={project.abstract}>
+  <header class="topbar">
+    <div class="journal-mark">
+      <a class="wordmark" href="#top" aria-label={`${project.title}, back to top`}>{project.slug}</a>
+      <span>Open research release</span>
+    </div>
+    <nav aria-label="Primary navigation">
+      <a href="#benchmark">Method</a>
+      <a href="#claims">Evidence</a>
+      <a href="#reproduce">Materials</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="paper-title">
+      <div class="hero__content">
+        <div class="article-kicker">
+          <span>Computational research</span>
+          <span>Version {release.version}</span>
+          <span>Evidence checked</span>
+        </div>
+        {!initialized && <p class="template-state">Template fixture · release disabled</p>}
+        <h1 id="paper-title">{project.title}</h1>
+        <p class="subtitle">{project.subtitle}</p>
+        <p class="hero-result">
+          <span>Primary result</span>
+          <strong>{expected.toFixed(6)}</strong> expected distinct choices
+        </p>
+        <div class="author-block">
+          <p class="byline">{authorNames}</p>
+          <p class="affiliations">{affiliations}</p>
+        </div>
+        <div class="abstract-block">
+          <p class="abstract-label">Abstract</p>
+          <p class="abstract">{project.abstract}</p>
+        </div>
+        <div class="paper-links" aria-label="Paper resources">
+          <a href={links.repository}>Source and evidence</a>
+          <a href="#claims">Registered claims</a>
+          <a href="#reproduce">Reproduction record</a>
+        </div>
+      </div>
+      <ResultStrip results={resultStrip} />
+    </section>
+
+    <section class="section section--rule" id="benchmark" aria-labelledby="benchmark-title">
+      <div class="section__heading">
+        <p class="section-number">1</p>
+        <div>
+          <span class="eyebrow">Method · Minimal benchmark</span>
+          <h2 id="benchmark-title">Coverage is not the number of attempts</h2>
+        </div>
+      </div>
+      <div class="prose-grid">
+        <div class="prose">
+          <p>
+            The built-in fixture asks how many distinct options are covered when independent actions can collide.
+            It is deliberately modest: its purpose is to prove the evidence path before a real study replaces it.
+          </p>
+          <div class="equation">
+            <p aria-label="Expected distinct options equals M times one minus one minus one over M to the N">
+              E[D] = M(1 - (1 - 1/M)<sup>N</sup>)
+            </p>
+            <span aria-hidden="true">(1)</span>
+          </div>
+          <p>
+            With <strong>{results.options}</strong> options and <strong>{results.choices}</strong> choices, the exact result is
+            <strong>{expected.toFixed(9)}</strong>. The value on this page is imported from the same checked artifact
+            used by the manuscript.
+          </p>
+        </div>
+        <figure class="research-figure">
+          <OccupancyDemo options={Number(results.options)} choices={Number(results.choices)} expected={expected} />
+          <figcaption>
+            <strong>Figure 1.</strong> One finite draw from the occupancy benchmark. The interactive sample is
+            illustrative; the reported expectation is imported from the exact generated result.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section section--claims" id="claims" aria-labelledby="claims-title">
+      <div class="section__heading">
+        <p class="section-number">2</p>
+        <div>
+          <span class="eyebrow">Results · Evidence boundary</span>
+          <h2 id="claims-title">Every statement carries its status</h2>
+        </div>
+      </div>
+      <p class="section-intro">
+        Claim type, executable outcome, scope, and limitations travel together. A finite scan remains a finite scan,
+        even when its pattern is compelling.
+      </p>
+      <ClaimLedger claims={displayedClaims} />
+    </section>
+
+    <section class="section section--materials" id="reproduce" aria-labelledby="reproduce-title">
+      <div class="section__heading">
+        <p class="section-number">3</p>
+        <div>
+          <span class="eyebrow">Data and code availability</span>
+          <h2 id="reproduce-title">Evidence and software travel together</h2>
+        </div>
+      </div>
+      <div class="reproduce-grid">
+        <pre aria-label="Reproduction commands"><code>make install
+paperkit build
+python -m pytest
+npm test --prefix packages/javascript
+npm run build --prefix site</code></pre>
+        <div>
+          <p>
+            The canonical Python implementation generates deterministic JSON, CSV, TeX, and conformance outputs.
+            The npm package, paper, and this explainer are checked against that same evidence record.
+          </p>
+          <dl class="artifact-list">
+            <div><dt>Python</dt><dd>{packages.python.distribution}</dd></div>
+            <div><dt>npm</dt><dd>{packages.javascript.name}</dd></div>
+            <div><dt>Licenses</dt><dd>{licenses.code} · {licenses.content}</dd></div>
+            <div><dt>Seed</dt><dd>{results.random_seed}</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      <p class="footer-title">{project.title}</p>
+      <p>{authorNames} · Version {release.version}</p>
+    </div>
+    <p><a href={links.repository}>Repository</a> · <a href="#claims">Claim ledger</a></p>
+  </footer>
+</ResearchLayout>

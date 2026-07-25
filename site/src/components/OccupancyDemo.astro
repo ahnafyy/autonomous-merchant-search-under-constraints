@@ -1,0 +1,64 @@
+---
+interface Props {
+  options: number;
+  choices: number;
+  expected: number;
+}
+
+const { options, choices, expected } = Astro.props;
+const occupied = [0, 3, 5];
+---
+
+<div
+  class="experiment"
+  data-experiment
+  data-options={options}
+  data-choices={choices}
+  data-expected={expected}
+>
+  <div class="experiment__toolbar">
+    <div>
+      <span class="eyebrow">Inspect the fixture</span>
+      <h3>Independent choices, shared coverage</h3>
+    </div>
+    <button type="button" data-run>Draw again</button>
+  </div>
+  <div class="option-grid" role="img" aria-label={`${options} options; highlighted options were selected`}>
+    {Array.from({ length: options }, (_, index) => (
+      <div class:list={["option-cell", { "option-cell--occupied": occupied.includes(index) }]} data-cell={index}>
+        <span>{index + 1}</span>
+        <i data-count>{occupied.includes(index) ? "1" : ""}</i>
+      </div>
+    ))}
+  </div>
+  <p class="experiment__readout" aria-live="polite" data-readout>
+    This draw covered <strong>{occupied.length}</strong> options. Across all draws, the exact expectation is
+    <strong>{expected.toFixed(9)}</strong>.
+  </p>
+</div>
+
+<script>
+  const experiment = document.querySelector<HTMLElement>("[data-experiment]");
+  const button = experiment?.querySelector<HTMLButtonElement>("[data-run]");
+  const readout = experiment?.querySelector<HTMLElement>("[data-readout]");
+  const cells = Array.from(experiment?.querySelectorAll<HTMLElement>("[data-cell]") ?? []);
+
+  button?.addEventListener("click", () => {
+    if (!experiment || !readout) return;
+    const options = Number(experiment.dataset.options);
+    const choices = Number(experiment.dataset.choices);
+    const expected = Number(experiment.dataset.expected);
+    const counts = new Array<number>(options).fill(0);
+    for (let choice = 0; choice < choices; choice += 1) {
+      counts[Math.floor(Math.random() * options)] += 1;
+    }
+    cells.forEach((cell, index) => {
+      const count = counts[index];
+      cell.classList.toggle("option-cell--occupied", count > 0);
+      const label = cell.querySelector<HTMLElement>("[data-count]");
+      if (label) label.textContent = count > 0 ? String(count) : "";
+    });
+    const distinct = counts.filter((count) => count > 0).length;
+    readout.innerHTML = `This draw covered <strong>${distinct}</strong> options. Across all draws, the exact expectation is <strong>${expected.toFixed(9)}</strong>.`;
+  });
+</script>

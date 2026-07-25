@@ -1,0 +1,17 @@
+schema_version: 1
+searches:
+  - id: "SEARCH-001"
+    searched_on: null
+    source: "TODO: arXiv, Semantic Scholar, Google Scholar, journal index, or repository"
+    query: "TODO: Exact query"
+    result_count_reviewed: 0
+    notes: "TODO: Search boundaries and follow-up queries."
+works:
+  - citation_key: "TODO"
+    title: "TODO: Closest prior work"
+    url: "TODO: Verified URL or DOI"
+    verified_on: null
+    overlap: "TODO: What mechanism, model, or result overlaps?"
+    distinction: "TODO: What remains different after a charitable reading?"
+    confidence: low
+    status: candidate

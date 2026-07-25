@@ -1,0 +1,31 @@
+{
+  "all_executable_claims_passed": true,
+  "claims": [
+    "EXAMPLE-COMPUTATION-001"
+  ],
+  "files": {
+    "claim-results.json": "49bc61d2ab4cf8addbafd963c100f28454ed032c91e40c83b3fc6d3fd27a37a6",
+    "conformance/expected-distinct.json": "5722e14a205744169d7e1ae07a86bceff1a55f8ea079a7d875fafe2213195f3e",
+    "data/summary.csv": "cbd50828a47957de56c47a8c055f0f2db755e7e0bf46ce77a1443e5a222c1ddc",
+    "results.json": "7aa3540fa279f766bd5e010b35a0ba9ed127d78754bace60d895ed420e966522",
+    "site-data.json": "dcc26925c4063996d1a7225046ea991d090e8ce8e6537a10cff4edd7728edcee",
+    "tables/claim_status.tex": "dbc0a1196cd73e1f5a19ead0f3bb773236532b566779925039d9024fb9a7d3d8",
+    "tables/project_metadata.tex": "d326e885735eae438e8c11acc1c823f01c51a4d886006c23ec509688c08fbdc6",
+    "tables/result_macros.tex": "7c8983cbeacfe0006dedf0573b18c84a435b0b97ac1caa9957dfbae3dae560a0"
+  },
+  "generator": {
+    "name": "paperkit",
+    "version": "0.1.0"
+  },
+  "project": {
+    "packages": {
+      "javascript": "@example/example-study",
+      "python": "example-study"
+    },
+    "slug": "paper-project",
+    "title": "TODO: Research title",
+    "version": "0.1.0"
+  },
+  "random_seed": 20260723,
+  "schema_version": 1
+}

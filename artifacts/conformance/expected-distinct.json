@@ -1,0 +1,77 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 0,
+        "value": 0.0
+      },
+      "input": {
+        "choices": 0,
+        "options": 1
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 1,
+        "value": 1.0
+      },
+      "input": {
+        "choices": 1,
+        "options": 2
+      }
+    },
+    {
+      "expected": {
+        "denominator": 3,
+        "numerator": 5,
+        "value": 1.6666666666666667
+      },
+      "input": {
+        "choices": 2,
+        "options": 3
+      }
+    },
+    {
+      "expected": {
+        "denominator": 512,
+        "numerator": 1695,
+        "value": 3.310546875
+      },
+      "input": {
+        "choices": 4,
+        "options": 8
+      }
+    },
+    {
+      "expected": {
+        "denominator": 100000,
+        "numerator": 468559,
+        "value": 4.68559
+      },
+      "input": {
+        "choices": 6,
+        "options": 10
+      }
+    }
+  ],
+  "errors": [
+    {
+      "input": {
+        "choices": 1,
+        "options": 0
+      },
+      "type": "ValueError"
+    },
+    {
+      "input": {
+        "choices": -1,
+        "options": 2
+      },
+      "type": "ValueError"
+    }
+  ],
+  "operation": "expected_distinct_choices",
+  "schema_version": 1
+}

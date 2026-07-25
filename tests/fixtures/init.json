@@ -1,0 +1,18 @@
+{
+  "abstract": "We define and verify a minimal benchmark for a reproducible research workflow.",
+  "affiliation": "Independent Researcher",
+  "arxiv_categories": ["cs.AI", "cs.MA"],
+  "author": "Ada Researcher",
+  "keywords": ["reproducibility", "research workflow"],
+  "javascript_package": "@example/verified-paper",
+  "orcid": "0000-0002-1825-0097",
+  "python_distribution": "verified-paper",
+  "python_import_name": "verified_paper",
+  "random_seed": 17,
+  "repository": "https://github.com/example/verified-paper",
+  "site": "https://example.github.io/verified-paper/",
+  "slug": "verified-paper",
+  "subtitle": "A checked path from claims to public artifacts",
+  "title": "A Verified Paper Fixture",
+  "version": "0.2.0"
+}

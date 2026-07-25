@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "example-study"
+version = "0.1.0"
+description = "Exact occupancy calculations accompanying the template research paper"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Research Paper and Package Template contributors" }]
+
+[project.urls]
+Repository = "https://github.com/OWNER/REPOSITORY"
+Paper = "https://OWNER.github.io/REPOSITORY/"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/example_study"]

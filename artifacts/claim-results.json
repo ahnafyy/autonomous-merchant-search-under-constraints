@@ -1,0 +1,18 @@
+{
+  "claims": [
+    {
+      "detail": "Absolute difference 0 <= tolerance 1e-12.",
+      "expected": 3.310546875,
+      "id": "EXAMPLE-COMPUTATION-001",
+      "limitations": [
+        "The choices are independent and uniformly distributed."
+      ],
+      "observed": 3.310546875,
+      "passed": true,
+      "scope": "Template fixture only; not a public research contribution.",
+      "site_visible": false,
+      "statement": "For four independent uniform choices among eight options, the expected number of distinct choices is 3.310546875.",
+      "status": "exact-computational"
+    }
+  ]
+}

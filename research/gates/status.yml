@@ -1,0 +1,22 @@
+schema_version: 1
+gates:
+  scope:
+    status: pending
+    approved_by: null
+    approved_on: null
+  novelty:
+    status: pending
+    approved_by: null
+    approved_on: null
+  design:
+    status: pending
+    approved_by: null
+    approved_on: null
+  evidence:
+    status: pending
+    approved_by: null
+    approved_on: null
+  release:
+    status: pending
+    approved_by: null
+    approved_on: null

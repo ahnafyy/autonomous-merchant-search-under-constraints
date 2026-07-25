@@ -1,0 +1,16 @@
+schema_version: 1
+claims:
+  - id: "EXAMPLE-COMPUTATION-001"
+    statement: "For four independent uniform choices among eight options, the expected number of distinct choices is 3.310546875."
+    status: "exact-computational"
+    scope: "Template fixture only; not a public research contribution."
+    evaluator: "paperkit.evaluators:evaluate_registered_result"
+    result_key: "expected_distinct"
+    expected: 3.310546875
+    tolerance: 1.0e-12
+    evidence:
+      - "artifacts/results.json"
+    manuscript_labels: []
+    site_visible: false
+    limitations:
+      - "The choices are independent and uniformly distributed."
