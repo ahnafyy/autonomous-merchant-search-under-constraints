@@ -26,16 +26,29 @@ def test_build_is_deterministic_and_claims_pass(tmp_path: Path) -> None:
     manifest = json.loads((first / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["all_executable_claims_passed"] is True
     assert "results.json" in manifest["files"]
-    assert "conformance/expected-distinct.json" in manifest["files"]
+    assert "conformance/merchant-search.json" in manifest["files"]
     site_data = json.loads((first / "site-data.json").read_text(encoding="utf-8"))
-    assert site_data["results"]["expected_distinct"] == 3.310546875
-    assert site_data["claims"][0]["id"] == "EXAMPLE-COMPUTATION-001"
-    assert site_data["packages"]["python"]["distribution"] == "example-study"
-    assert site_data["packages"]["javascript"]["name"] == "@example/example-study"
+    assert site_data["results"]["reservation_surface_monotone"] is True
+    assert site_data["results"]["critical_api_call_weight_numerator"] == 11797021
+    assert site_data["results"]["hard_constraint_action_signature"] == (
+        "relaxed:continue|time-tight:buy|token-tight:buy|api-tight:buy|"
+        "api-spend-tight:buy|combined:buy|price-capped:continue"
+    )
+    assert {claim["id"] for claim in site_data["claims"]} == {
+            "MERCHANT-PERMIT-OPEN-001"
+    }
+    assert site_data["claims"][0]["status"] == "open"
+    assert site_data["packages"]["python"]["distribution"] == (
+        "autonomous-shopping-optimizer"
+    )
+    assert site_data["packages"]["javascript"]["name"] == (
+        "autonomous-shopping-optimizer"
+    )
     metadata = (first / "tables" / "project_metadata.tex").read_text(encoding="utf-8")
     assert "\\newcommand{\\PaperTitle}" in metadata
     claim_table = (first / "tables" / "claim_status.tex").read_text(encoding="utf-8")
-    assert "EXAMPLE-COMPUTATION-001" in claim_table
+    assert "MERCHANT-PERMIT-OPEN-001" in claim_table
+    assert "MERCHANT-BELLMAN-002" not in claim_table
 
 
 def test_generated_tex_can_be_staged(tmp_path: Path) -> None:

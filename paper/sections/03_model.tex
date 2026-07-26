@@ -1,4 +1,37 @@
 \section{Model And Methods}
 
-TODO: State actors, information, timing, actions, objectives, assumptions, and
-solution or enumeration methods. Make every comparison identifiable from this section.
+Let $S$ be the set of unqueried merchants, let
+$b\in\mathbb{Z}_{\geq 0}^{4}$ denote the resources remaining before a query,
+and let $F$ be the terminal purchase-failure penalty.  Merchant $t\in S$ is
+queryable only if $c_t\leq b$ componentwise.  Its forecast assigns probability
+$q_{t,\bot}$ to unavailability and probability $q_{t,p}$ to each price $p$.
+The hard purchase-price cap is $P_{\max}$.
+
+Write $W(S,b)$ for minimum expected purchase loss before choosing the next
+merchant.  If no merchant in $S$ is feasible, $W(S,b)=F$.  For a feasible
+choice $t$, let $b'=b-c_t$ and
+$C_t(S,b)=W(S\setminus\{t\},b')$.  The expected loss from querying $t$ is
+\begin{equation}
+Q_t(S,b)=q_{t,\bot}C_t(S,b)
+ + \sum_p q_{t,p}
+ \begin{cases}
+	 \min\{p,C_t(S,b)\}, & p\leq P_{\max},\\
+	 C_t(S,b), & p>P_{\max}.
+ \end{cases}
+\end{equation}
+The adaptive controller sets
+$W(S,b)=\min_{t\in S:c_t\leq b}Q_t(S,b)$ and queries the minimizing merchant.
+Thus the reservation price after observing merchant $t$ is
+\begin{equation}
+R_t(S,b)=\min\{P_{\max},W(S\setminus\{t\},b-c_t)\}.
+\end{equation}
+The agent buys an available offer exactly when $p_t\leq R_t(b)$.  If this
+condition fails, it continues when another query is feasible and otherwise
+rejects into terminal failure.  Query resources are feasibility constraints;
+they do not appear as additive objective terms.
+
+All probabilities and values are represented as rational numbers.  Dynamic
+program states are memoized by the unqueried merchant set and the
+four-dimensional remaining-budget vector.  The scalarized comparator uses the same forecasts
+but adds weighted query-resource costs to the objective and therefore answers
+a different question.

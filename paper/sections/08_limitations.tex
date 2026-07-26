@@ -1,4 +1,16 @@
 \section{Limitations And Open Questions}
 
-TODO: State assumptions that make the result unusually clean, plausible failures
-under richer conditions, unresolved claim boundaries, and concrete next studies.
+The benchmark is synthetic and its forecast weights are not calibrated to a
+merchant market.  Forecasts are known, discrete, and independent across the
+fixed query order.  Query requirements are deterministic, offers cannot be
+recalled, and the objective uses a declared terminal failure penalty.  The
+model omits merchant selection, parallel calls, belief updating, substitutions,
+shipping quality, trust, returns, strategic pricing, and execution failures.
+
+The registered scenarios also align several resource caps with a shortened
+reachable horizon.  A policy that uses only the number of reachable merchants
+may therefore explain the current action differences.  Establishing that
+resource identity matters requires crossed budgets with equal reachable depth,
+paired policy comparisons, and forecast perturbations.  Real trace calibration
+is required before interpreting any action frequency or savings estimate as an
+empirical statement about autonomous shopping.

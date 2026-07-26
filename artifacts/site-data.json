@@ -10,18 +10,19 @@
   ],
   "claims": [
     {
-      "detail": "Absolute difference 0 <= tolerance 1e-12.",
-      "expected": 3.310546875,
-      "id": "EXAMPLE-COMPUTATION-001",
+      "detail": "No executable evaluator; status is documentary.",
+      "expected": null,
+      "id": "MERCHANT-PERMIT-OPEN-001",
       "limitations": [
-        "The choices are independent and uniformly distributed."
+        "The repository does not yet contain a calibrated query-usage trace corpus.",
+        "Zero violations require the host runtime to enforce every permit before invoking a model or merchant tool."
       ],
-      "observed": 3.310546875,
+      "observed": null,
       "passed": true,
-      "scope": "Template fixture only; not a public research contribution.",
-      "site_visible": false,
-      "statement": "For four independent uniform choices among eight options, the expected number of distinct choices is 3.310546875.",
-      "status": "exact-computational"
+      "scope": "Sequential no-recall merchant search with enforceable per-call limits, uncertain resource usage, a hard purchase-price cap, and paired replay traces.",
+      "site_visible": true,
+      "statement": "It remains open whether adaptive pre-call allocation of enforceable time, token, API-call, and API-spend permits improves purchase loss or purchase success over fixed-split and myopic feasible baselines while maintaining zero hard-budget violations under uncertain realized query usage.",
+      "status": "open"
     }
   ],
   "initialized": false,
@@ -30,40 +31,1460 @@
     "content": "CC-BY-4.0"
   },
   "links": {
-    "repository": "https://github.com/OWNER/REPOSITORY",
-    "site": "https://OWNER.github.io/REPOSITORY/"
+    "repository": "https://github.com/ahnafyy/autonomous-merchant-search-under-constraints",
+    "site": "https://ahnafyy.github.io/autonomous-merchant-search-under-constraints/"
   },
   "packages": {
     "javascript": {
-      "name": "@example/example-study"
+      "name": "autonomous-shopping-optimizer"
     },
     "python": {
-      "distribution": "example-study",
+      "distribution": "autonomous-shopping-optimizer",
       "import_name": "example_study"
     }
   },
   "project": {
-    "abstract": "TODO: State the problem, method, result, and contribution.",
+    "abstract": "Autonomous Shopping Optimizer is middleware for sequential merchant search under hard time, token, API-call, API-spend, and purchase-price limits. Its exact finite-horizon planner tracks remaining resources, chooses the next feasible merchant, and returns buy, continue, or reject without executing an LLM call or a purchase. Before each call it can issue enforceable timeout, token, call, and spend permits, then reconcile actual usage. The current research asks whether adaptive permit allocation improves purchase quality or success over fixed feasible baselines while maintaining zero hard-budget violations.",
     "arxiv_categories": [
       "cs.AI"
     ],
     "keywords": [
-      "TODO"
+      "autonomous shopping",
+      "online search",
+      "optimal stopping",
+      "resource constraints",
+      "ephemeral offers"
     ],
-    "slug": "paper-project",
-    "subtitle": "TODO: One-sentence contribution",
-    "title": "TODO: Research title"
+    "slug": "autonomous-merchant-search-under-constraints",
+    "subtitle": "Exact stopping decisions under time, token, API, and purchase-price limits",
+    "title": "Autonomous Shopping Optimizer"
   },
   "release": {
     "version": "0.1.0"
   },
   "results": {
-    "choices": 4,
-    "expected_distinct": 3.310546875,
-    "expected_distinct_denominator": 512,
-    "expected_distinct_numerator": 1695,
-    "options": 8,
-    "random_seed": 20260723
+    "algorithm": "finite_horizon_bellman_reservation_policy",
+    "base_resource_weights": {
+      "api_cost": 1,
+      "time": {
+        "denominator": 2,
+        "numerator": 1
+      },
+      "tokens": {
+        "denominator": 1000,
+        "numerator": 1
+      }
+    },
+    "break_even": {
+      "critical_api_call_weight": {
+        "denominator": 1682870,
+        "numerator": 11797021,
+        "value": 7.010060789009252
+      },
+      "lower_weight": {
+        "denominator": 1,
+        "numerator": 6,
+        "value": 6.0
+      },
+      "observed_price": 110,
+      "rule": "continue_below_critical_weight_buy_at_or_above",
+      "upper_weight": {
+        "denominator": 1,
+        "numerator": 8,
+        "value": 8.0
+      }
+    },
+    "critical_api_call_weight": 7.010060789009252,
+    "critical_api_call_weight_denominator": 1682870,
+    "critical_api_call_weight_numerator": 11797021,
+    "decision_rule": {
+      "buy_when": "observed_price <= reservation_price",
+      "continue_when": "observed_price > reservation_price",
+      "interpretation": "Continue only when expected price improvement exceeds the fully scalarized cost and failure risk of searching onward."
+    },
+    "equal_depth_routing_control": {
+      "remaining_query_depth": 1,
+      "signature": "time-tight:merchant-3|token-tight:merchant-2",
+      "time_tight_next_merchant_index": 2,
+      "token_tight_next_merchant_index": 1
+    },
+    "equal_depth_routing_signature": "time-tight:merchant-3|token-tight:merchant-2",
+    "failure_penalty": 220,
+    "first_buy_api_call_weight": 8,
+    "hard_constraint_action_signature": "relaxed:continue|time-tight:buy|token-tight:buy|api-tight:buy|api-spend-tight:buy|combined:buy|price-capped:continue",
+    "hard_constraint_action_switch": true,
+    "hard_constraint_actions": {
+      "api-spend-tight": "buy",
+      "api-tight": "buy",
+      "combined": "buy",
+      "price-capped": "continue",
+      "relaxed": "continue",
+      "time-tight": "buy",
+      "token-tight": "buy"
+    },
+    "hard_constraint_buy_count": 5,
+    "hard_constraint_continue_count": 2,
+    "hard_constraint_scenario_count": 7,
+    "hard_constraint_surface": [
+      {
+        "action": "continue",
+        "budget": {
+          "api_calls": 8,
+          "api_cost": 20,
+          "time": 31,
+          "tokens": 10000
+        },
+        "continuation_value": {
+          "denominator": 319440,
+          "numerator": 23559997,
+          "value": 73.75406023040321
+        },
+        "expected_purchase_loss": {
+          "denominator": 1597200,
+          "numerator": 115749929,
+          "value": 72.47052905083896
+        },
+        "feasible_next_merchant_count": 7,
+        "feasible_next_merchants": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "id": "relaxed",
+        "label": "All budgets relaxed",
+        "max_purchase_price": 140,
+        "next_merchant_index": 7,
+        "observed_price": 110,
+        "remaining_after_observation": {
+          "api_calls": 7,
+          "api_cost": 18,
+          "time": 28,
+          "tokens": 9100
+        },
+        "reservation_price": {
+          "denominator": 319440,
+          "numerator": 23559997,
+          "value": 73.75406023040321
+        }
+      },
+      {
+        "action": "buy",
+        "budget": {
+          "api_calls": 8,
+          "api_cost": 20,
+          "time": 6,
+          "tokens": 10000
+        },
+        "continuation_value": {
+          "denominator": 11,
+          "numerator": 1423,
+          "value": 129.36363636363637
+        },
+        "expected_purchase_loss": {
+          "denominator": 30,
+          "numerator": 3029,
+          "value": 100.96666666666667
+        },
+        "feasible_next_merchant_count": 2,
+        "feasible_next_merchants": [
+          3,
+          6
+        ],
+        "id": "time-tight",
+        "label": "Tight deadline",
+        "max_purchase_price": 140,
+        "next_merchant_index": 3,
+        "observed_price": 110,
+        "remaining_after_observation": {
+          "api_calls": 7,
+          "api_cost": 18,
+          "time": 3,
+          "tokens": 9100
+        },
+        "reservation_price": {
+          "denominator": 11,
+          "numerator": 1423,
+          "value": 129.36363636363637
+        }
+      },
+      {
+        "action": "buy",
+        "budget": {
+          "api_calls": 8,
+          "api_cost": 20,
+          "time": 31,
+          "tokens": 1900
+        },
+        "continuation_value": {
+          "denominator": 10,
+          "numerator": 1219,
+          "value": 121.9
+        },
+        "expected_purchase_loss": {
+          "denominator": 50,
+          "numerator": 5131,
+          "value": 102.62
+        },
+        "feasible_next_merchant_count": 1,
+        "feasible_next_merchants": [
+          1
+        ],
+        "id": "token-tight",
+        "label": "Tight token budget",
+        "max_purchase_price": 140,
+        "next_merchant_index": 1,
+        "observed_price": 110,
+        "remaining_after_observation": {
+          "api_calls": 7,
+          "api_cost": 18,
+          "time": 28,
+          "tokens": 1000
+        },
+        "reservation_price": {
+          "denominator": 10,
+          "numerator": 1219,
+          "value": 121.9
+        }
+      },
+      {
+        "action": "buy",
+        "budget": {
+          "api_calls": 2,
+          "api_cost": 20,
+          "time": 31,
+          "tokens": 10000
+        },
+        "continuation_value": {
+          "denominator": 5,
+          "numerator": 606,
+          "value": 121.2
+        },
+        "expected_purchase_loss": {
+          "denominator": 60,
+          "numerator": 5921,
+          "value": 98.68333333333334
+        },
+        "feasible_next_merchant_count": 7,
+        "feasible_next_merchants": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "id": "api-tight",
+        "label": "Two API calls available",
+        "max_purchase_price": 140,
+        "next_merchant_index": 2,
+        "observed_price": 110,
+        "remaining_after_observation": {
+          "api_calls": 1,
+          "api_cost": 18,
+          "time": 28,
+          "tokens": 9100
+        },
+        "reservation_price": {
+          "denominator": 5,
+          "numerator": 606,
+          "value": 121.2
+        }
+      },
+      {
+        "action": "buy",
+        "budget": {
+          "api_calls": 8,
+          "api_cost": 4,
+          "time": 31,
+          "tokens": 10000
+        },
+        "continuation_value": {
+          "denominator": 5,
+          "numerator": 606,
+          "value": 121.2
+        },
+        "expected_purchase_loss": {
+          "denominator": 30,
+          "numerator": 2993,
+          "value": 99.76666666666667
+        },
+        "feasible_next_merchant_count": 3,
+        "feasible_next_merchants": [
+          2,
+          4,
+          6
+        ],
+        "id": "api-spend-tight",
+        "label": "Tight API spending cap",
+        "max_purchase_price": 140,
+        "next_merchant_index": 2,
+        "observed_price": 110,
+        "remaining_after_observation": {
+          "api_calls": 7,
+          "api_cost": 2,
+          "time": 28,
+          "tokens": 9100
+        },
+        "reservation_price": {
+          "denominator": 5,
+          "numerator": 606,
+          "value": 121.2
+        }
+      },
+      {
+        "action": "buy",
+        "budget": {
+          "api_calls": 3,
+          "api_cost": 7,
+          "time": 10,
+          "tokens": 3000
+        },
+        "continuation_value": {
+          "denominator": 5,
+          "numerator": 606,
+          "value": 121.2
+        },
+        "expected_purchase_loss": {
+          "denominator": 60,
+          "numerator": 5921,
+          "value": 98.68333333333334
+        },
+        "feasible_next_merchant_count": 7,
+        "feasible_next_merchants": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "id": "combined",
+        "label": "Combined operating limits",
+        "max_purchase_price": 140,
+        "next_merchant_index": 2,
+        "observed_price": 110,
+        "remaining_after_observation": {
+          "api_calls": 2,
+          "api_cost": 5,
+          "time": 7,
+          "tokens": 2100
+        },
+        "reservation_price": {
+          "denominator": 5,
+          "numerator": 606,
+          "value": 121.2
+        }
+      },
+      {
+        "action": "continue",
+        "budget": {
+          "api_calls": 8,
+          "api_cost": 20,
+          "time": 31,
+          "tokens": 10000
+        },
+        "continuation_value": {
+          "denominator": 29040,
+          "numerator": 2189063,
+          "value": 75.38095730027548
+        },
+        "expected_purchase_loss": {
+          "denominator": 29040,
+          "numerator": 2158067,
+          "value": 74.31360192837465
+        },
+        "feasible_next_merchant_count": 7,
+        "feasible_next_merchants": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "id": "price-capped",
+        "label": "Hard purchase-price cap",
+        "max_purchase_price": 100,
+        "next_merchant_index": 7,
+        "observed_price": 110,
+        "remaining_after_observation": {
+          "api_calls": 7,
+          "api_cost": 18,
+          "time": 28,
+          "tokens": 9100
+        },
+        "reservation_price": {
+          "denominator": 29040,
+          "numerator": 2189063,
+          "value": 75.38095730027548
+        }
+      }
+    ],
+    "merchant_count": 8,
+    "merchant_forecasts": [
+      {
+        "api_calls": 1,
+        "api_cost": 2,
+        "price_weights": [
+          {
+            "price": 72,
+            "weight": 1
+          },
+          {
+            "price": 88,
+            "weight": 2
+          },
+          {
+            "price": 104,
+            "weight": 3
+          },
+          {
+            "price": 118,
+            "weight": 2
+          },
+          {
+            "price": 145,
+            "weight": 1
+          }
+        ],
+        "time": 3,
+        "tokens": 900,
+        "unavailable_weight": 1
+      },
+      {
+        "api_calls": 1,
+        "api_cost": 3,
+        "price_weights": [
+          {
+            "price": 66,
+            "weight": 1
+          },
+          {
+            "price": 84,
+            "weight": 2
+          },
+          {
+            "price": 101,
+            "weight": 3
+          },
+          {
+            "price": 121,
+            "weight": 2
+          },
+          {
+            "price": 150,
+            "weight": 1
+          }
+        ],
+        "time": 4,
+        "tokens": 1000,
+        "unavailable_weight": 1
+      },
+      {
+        "api_calls": 1,
+        "api_cost": 2,
+        "price_weights": [
+          {
+            "price": 61,
+            "weight": 1
+          },
+          {
+            "price": 82,
+            "weight": 2
+          },
+          {
+            "price": 99,
+            "weight": 3
+          },
+          {
+            "price": 125,
+            "weight": 2
+          },
+          {
+            "price": 154,
+            "weight": 1
+          }
+        ],
+        "time": 5,
+        "tokens": 1100,
+        "unavailable_weight": 1
+      },
+      {
+        "api_calls": 1,
+        "api_cost": 3,
+        "price_weights": [
+          {
+            "price": 58,
+            "weight": 1
+          },
+          {
+            "price": 80,
+            "weight": 2
+          },
+          {
+            "price": 97,
+            "weight": 3
+          },
+          {
+            "price": 127,
+            "weight": 2
+          },
+          {
+            "price": 158,
+            "weight": 1
+          }
+        ],
+        "time": 3,
+        "tokens": 1200,
+        "unavailable_weight": 2
+      },
+      {
+        "api_calls": 1,
+        "api_cost": 2,
+        "price_weights": [
+          {
+            "price": 55,
+            "weight": 1
+          },
+          {
+            "price": 78,
+            "weight": 2
+          },
+          {
+            "price": 95,
+            "weight": 3
+          },
+          {
+            "price": 130,
+            "weight": 2
+          },
+          {
+            "price": 163,
+            "weight": 1
+          }
+        ],
+        "time": 4,
+        "tokens": 1300,
+        "unavailable_weight": 2
+      },
+      {
+        "api_calls": 1,
+        "api_cost": 3,
+        "price_weights": [
+          {
+            "price": 52,
+            "weight": 1
+          },
+          {
+            "price": 76,
+            "weight": 2
+          },
+          {
+            "price": 93,
+            "weight": 3
+          },
+          {
+            "price": 134,
+            "weight": 2
+          },
+          {
+            "price": 168,
+            "weight": 1
+          }
+        ],
+        "time": 5,
+        "tokens": 1400,
+        "unavailable_weight": 2
+      },
+      {
+        "api_calls": 1,
+        "api_cost": 2,
+        "price_weights": [
+          {
+            "price": 49,
+            "weight": 1
+          },
+          {
+            "price": 74,
+            "weight": 2
+          },
+          {
+            "price": 91,
+            "weight": 3
+          },
+          {
+            "price": 138,
+            "weight": 2
+          },
+          {
+            "price": 174,
+            "weight": 1
+          }
+        ],
+        "time": 3,
+        "tokens": 1500,
+        "unavailable_weight": 3
+      },
+      {
+        "api_calls": 1,
+        "api_cost": 3,
+        "price_weights": [
+          {
+            "price": 46,
+            "weight": 1
+          },
+          {
+            "price": 72,
+            "weight": 2
+          },
+          {
+            "price": 89,
+            "weight": 3
+          },
+          {
+            "price": 142,
+            "weight": 2
+          },
+          {
+            "price": 180,
+            "weight": 1
+          }
+        ],
+        "time": 4,
+        "tokens": 1600,
+        "unavailable_weight": 3
+      }
+    ],
+    "observed_offer_action_switch": true,
+    "observed_price": 110,
+    "price_capped_limit": 100,
+    "random_seed": 20260723,
+    "reservation_surface": [
+      {
+        "action": "continue",
+        "api_call_weight": 0,
+        "expected_loss_before_first_query": {
+          "denominator": 39930000,
+          "numerator": 3852118409,
+          "value": 96.47178585023792
+        },
+        "net_value_of_continuing": {
+          "denominator": 3993000,
+          "numerator": 55492513,
+          "value": 13.897448785374404
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 6,
+          "value": 6.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 0,
+            "value": 0.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 3993000,
+          "numerator": 383737487,
+          "value": 96.10255121462559
+        },
+        "stop_percentile": {
+          "denominator": 3,
+          "numerator": 1,
+          "value": 0.3333333333333333
+        }
+      },
+      {
+        "action": "continue",
+        "api_call_weight": 2,
+        "expected_loss_before_first_query": {
+          "denominator": 6655000,
+          "numerator": 678817151,
+          "value": 102.00107453042826
+        },
+        "net_value_of_continuing": {
+          "denominator": 665500,
+          "numerator": 5893407,
+          "value": 8.85560781367393
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 8,
+          "value": 8.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 665500,
+          "numerator": 67311593,
+          "value": 101.14439218632607
+        },
+        "stop_percentile": {
+          "denominator": 3,
+          "numerator": 1,
+          "value": 0.3333333333333333
+        }
+      },
+      {
+        "action": "continue",
+        "api_call_weight": 4,
+        "expected_loss_before_first_query": {
+          "denominator": 2495625,
+          "numerator": 265460209,
+          "value": 106.37023150513399
+        },
+        "net_value_of_continuing": {
+          "denominator": 998250,
+          "numerator": 5065541,
+          "value": 5.074421237165039
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 10,
+          "value": 10.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 4,
+            "value": 4.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 998250,
+          "numerator": 104741959,
+          "value": 104.92557876283496
+        },
+        "stop_percentile": {
+          "denominator": 3,
+          "numerator": 2,
+          "value": 0.6666666666666666
+        }
+      },
+      {
+        "action": "continue",
+        "api_call_weight": 6,
+        "expected_loss_before_first_query": {
+          "denominator": 2495625,
+          "numerator": 273817199,
+          "value": 109.71888765339344
+        },
+        "net_value_of_continuing": {
+          "denominator": 998250,
+          "numerator": 1699801,
+          "value": 1.7027808665164037
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 12,
+          "value": 12.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 6,
+            "value": 6.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 998250,
+          "numerator": 108107699,
+          "value": 108.2972191334836
+        },
+        "stop_percentile": {
+          "denominator": 3,
+          "numerator": 2,
+          "value": 0.6666666666666666
+        }
+      },
+      {
+        "action": "buy",
+        "api_call_weight": 8,
+        "expected_loss_before_first_query": {
+          "denominator": 75625,
+          "numerator": 8550733,
+          "value": 113.06754380165289
+        },
+        "net_value_of_continuing": {
+          "denominator": 30250,
+          "numerator": -50483,
+          "value": -1.6688595041322314
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 14,
+          "value": 14.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 8,
+            "value": 8.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 30250,
+          "numerator": 3377983,
+          "value": 111.66885950413223
+        },
+        "stop_percentile": {
+          "denominator": 3,
+          "numerator": 2,
+          "value": 0.6666666666666666
+        }
+      },
+      {
+        "action": "buy",
+        "api_call_weight": 10,
+        "expected_loss_before_first_query": {
+          "denominator": 2495625,
+          "numerator": 290531179,
+          "value": 116.41619994991234
+        },
+        "net_value_of_continuing": {
+          "denominator": 998250,
+          "numerator": -5031679,
+          "value": -5.040499874780867
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 16,
+          "value": 16.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 10,
+            "value": 10.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 998250,
+          "numerator": 114839179,
+          "value": 115.04049987478086
+        },
+        "stop_percentile": {
+          "denominator": 3,
+          "numerator": 2,
+          "value": 0.6666666666666666
+        }
+      },
+      {
+        "action": "buy",
+        "api_call_weight": 12,
+        "expected_loss_before_first_query": {
+          "denominator": 4991250,
+          "numerator": 597364919,
+          "value": 119.6824280490859
+        },
+        "net_value_of_continuing": {
+          "denominator": 998250,
+          "numerator": -8397419,
+          "value": -8.412140245429502
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 18,
+          "value": 18.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 12,
+            "value": 12.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 998250,
+          "numerator": 118204919,
+          "value": 118.4121402454295
+        },
+        "stop_percentile": {
+          "denominator": 9,
+          "numerator": 8,
+          "value": 0.8888888888888888
+        }
+      },
+      {
+        "action": "buy",
+        "api_call_weight": 14,
+        "expected_loss_before_first_query": {
+          "denominator": 1663750,
+          "numerator": 203571053,
+          "value": 122.35675612321563
+        },
+        "net_value_of_continuing": {
+          "denominator": 332750,
+          "numerator": -3921053,
+          "value": -11.783780616078136
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 20,
+          "value": 20.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 14,
+            "value": 14.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 332750,
+          "numerator": 40523553,
+          "value": 121.78378061607813
+        },
+        "stop_percentile": {
+          "denominator": 9,
+          "numerator": 8,
+          "value": 0.8888888888888888
+        }
+      },
+      {
+        "action": "buy",
+        "api_call_weight": 16,
+        "expected_loss_before_first_query": {
+          "denominator": 831875,
+          "numerator": 103922127,
+          "value": 124.92517145003757
+        },
+        "net_value_of_continuing": {
+          "denominator": 166375,
+          "numerator": -2433377,
+          "value": -14.62585725018783
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 22,
+          "value": 22.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 16,
+            "value": 16.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 166375,
+          "numerator": 20734627,
+          "value": 124.62585725018783
+        },
+        "stop_percentile": {
+          "denominator": 9,
+          "numerator": 8,
+          "value": 0.8888888888888888
+        }
+      },
+      {
+        "action": "buy",
+        "api_call_weight": 18,
+        "expected_loss_before_first_query": {
+          "denominator": 3327500,
+          "numerator": 424040017,
+          "value": 127.43501637866267
+        },
+        "net_value_of_continuing": {
+          "denominator": 665500,
+          "numerator": -11430017,
+          "value": -17.175081893313298
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 24,
+          "value": 24.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 18,
+            "value": 18.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 665500,
+          "numerator": 84635017,
+          "value": 127.1750818933133
+        },
+        "stop_percentile": {
+          "denominator": 9,
+          "numerator": 8,
+          "value": 0.8888888888888888
+        }
+      },
+      {
+        "action": "buy",
+        "api_call_weight": 20,
+        "expected_loss_before_first_query": {
+          "denominator": 3327500,
+          "numerator": 432365377,
+          "value": 129.93700285499625
+        },
+        "net_value_of_continuing": {
+          "denominator": 665500,
+          "numerator": -13100377,
+          "value": -19.685014274981217
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 26,
+          "value": 26.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 20,
+            "value": 20.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 665500,
+          "numerator": 86305377,
+          "value": 129.68501427498123
+        },
+        "stop_percentile": {
+          "denominator": 9,
+          "numerator": 8,
+          "value": 0.8888888888888888
+        }
+      },
+      {
+        "action": "buy",
+        "api_call_weight": 22,
+        "expected_loss_before_first_query": {
+          "denominator": 3327500,
+          "numerator": 440690737,
+          "value": 132.43898933132982
+        },
+        "net_value_of_continuing": {
+          "denominator": 665500,
+          "numerator": -14770737,
+          "value": -22.194946656649137
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 28,
+          "value": 28.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 22,
+            "value": 22.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 665500,
+          "numerator": 87975737,
+          "value": 132.19494665664914
+        },
+        "stop_percentile": {
+          "denominator": 9,
+          "numerator": 8,
+          "value": 0.8888888888888888
+        }
+      },
+      {
+        "action": "buy",
+        "api_call_weight": 24,
+        "expected_loss_before_first_query": {
+          "denominator": 3327500,
+          "numerator": 449016097,
+          "value": 134.94097580766342
+        },
+        "net_value_of_continuing": {
+          "denominator": 665500,
+          "numerator": -16441097,
+          "value": -24.704879038317056
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 30,
+          "value": 30.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 24,
+            "value": 24.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 665500,
+          "numerator": 89646097,
+          "value": 134.70487903831705
+        },
+        "stop_percentile": {
+          "denominator": 9,
+          "numerator": 8,
+          "value": 0.8888888888888888
+        }
+      },
+      {
+        "action": "buy",
+        "api_call_weight": 26,
+        "expected_loss_before_first_query": {
+          "denominator": 3327500,
+          "numerator": 457341457,
+          "value": 137.442962283997
+        },
+        "net_value_of_continuing": {
+          "denominator": 665500,
+          "numerator": -18111457,
+          "value": -27.214811419984972
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 32,
+          "value": 32.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 26,
+            "value": 26.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 665500,
+          "numerator": 91316457,
+          "value": 137.21481141998498
+        },
+        "stop_percentile": {
+          "denominator": 9,
+          "numerator": 8,
+          "value": 0.8888888888888888
+        }
+      },
+      {
+        "action": "buy",
+        "api_call_weight": 28,
+        "expected_loss_before_first_query": {
+          "denominator": 302500,
+          "numerator": 42333347,
+          "value": 139.9449487603306
+        },
+        "net_value_of_continuing": {
+          "denominator": 60500,
+          "numerator": -1798347,
+          "value": -29.72474380165289
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 34,
+          "value": 34.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 28,
+            "value": 28.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 60500,
+          "numerator": 8453347,
+          "value": 139.7247438016529
+        },
+        "stop_percentile": {
+          "denominator": 9,
+          "numerator": 8,
+          "value": 0.8888888888888888
+        }
+      },
+      {
+        "action": "buy",
+        "api_call_weight": 30,
+        "expected_loss_before_first_query": {
+          "denominator": 3327500,
+          "numerator": 473992177,
+          "value": 142.44693523666416
+        },
+        "net_value_of_continuing": {
+          "denominator": 665500,
+          "numerator": -21452177,
+          "value": -32.234676183320815
+        },
+        "next_query_cost": {
+          "denominator": 1,
+          "numerator": 36,
+          "value": 36.0
+        },
+        "next_query_cost_components": {
+          "api_calls": {
+            "denominator": 1,
+            "numerator": 30,
+            "value": 30.0
+          },
+          "api_cost": {
+            "denominator": 1,
+            "numerator": 3,
+            "value": 3.0
+          },
+          "time": {
+            "denominator": 1,
+            "numerator": 2,
+            "value": 2.0
+          },
+          "tokens": {
+            "denominator": 1,
+            "numerator": 1,
+            "value": 1.0
+          }
+        },
+        "reservation_price": {
+          "denominator": 665500,
+          "numerator": 94657177,
+          "value": 142.2346761833208
+        },
+        "stop_percentile": {
+          "denominator": 9,
+          "numerator": 8,
+          "value": 0.8888888888888888
+        }
+      }
+    ],
+    "reservation_surface_monotone": true
   },
   "schema_version": 1
 }

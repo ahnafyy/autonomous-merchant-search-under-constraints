@@ -1,4 +1,11 @@
 \section{Conclusion}
 
-TODO: Restate the mechanism and the main calibrated result without introducing
-new claims. End with the reusable distinction or design principle.
+We formulated autonomous merchant search as exact finite-horizon stopping with
+hard time, token, API-call, API-spend, and purchase-price constraints.  Remaining
+resources are part of the Bellman state, and the purchase cap restricts the
+admissible action set.  On the registered synthetic benchmark, binding resource
+regimes change the action for the same offer.
+
+The reusable distinction is between pricing a resource and enforcing its
+feasibility.  Scalar query costs can be useful comparators, but an autonomous
+agent facing actual caps must plan over what remains possible.

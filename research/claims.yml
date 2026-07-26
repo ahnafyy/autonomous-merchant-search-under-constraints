@@ -1,16 +1,19 @@
 schema_version: 1
 claims:
-  - id: "EXAMPLE-COMPUTATION-001"
-    statement: "For four independent uniform choices among eight options, the expected number of distinct choices is 3.310546875."
-    status: "exact-computational"
-    scope: "Template fixture only; not a public research contribution."
-    evaluator: "paperkit.evaluators:evaluate_registered_result"
-    result_key: "expected_distinct"
-    expected: 3.310546875
-    tolerance: 1.0e-12
+  - id: "MERCHANT-PERMIT-OPEN-001"
+    statement: >-
+      It remains open whether adaptive pre-call allocation of enforceable time, token,
+      API-call, and API-spend permits improves purchase loss or purchase success over
+      fixed-split and myopic feasible baselines while maintaining zero hard-budget
+      violations under uncertain realized query usage.
+    status: "open"
+    scope: >-
+      Sequential no-recall merchant search with enforceable per-call limits, uncertain
+      resource usage, a hard purchase-price cap, and paired replay traces.
     evidence:
-      - "artifacts/results.json"
+      - "research/literature.yml"
     manuscript_labels: []
-    site_visible: false
+    site_visible: true
     limitations:
-      - "The choices are independent and uniformly distributed."
+      - "The repository does not yet contain a calibrated query-usage trace corpus."
+      - "Zero violations require the host runtime to enforce every permit before invoking a model or merchant tool."

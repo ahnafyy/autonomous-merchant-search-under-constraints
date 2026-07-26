@@ -1,7 +1,7 @@
 {
-  "name": "@example/example-study",
+  "name": "autonomous-shopping-optimizer",
   "version": "0.1.0",
-  "description": "Exact occupancy calculations accompanying the template research paper",
+  "description": "Hard-budget optimizer middleware for autonomous shopping",
   "type": "module",
   "exports": {
     ".": {
@@ -20,7 +20,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OWNER/REPOSITORY.git"
+    "url": "git+https://github.com/ahnafyy/autonomous-merchant-search-under-constraints.git"
   },
   "publishConfig": {
     "access": "public",

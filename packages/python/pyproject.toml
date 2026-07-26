@@ -3,17 +3,21 @@ requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [project]
-name = "example-study"
+name = "autonomous-shopping-optimizer"
 version = "0.1.0"
-description = "Exact occupancy calculations accompanying the template research paper"
+description = "Hard-budget optimizer middleware for autonomous shopping"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
-authors = [{ name = "Research Paper and Package Template contributors" }]
+authors = [{ name = "Ahnaf Prio" }]
 
 [project.urls]
-Repository = "https://github.com/OWNER/REPOSITORY"
-Paper = "https://OWNER.github.io/REPOSITORY/"
+Repository = "https://github.com/ahnafyy/autonomous-merchant-search-under-constraints"
+Paper = "https://ahnafyy.github.io/autonomous-merchant-search-under-constraints/"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/example_study"]
+packages = [
+	"src/autonomous_shopping_optimizer",
+	"src/autonomous_shopping",
+	"src/example_study",
+]

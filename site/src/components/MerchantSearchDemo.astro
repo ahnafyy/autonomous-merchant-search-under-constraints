@@ -1,0 +1,176 @@
+---
+interface ExactValue {
+  numerator: number;
+  denominator: number;
+  value: number;
+}
+
+interface SurfaceRow {
+  action: "buy" | "continue";
+  api_call_weight: number;
+  reservation_price: ExactValue;
+  net_value_of_continuing: ExactValue;
+  stop_percentile: ExactValue;
+  next_query_cost: ExactValue;
+  next_query_cost_components: Record<string, ExactValue>;
+}
+
+interface Props {
+  surface: SurfaceRow[];
+  observedPrice: number;
+  criticalWeight: ExactValue;
+}
+
+const { surface, observedPrice, criticalWeight } = Astro.props;
+const initial = surface.find((row) => row.action === "buy") ?? surface[0];
+const componentOrder = ["api_calls", "api_cost", "time", "tokens"];
+const componentLabels: Record<string, string> = {
+  api_calls: "API shadow cost",
+  api_cost: "API charge",
+  time: "Time value",
+  tokens: "Token value",
+};
+---
+
+<div class="experiment merchant-demo" data-merchant-demo data-surface={JSON.stringify(surface)}>
+  <div class="experiment__toolbar">
+    <div>
+      <span class="eyebrow">Bellman decision console</span>
+      <h3>Should the agent buy at ${observedPrice}?</h3>
+    </div>
+    <strong class:list={["decision-badge", `decision-badge--${initial.action}`]} data-action>
+      {initial.action}
+    </strong>
+  </div>
+
+  <div class="cost-control">
+    <div class="cost-control__label">
+      <label for="api-shadow-cost">Value assigned to one additional API call</label>
+      <output for="api-shadow-cost" data-weight>${initial.api_call_weight}</output>
+    </div>
+    <input
+      id="api-shadow-cost"
+      type="range"
+      min={surface[0].api_call_weight}
+      max={surface.at(-1)?.api_call_weight}
+      step="2"
+      value={initial.api_call_weight}
+      data-cost-slider
+    />
+    <div class="cost-control__axis" aria-hidden="true">
+      <span>cheap search</span>
+      <span>break-even x* = {criticalWeight.value.toFixed(3)}</span>
+      <span>expensive search</span>
+    </div>
+  </div>
+
+  <dl class="decision-grid" aria-label="Current stopping decision">
+    <div>
+      <dt>Current offer</dt>
+      <dd>${observedPrice.toFixed(2)}</dd>
+      <dd class="decision-grid__note">buy now cost</dd>
+    </div>
+    <div>
+      <dt>Reservation price</dt>
+      <dd data-reservation>${initial.reservation_price.value.toFixed(2)}</dd>
+      <dd class="decision-grid__note">buy at or below</dd>
+    </div>
+    <div>
+      <dt>Value of continuing</dt>
+      <dd data-margin>{initial.net_value_of_continuing.value.toFixed(2)}</dd>
+      <dd class="decision-grid__note">positive favors search</dd>
+    </div>
+    <div>
+      <dt>Stop percentile</dt>
+      <dd data-percentile>{(100 * initial.stop_percentile.value).toFixed(1)}%</dd>
+      <dd class="decision-grid__note">forecast offers accepted</dd>
+    </div>
+  </dl>
+
+  <p class="experiment__readout" aria-live="polite" data-readout>
+    <strong>{initial.action === "buy" ? "Buy now." : "Search again."}</strong>
+    The observed price is {Math.abs(initial.net_value_of_continuing.value).toFixed(2)}
+    {initial.action === "buy" ? " below" : " above"} the continuation value.
+  </p>
+
+  <div class="cost-equation" aria-label="Next query cost decomposition">
+    <span class="cost-equation__title">Next query cost x</span>
+    <div class="cost-equation__terms">
+      {componentOrder.map((key, index) => (
+        <span>
+          {index > 0 && <i aria-hidden="true">+</i>}
+          <b data-component={key}>{initial.next_query_cost_components[key].value.toFixed(2)}</b>
+          <small>{componentLabels[key]}</small>
+        </span>
+      ))}
+      <span>
+        <i aria-hidden="true">=</i>
+        <b data-total-cost>{initial.next_query_cost.value.toFixed(2)}</b>
+        <small>total scalar cost</small>
+      </span>
+    </div>
+  </div>
+
+  <div class="exact-table-wrap" role="region" aria-label="Scrollable exact results" tabindex="0">
+    <table class="exact-table">
+      <caption>Exact finite-horizon policy surface over the API shadow-cost grid</caption>
+      <thead>
+        <tr>
+          <th scope="col">API weight</th>
+          <th scope="col">Reservation price</th>
+          <th scope="col">Stop percentile</th>
+          <th scope="col">Decision at ${observedPrice}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {surface.map((row) => (
+          <tr>
+            <th scope="row">{row.api_call_weight}</th>
+            <td>${row.reservation_price.value.toFixed(2)}</td>
+            <td>{(100 * row.stop_percentile.value).toFixed(1)}%</td>
+            <td>{row.action}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  const demo = document.querySelector<HTMLElement>("[data-merchant-demo]");
+  const readout = demo?.querySelector<HTMLElement>("[data-readout]");
+  const slider = demo?.querySelector<HTMLInputElement>("[data-cost-slider]");
+  const action = demo?.querySelector<HTMLElement>("[data-action]");
+  const weight = demo?.querySelector<HTMLOutputElement>("[data-weight]");
+  const reservation = demo?.querySelector<HTMLElement>("[data-reservation]");
+  const margin = demo?.querySelector<HTMLElement>("[data-margin]");
+  const percentile = demo?.querySelector<HTMLElement>("[data-percentile]");
+  const totalCost = demo?.querySelector<HTMLElement>("[data-total-cost]");
+  const surface = JSON.parse(demo?.dataset.surface ?? "[]") as Array<{
+    action: "buy" | "continue";
+    api_call_weight: number;
+    reservation_price: { value: number };
+    net_value_of_continuing: { value: number };
+    stop_percentile: { value: number };
+    next_query_cost: { value: number };
+    next_query_cost_components: Record<string, { value: number }>;
+  }>;
+
+  slider?.addEventListener("input", () => {
+    const row = surface.find((candidate) => candidate.api_call_weight === Number(slider.value));
+    if (!row || !readout || !action || !weight || !reservation || !margin || !percentile || !totalCost) return;
+    action.textContent = row.action;
+    action.className = `decision-badge decision-badge--${row.action}`;
+    weight.textContent = `$${row.api_call_weight}`;
+    reservation.textContent = `$${row.reservation_price.value.toFixed(2)}`;
+    margin.textContent = row.net_value_of_continuing.value.toFixed(2);
+    percentile.textContent = `${(100 * row.stop_percentile.value).toFixed(1)}%`;
+    totalCost.textContent = row.next_query_cost.value.toFixed(2);
+    for (const [key, component] of Object.entries(row.next_query_cost_components)) {
+      const target = demo?.querySelector<HTMLElement>(`[data-component="${key}"]`);
+      if (target) target.textContent = component.value.toFixed(2);
+    }
+    const magnitude = Math.abs(row.net_value_of_continuing.value).toFixed(2);
+    readout.innerHTML = `<strong>${row.action === "buy" ? "Buy now." : "Search again."}</strong> The observed price is ${magnitude} ${row.action === "buy" ? "below" : "above"} the continuation value.`;
+  });
+</script>

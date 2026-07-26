@@ -1,11 +1,67 @@
 schema_version: 1
 avenues:
   - id: "AVENUE-001"
-    title: "TODO: Candidate research question"
+    title: "Adaptive hard-budget allocation for autonomous shopping agents"
+    status: selected
+    mechanism: >-
+      Before each model or merchant-tool call, the optimizer chooses both a merchant
+      and enforceable limits for time, tokens, calls, and spend. Conserving resources
+      preserves later search, while overly strict permits can cause truncation,
+      timeout, and purchase failure.
+    minimal_model: >-
+      A finite no-recall merchant-search episode with stochastic correlated query
+      usage, enforceable per-call permits, a hard total resource vector, and a hard
+      purchase-price cap.
+    novelty_hypothesis: >-
+      Jointly routing merchants and sizing enforceable call permits may improve
+      purchase quality or success over fixed splitting and myopic feasible policies
+      without any hard-limit violations.
+    decisive_calculation: >-
+      On paired held-out traces, compare adaptive permits with equal split, greedy
+      feasible, fixed-depth, worst-case reserve, and clairvoyant controls. Reject the
+      avenue if adaptive allocation does not improve purchase loss or success at zero
+      violations after planner overhead and forecast error are included.
+    expected_value: >-
+      The result would give deployable guidance for timeout, max-token, call, and spend
+      limits around autonomous shopping tool loops.
+    rejection_reason: null
+  - id: "AVENUE-002"
+    title: "Distribution-free stopping guarantees for ephemeral offers"
     status: candidate
-    mechanism: "TODO: What mechanism could produce the surprising behavior?"
-    minimal_model: "TODO: Smallest inspectable model that isolates the mechanism."
-    novelty_hypothesis: "TODO: What might be new relative to the closest literature?"
-    decisive_calculation: "TODO: Cheapest calculation that could reject this avenue."
-    expected_value: "TODO: Why the answer would matter even if the hypothesis fails."
+    mechanism: >-
+      Random merchant order or policy randomization may permit nontrivial guarantees
+      without assuming reusable price or availability distributions.
+    minimal_model: >-
+      Unit query costs, a finite horizon, scalar prices, arbitrary availability, and
+      either adversarial or uniformly random merchant order.
+    novelty_hypothesis: >-
+      Existing secretary, prophet, and online-search results may not directly cover
+      joint purchase failure and operational resource budgets. This distinction must
+      be established against verified prior work.
+    decisive_calculation: >-
+      Construct adversarial traces and derive the smallest horizon at which every
+      deterministic threshold policy has an unbounded price ratio or excessive
+      purchase-failure probability.
+    expected_value: >-
+      The result would state when distribution-free optimization is possible and when
+      stronger assumptions are unavoidable.
+    rejection_reason: null
+  - id: "AVENUE-003"
+    title: "From landed price to multi-attribute merchant utility"
+    status: candidate
+    mechanism: >-
+      Shipping, delivery, trust, returns, and condition can reverse merchant rankings
+      that appear optimal under item price alone.
+    minimal_model: >-
+      Extend the selected scalar-price benchmark with a declared utility function or
+      a Pareto order over a small set of merchant attributes.
+    novelty_hypothesis: >-
+      The extension may show which scalar stopping conclusions survive partial orders
+      and heterogeneous shopper preferences; no novelty is assumed before review.
+    decisive_calculation: >-
+      Test whether two attributes already produce policy reversals not representable
+      by a stable scalar landed-price transformation.
+    expected_value: >-
+      A calibrated negative result would justify keeping the first paper focused on
+      exact-SKU landed price rather than an unnecessarily broad utility model.
     rejection_reason: null

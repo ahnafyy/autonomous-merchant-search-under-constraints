@@ -1,17 +1,17 @@
 {
   "all_executable_claims_passed": true,
   "claims": [
-    "EXAMPLE-COMPUTATION-001"
+    "MERCHANT-PERMIT-OPEN-001"
   ],
   "files": {
-    "claim-results.json": "49bc61d2ab4cf8addbafd963c100f28454ed032c91e40c83b3fc6d3fd27a37a6",
-    "conformance/expected-distinct.json": "5722e14a205744169d7e1ae07a86bceff1a55f8ea079a7d875fafe2213195f3e",
-    "data/summary.csv": "cbd50828a47957de56c47a8c055f0f2db755e7e0bf46ce77a1443e5a222c1ddc",
-    "results.json": "7aa3540fa279f766bd5e010b35a0ba9ed127d78754bace60d895ed420e966522",
-    "site-data.json": "dcc26925c4063996d1a7225046ea991d090e8ce8e6537a10cff4edd7728edcee",
-    "tables/claim_status.tex": "dbc0a1196cd73e1f5a19ead0f3bb773236532b566779925039d9024fb9a7d3d8",
-    "tables/project_metadata.tex": "d326e885735eae438e8c11acc1c823f01c51a4d886006c23ec509688c08fbdc6",
-    "tables/result_macros.tex": "7c8983cbeacfe0006dedf0573b18c84a435b0b97ac1caa9957dfbae3dae560a0"
+    "claim-results.json": "90fcf668d749c8f535b3ea4bb23c76ce04fa8a0c11f0d69343a0328501be93dc",
+    "conformance/merchant-search.json": "c060ee519cfd320b22679b9e3cf821b4477f42a4869eb58505ab6416d223108f",
+    "data/summary.csv": "fe7740efa5a20af9023d4acf9c418d1b71af0af7b1d82e82d0d5e3a2d8411926",
+    "results.json": "2400ab7210a4f41fd0440e2229fe4da185cf98f4407b231ac43e2a4b2093f326",
+    "site-data.json": "0dba54a04ad2a4401fb157ddf8686e073fe2c9e0ceecb672eac19557a94dcd8f",
+    "tables/claim_status.tex": "811901ae1a416493702583fc87e1487db35231783cbca6ca965fc7271c044c7b",
+    "tables/project_metadata.tex": "27b1f10faf9b4f0e024c1bfc1ef3f936051b4a6c6e474eae072242ba992494e0",
+    "tables/result_macros.tex": "5d14fbc652852e9d9f545afbed0319a7f5c6dff20dd8c80f07a2079222a87565"
   },
   "generator": {
     "name": "paperkit",
@@ -19,11 +19,11 @@
   },
   "project": {
     "packages": {
-      "javascript": "@example/example-study",
-      "python": "example-study"
+      "javascript": "autonomous-shopping-optimizer",
+      "python": "autonomous-shopping-optimizer"
     },
-    "slug": "paper-project",
-    "title": "TODO: Research title",
+    "slug": "autonomous-merchant-search-under-constraints",
+    "title": "Autonomous Shopping Optimizer",
     "version": "0.1.0"
   },
   "random_seed": 20260723,

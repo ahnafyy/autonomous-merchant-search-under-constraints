@@ -1,0 +1,258 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "accepted_index": 0,
+        "accepted_price": 7,
+        "purchased": true,
+        "queries": 1,
+        "resources": {
+          "api_calls": 1,
+          "api_cost": 0,
+          "time": 0,
+          "tokens": 0
+        },
+        "terminal_reason": "purchased"
+      },
+      "input": {
+        "offers": [
+          {
+            "api_calls": 1,
+            "available": true,
+            "price": 7
+          }
+        ],
+        "policy": "accept_first"
+      }
+    },
+    {
+      "expected": {
+        "accepted_index": 1,
+        "accepted_price": 2,
+        "purchased": true,
+        "queries": 2,
+        "resources": {
+          "api_calls": 2,
+          "api_cost": 0,
+          "time": 0,
+          "tokens": 0
+        },
+        "terminal_reason": "purchased"
+      },
+      "input": {
+        "offers": [
+          {
+            "api_calls": 1,
+            "available": true,
+            "price": 6
+          },
+          {
+            "api_calls": 1,
+            "available": true,
+            "price": 2
+          }
+        ],
+        "policy": "resource_aware_threshold",
+        "threshold": 2
+      }
+    },
+    {
+      "expected": {
+        "accepted_index": 1,
+        "accepted_price": 5,
+        "purchased": true,
+        "queries": 2,
+        "resources": {
+          "api_calls": 2,
+          "api_cost": 0,
+          "time": 0,
+          "tokens": 0
+        },
+        "terminal_reason": "purchased"
+      },
+      "input": {
+        "offers": [
+          {
+            "api_calls": 1,
+            "available": false,
+            "price": null
+          },
+          {
+            "api_calls": 1,
+            "available": true,
+            "price": 5
+          }
+        ],
+        "policy": "accept_first"
+      }
+    },
+    {
+      "expected": {
+        "accepted_index": null,
+        "accepted_price": null,
+        "purchased": false,
+        "queries": 1,
+        "resources": {
+          "api_calls": 1,
+          "api_cost": 0,
+          "time": 0,
+          "tokens": 0
+        },
+        "terminal_reason": "resource_exhausted"
+      },
+      "input": {
+        "budget": {
+          "api_calls": 1
+        },
+        "offers": [
+          {
+            "api_calls": 1,
+            "available": true,
+            "price": 6
+          },
+          {
+            "api_calls": 1,
+            "available": true,
+            "price": 2
+          }
+        ],
+        "policy": "fixed_threshold",
+        "threshold": 2
+      }
+    }
+  ],
+  "errors": [
+    {
+      "input": {
+        "offers": [
+          {
+            "available": true,
+            "price": null
+          }
+        ],
+        "policy": "accept_first"
+      },
+      "type": "ValueError"
+    },
+    {
+      "input": {
+        "offers": [],
+        "policy": "unknown"
+      },
+      "type": "ValueError"
+    }
+  ],
+  "operation": "simulate_policy",
+  "planner_cases": [
+    {
+      "expected": {
+        "action": "continue",
+        "continuation_value": 60.0,
+        "feasible_next_merchants": [
+          2
+        ],
+        "next_merchant_index": 2,
+        "remaining_after_observation": {
+          "api_calls": 1,
+          "api_cost": 0,
+          "time": 1,
+          "tokens": 9
+        },
+        "reservation_price": 60.0
+      },
+      "input": {
+        "budget": {
+          "api_calls": 2,
+          "api_cost": 0,
+          "time": 2,
+          "tokens": 10
+        },
+        "failurePenalty": 180,
+        "maxPurchasePrice": 150,
+        "merchants": [
+          {
+            "api_calls": 1,
+            "price_weights": [
+              {
+                "price": 100,
+                "weight": 1
+              }
+            ],
+            "time": 1,
+            "tokens": 1
+          },
+          {
+            "api_calls": 1,
+            "price_weights": [
+              {
+                "price": 50,
+                "weight": 1
+              }
+            ],
+            "time": 5,
+            "tokens": 1
+          },
+          {
+            "api_calls": 1,
+            "price_weights": [
+              {
+                "price": 60,
+                "weight": 1
+              }
+            ],
+            "time": 1,
+            "tokens": 5
+          }
+        ],
+        "observedPrice": 100
+      }
+    },
+    {
+      "expected": {
+        "action": "reject_without_feasible_query",
+        "continuation_value": 180.0,
+        "feasible_next_merchants": [],
+        "next_merchant_index": null,
+        "remaining_after_observation": {
+          "api_calls": 0,
+          "api_cost": 0,
+          "time": 0,
+          "tokens": 0
+        },
+        "reservation_price": 90.0
+      },
+      "input": {
+        "budget": {
+          "api_calls": 1,
+          "api_cost": 0,
+          "time": 0,
+          "tokens": 0
+        },
+        "failurePenalty": 180,
+        "maxPurchasePrice": 90,
+        "merchants": [
+          {
+            "api_calls": 1,
+            "price_weights": [
+              {
+                "price": 100,
+                "weight": 1
+              }
+            ]
+          },
+          {
+            "api_calls": 1,
+            "price_weights": [
+              {
+                "price": 60,
+                "weight": 1
+              }
+            ]
+          }
+        ],
+        "observedPrice": 100
+      }
+    }
+  ],
+  "schema_version": 1
+}

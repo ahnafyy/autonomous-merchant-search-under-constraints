@@ -1,12 +1,24 @@
 schema_version: 1
 initialized: false
 project:
-  title: "TODO: Research title"
-  subtitle: "TODO: One-sentence contribution"
-  slug: "paper-project"
-  abstract: "TODO: State the problem, method, result, and contribution."
+  title: "Autonomous Shopping Optimizer"
+  subtitle: "Exact stopping decisions under time, token, API, and purchase-price limits"
+  slug: "autonomous-merchant-search-under-constraints"
+  abstract: >-
+    Autonomous Shopping Optimizer is middleware for sequential merchant search under
+    hard time, token, API-call, API-spend, and purchase-price limits. Its exact
+    finite-horizon planner tracks remaining resources, chooses the next feasible
+    merchant, and returns buy, continue, or reject without executing an LLM call or a
+    purchase. Before each call it can issue enforceable timeout, token, call, and spend
+    permits, then reconcile actual usage. The current research asks whether adaptive
+    permit allocation improves purchase quality or success over fixed feasible
+    baselines while maintaining zero hard-budget violations.
   keywords:
-    - "TODO"
+    - "autonomous shopping"
+    - "online search"
+    - "optimal stopping"
+    - "resource constraints"
+    - "ephemeral offers"
   arxiv_categories:
     - "cs.AI"
 authors:
@@ -15,18 +27,18 @@ authors:
     affiliations:
       - "TODO: Affiliation"
 links:
-  repository: "https://github.com/OWNER/REPOSITORY"
-  site: "https://OWNER.github.io/REPOSITORY/"
+  repository: "https://github.com/ahnafyy/autonomous-merchant-search-under-constraints"
+  site: "https://ahnafyy.github.io/autonomous-merchant-search-under-constraints/"
 research:
   random_seed: 20260723
 release:
   version: "0.1.0"
 packages:
   python:
-    distribution: "example-study"
+    distribution: "autonomous-shopping-optimizer"
     import_name: "example_study"
   javascript:
-    name: "@example/example-study"
+    name: "autonomous-shopping-optimizer"
 licenses:
   code: "MIT"
   content: "CC-BY-4.0"

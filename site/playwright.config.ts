@@ -1,5 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const runtime = globalThis as typeof globalThis & {
+  process?: { env?: Record<string, string | undefined> };
+};
+
 export default defineConfig({
   testDir: "./tests",
   outputDir: "./test-results",
@@ -7,6 +11,7 @@ export default defineConfig({
   use: {
     baseURL: "http://127.0.0.1:4321",
     trace: "retain-on-failure",
+    channel: runtime.process?.env?.PLAYWRIGHT_USE_SYSTEM_CHROME === "1" ? "chrome" : undefined,
   },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },

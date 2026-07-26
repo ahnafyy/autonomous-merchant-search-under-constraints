@@ -6,5 +6,17 @@ numerical results, finite computational patterns, conjectures, and open question
 
 \input{generated/claim_status}
 
-TODO: Describe the reproduction command, environment, seeds, tolerances,
-independent cross-checks, and generated artifacts for this study.
+Run \texttt{python -m paperkit.cli build} from the repository root to regenerate
+the JSON, CSV, \LaTeX{}, site, claim, and conformance artifacts.  Run
+\texttt{python -m pytest} and \texttt{python -m ruff check .} for the Python
+implementation and \texttt{npm test --prefix packages/javascript} for the
+cross-language trace simulator.  The analysis uses exact rational arithmetic;
+the hard-constraint claim has no floating tolerance.  Generated manifests omit
+wall-clock timestamps and record the configured seed
+\ResultRandomSeed{}.
+
+The current unit checks cover offer expiry, resource exhaustion, hard-cap
+admissibility, budget-dependent Bellman actions, deterministic artifact
+generation, and claim evaluation.  Exhaustive independent policy enumeration
+on reduced stochastic horizons remains a required robustness check rather than
+a completed verification result.

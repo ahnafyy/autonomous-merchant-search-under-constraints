@@ -61,22 +61,129 @@ def _load_analysis(root: Path, import_name: str) -> Any:
 
 
 def _conformance_vectors(analysis: Any) -> dict[str, Any]:
-    cases = []
-    for options, choices in ((1, 0), (2, 1), (3, 2), (8, 4), (10, 6)):
-        result = analysis.expected_distinct_choices(options, choices)
-        cases.append(
+    inputs = [
+        {
+            "offers": [{"available": True, "price": 7, "api_calls": 1}],
+            "policy": "accept_first",
+        },
+        {
+            "offers": [
+                {"available": True, "price": 6, "api_calls": 1},
+                {"available": True, "price": 2, "api_calls": 1},
+            ],
+            "policy": "resource_aware_threshold",
+            "threshold": 2,
+        },
+        {
+            "offers": [
+                {"available": False, "price": None, "api_calls": 1},
+                {"available": True, "price": 5, "api_calls": 1},
+            ],
+            "policy": "accept_first",
+        },
+        {
+            "offers": [
+                {"available": True, "price": 6, "api_calls": 1},
+                {"available": True, "price": 2, "api_calls": 1},
+            ],
+            "policy": "fixed_threshold",
+            "threshold": 2,
+            "budget": {"api_calls": 1},
+        },
+    ]
+    cases = [
+        {"input": value, "expected": analysis.simulate_policy(**value).as_dict()}
+        for value in inputs
+    ]
+    planner_inputs = [
+        {
+            "merchants": [
+                {
+                    "price_weights": [{"price": 100, "weight": 1}],
+                    "time": 1,
+                    "tokens": 1,
+                    "api_calls": 1,
+                },
+                {
+                    "price_weights": [{"price": 50, "weight": 1}],
+                    "time": 5,
+                    "tokens": 1,
+                    "api_calls": 1,
+                },
+                {
+                    "price_weights": [{"price": 60, "weight": 1}],
+                    "time": 1,
+                    "tokens": 5,
+                    "api_calls": 1,
+                },
+            ],
+            "budget": {"time": 2, "tokens": 10, "api_calls": 2, "api_cost": 0},
+            "observedPrice": 100,
+            "maxPurchasePrice": 150,
+            "failurePenalty": 180,
+        },
+        {
+            "merchants": [
+                {
+                    "price_weights": [{"price": 100, "weight": 1}],
+                    "api_calls": 1,
+                },
+                {
+                    "price_weights": [{"price": 60, "weight": 1}],
+                    "api_calls": 1,
+                },
+            ],
+            "budget": {"time": 0, "tokens": 0, "api_calls": 1, "api_cost": 0},
+            "observedPrice": 100,
+            "maxPurchasePrice": 90,
+            "failurePenalty": 180,
+        },
+    ]
+    planner_cases = []
+    for value in planner_inputs:
+        plan = analysis.adaptive_hard_budget_plan(
+            value["merchants"],
+            value["budget"],
+            value["maxPurchasePrice"],
+            value["failurePenalty"],
+        )
+        reservation = plan["reservation_price"]["value"]
+        if value["observedPrice"] <= reservation:
+            action = "buy"
+        elif plan["next_merchant_index"] is None:
+            action = "reject_without_feasible_query"
+        else:
+            action = "continue"
+        planner_cases.append(
             {
-                "input": {"choices": choices, "options": options},
-                "expected": result.as_dict(),
+                "input": value,
+                "expected": {
+                    "action": action,
+                    "reservation_price": reservation,
+                    "continuation_value": plan["continuation_value"]["value"],
+                    "next_merchant_index": plan["next_merchant_index"],
+                    "feasible_next_merchants": plan["feasible_next_merchants"],
+                    "remaining_after_observation": plan["remaining_after_observation"],
+                },
             }
         )
     return {
         "schema_version": 1,
-        "operation": "expected_distinct_choices",
+        "operation": "simulate_policy",
         "cases": cases,
+        "planner_cases": planner_cases,
         "errors": [
-            {"input": {"choices": 1, "options": 0}, "type": "ValueError"},
-            {"input": {"choices": -1, "options": 2}, "type": "ValueError"},
+            {
+                "input": {
+                    "offers": [{"available": True, "price": None}],
+                    "policy": "accept_first",
+                },
+                "type": "ValueError",
+            },
+            {
+                "input": {"offers": [], "policy": "unknown"},
+                "type": "ValueError",
+            },
         ],
     }
 
@@ -96,7 +203,7 @@ def build(root: Path, output_dir: Path | None = None) -> Path:
         _write_json(staging / "results.json", results)
         _write_json(staging / "claim-results.json", {"claims": evaluations})
         _write_json(
-            staging / "conformance" / "expected-distinct.json",
+            staging / "conformance" / "merchant-search.json",
             _conformance_vectors(analysis),
         )
         raw_project = load_yaml(root / "project.yml")

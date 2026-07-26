@@ -1,6 +1,7 @@
 ---
 import ClaimLedger from "../components/ClaimLedger.astro";
-import OccupancyDemo from "../components/OccupancyDemo.astro";
+import HardConstraintDemo from "../components/HardConstraintDemo.astro";
+import PlanningWorkbench from "../components/PlanningWorkbench.astro";
 import ResultStrip from "../components/ResultStrip.astro";
 import ResearchLayout from "../layouts/ResearchLayout.astro";
 import data from "../generated/site-data.json";
@@ -8,26 +9,29 @@ import data from "../generated/site-data.json";
 const { project, authors, links, licenses, release, packages, results, claims, initialized } = data;
 const authorNames = authors.map((author) => author.name).join(", ");
 const affiliations = [...new Set(authors.flatMap((author) => author.affiliations))].join(" · ");
-const expected = Number(results.expected_distinct);
-const displayedClaims = initialized ? claims.filter((claim) => claim.site_visible) : claims;
+const constraintSurface = results.hard_constraint_surface.map((row) => ({
+  ...row,
+  action: row.action as "buy" | "continue" | "reject_without_feasible_query",
+}));
+const displayedClaims = claims.filter((claim) => claim.site_visible);
 const resultStrip = [
   {
-    label: "Options",
-    value: String(results.options),
-    note: "equally likely states",
+    label: "Hard resources",
+    value: "4",
+    note: "time, tokens, API calls, and API spend",
     tone: "gold" as const,
   },
   {
-    label: "Independent choices",
-    value: String(results.choices),
-    note: "one action per draw",
-    tone: "coral" as const,
+    label: "Planner actions",
+    value: "3",
+    note: "buy, continue, or reject",
+    tone: "teal" as const,
   },
   {
-    label: "Expected distinct",
-    value: expected.toFixed(6),
-    note: "exact finite calculation",
-    tone: "teal" as const,
+    label: "Research status",
+    value: "Open",
+    note: "no novelty claim yet",
+    tone: "coral" as const,
   },
 ];
 ---
@@ -51,63 +55,89 @@ const resultStrip = [
         <div class="article-kicker">
           <span>Computational research</span>
           <span>Version {release.version}</span>
-          <span>Evidence checked</span>
+          <span>Optimizer prototype</span>
         </div>
-        {!initialized && <p class="template-state">Template fixture · release disabled</p>}
+        {!initialized && <p class="template-state">Research prototype · human gates pending</p>}
         <h1 id="paper-title">{project.title}</h1>
         <p class="subtitle">{project.subtitle}</p>
         <p class="hero-result">
-          <span>Primary result</span>
-          <strong>{expected.toFixed(6)}</strong> expected distinct choices
+          <span>What it does</span>
+          <strong>Plan the next shopping action without violating hard budgets</strong>
         </p>
-        <div class="author-block">
-          <p class="byline">{authorNames}</p>
-          <p class="affiliations">{affiliations}</p>
-        </div>
+        {initialized && (
+          <div class="author-block">
+            <p class="byline">{authorNames}</p>
+            <p class="affiliations">{affiliations}</p>
+          </div>
+        )}
         <div class="abstract-block">
           <p class="abstract-label">Abstract</p>
           <p class="abstract">{project.abstract}</p>
         </div>
         <div class="paper-links" aria-label="Paper resources">
+          <a href="#workbench">Try the optimizer</a>
           <a href={links.repository}>Source and evidence</a>
-          <a href="#claims">Registered claims</a>
           <a href="#reproduce">Reproduction record</a>
         </div>
       </div>
       <ResultStrip results={resultStrip} />
     </section>
 
-    <section class="section section--rule" id="benchmark" aria-labelledby="benchmark-title">
+    <section class="section section--rule" id="workbench" aria-labelledby="workbench-title">
       <div class="section__heading">
         <p class="section-number">1</p>
         <div>
+          <span class="eyebrow">Interactive optimizer</span>
+          <h2 id="workbench-title">Set the limits your agent actually has</h2>
+        </div>
+      </div>
+      <p class="section-intro">
+        Change remaining time, average call latency, token use, API allowance, API charge, and the hard purchase cap.
+        Planning runs entirely in your browser against the declared synthetic merchant forecasts.
+      </p>
+      <PlanningWorkbench
+        merchantForecasts={results.merchant_forecasts}
+        observedPrice={results.observed_price}
+        failurePenalty={results.failure_penalty}
+      />
+    </section>
+
+    <section class="section section--rule" id="benchmark" aria-labelledby="benchmark-title">
+      <div class="section__heading">
+        <p class="section-number">2</p>
+        <div>
           <span class="eyebrow">Method · Minimal benchmark</span>
-          <h2 id="benchmark-title">Coverage is not the number of attempts</h2>
+          <h2 id="benchmark-title">Carry remaining resources into every decision</h2>
         </div>
       </div>
       <div class="prose-grid">
         <div class="prose">
           <p>
-            The built-in fixture asks how many distinct options are covered when independent actions can collide.
-            It is deliberately modest: its purpose is to prove the evidence path before a real study replaces it.
+            Each Bellman state records the merchant index and the remaining time, tokens, API calls, and API-spend
+            capacity. A query is available only when every resource requirement fits. The purchase-price cap is an
+            admissibility rule, not a penalty that the optimizer may trade away.
           </p>
           <div class="equation">
-            <p aria-label="Expected distinct options equals M times one minus one minus one over M to the N">
-              E[D] = M(1 - (1 - 1/M)<sup>N</sup>)
+            <p aria-label="Buy at time t when price is no greater than both the price cap and continuation value under the remaining budget">
+              buy ⇔ p<sub>t</sub> ≤ min(P<sub>max</sub>, V<sub>t+1</sub>(b − c<sub>t</sub>))
             </p>
             <span aria-hidden="true">(1)</span>
           </div>
           <p>
-            With <strong>{results.options}</strong> options and <strong>{results.choices}</strong> choices, the exact result is
-            <strong>{expected.toFixed(9)}</strong>. The value on this page is imported from the same checked artifact
-            used by the manuscript.
+            With all budgets relaxed, the registered agent rejects the <strong>${results.observed_price}</strong> offer
+            and searches again. It buys the same offer when the deadline, token budget, call count, API-spend limit,
+            or combined capacity blocks enough future search. Under a <strong>$100 hard purchase cap</strong>, the
+            offer is inadmissible and the agent continues despite its availability.
           </p>
         </div>
         <figure class="research-figure">
-          <OccupancyDemo options={Number(results.options)} choices={Number(results.choices)} expected={expected} />
+          <HardConstraintDemo
+            surface={constraintSurface}
+            observedPrice={results.observed_price}
+          />
           <figcaption>
-            <strong>Figure 1.</strong> One finite draw from the occupancy benchmark. The interactive sample is
-            illustrative; the reported expectation is imported from the exact generated result.
+            <strong>Figure 1.</strong> Exact hard-constraint action map. The selector reads generated evidence rows;
+            no scientific computation occurs in the browser.
           </figcaption>
         </figure>
       </div>
@@ -115,22 +145,23 @@ const resultStrip = [
 
     <section class="section section--claims" id="claims" aria-labelledby="claims-title">
       <div class="section__heading">
-        <p class="section-number">2</p>
+        <p class="section-number">3</p>
         <div>
-          <span class="eyebrow">Results · Evidence boundary</span>
-          <h2 id="claims-title">Every statement carries its status</h2>
+          <span class="eyebrow">Research status · Evidence boundary</span>
+          <h2 id="claims-title">The interesting question is still open</h2>
         </div>
       </div>
       <p class="section-intro">
-        Claim type, executable outcome, scope, and limitations travel together. A finite scan remains a finite scan,
-        even when its pattern is compelling.
+        Constraint sensitivity is implementation validation, not novelty. The open question is whether adaptive,
+        enforceable per-call limits improve purchase quality or success over fixed feasible allocation without ever
+        exceeding the episode's hard budgets.
       </p>
       <ClaimLedger claims={displayedClaims} />
     </section>
 
     <section class="section section--materials" id="reproduce" aria-labelledby="reproduce-title">
       <div class="section__heading">
-        <p class="section-number">3</p>
+        <p class="section-number">4</p>
         <div>
           <span class="eyebrow">Data and code availability</span>
           <h2 id="reproduce-title">Evidence and software travel together</h2>
@@ -138,14 +169,15 @@ const resultStrip = [
       </div>
       <div class="reproduce-grid">
         <pre aria-label="Reproduction commands"><code>make install
-paperkit build
-python -m pytest
-npm test --prefix packages/javascript
-npm run build --prefix site</code></pre>
+make build
+make check
+make site</code></pre>
         <div>
           <p>
-            The canonical Python implementation generates deterministic JSON, CSV, TeX, and conformance outputs.
-            The npm package, paper, and this explainer are checked against that same evidence record.
+            The canonical Python implementation runs exact finite-horizon backward induction with remaining hard
+            resources in its state and generates the action map as deterministic JSON, CSV, TeX, and conformance
+            outputs. The middleware issues timeout, token, call, and spend permits before dispatch and reconciles
+            actual usage after each call.
           </p>
           <dl class="artifact-list">
             <div><dt>Python</dt><dd>{packages.python.distribution}</dd></div>
@@ -161,7 +193,7 @@ npm run build --prefix site</code></pre>
   <footer>
     <div>
       <p class="footer-title">{project.title}</p>
-      <p>{authorNames} · Version {release.version}</p>
+      <p>{initialized ? authorNames : "Working research prototype"} · Version {release.version}</p>
     </div>
     <p><a href={links.repository}>Repository</a> · <a href="#claims">Claim ledger</a></p>
   </footer>

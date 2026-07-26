@@ -1,4 +1,24 @@
 \section{Minimal Benchmark}
 
-TODO: Define the smallest inspectable game, model, or computational problem.
-Introduce the primary outcome and at least one control before extensions.
+An episode contains \ResultMerchantCount{} merchants in a fixed external order.
+Querying merchant $t$ consumes an integer resource vector
+$c_t=(c_t^{\mathrm{time}},c_t^{\mathrm{token}},c_t^{\mathrm{call}},
+c_t^{\mathrm{spend}})$ and reveals either unavailability or one landed price.
+Available offers are ephemeral: an offer that is not accepted immediately
+cannot be recalled.  Exhausting the merchant sequence or losing query
+feasibility without purchasing incurs the registered failure penalty.
+
+The primary benchmark records discrete merchant-specific price distributions,
+stockout mass, and query requirements.  It evaluates
+\ResultHardConstraintScenarioCount{} declared operating regimes on the same
+forecasts and the same observed offer of \$\ResultObservedPrice{}.  The regimes
+include relaxed resources, individually binding time, token, API-call, and
+API-spend limits, a combined limit, and a purchase-price cap of
+\$\ResultPriceCappedLimit{}.  The complete inputs are generated in
+\texttt{artifacts/results.json}; they are synthetic benchmark values rather
+than market estimates.
+
+The primary outcome is the exact action---buy, continue, or reject without a
+feasible next query---together with the reservation price and remaining budget.
+Simpler stopping and routing policies are retained as controls, but every
+deployable policy must satisfy the same hard feasibility checks.

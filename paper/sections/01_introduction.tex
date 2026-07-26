@@ -1,5 +1,27 @@
 \section{Introduction}
 
-TODO: Open with the concrete puzzle, not the literature. State the smallest
-example, the surprising comparison, and why the mechanism matters. End with a
-calibrated list of contributions and a roadmap.
+An autonomous shopping agent that has found an acceptable offer still faces a
+sequential decision: buy now or spend additional resources searching for a
+better offer.  The decision is not governed by price alone.  A later query may
+miss a deadline, exceed a token or API allowance, consume the remaining API
+spend, or leave the agent without an admissible purchase.  A hard purchase-price
+cap creates the opposite restriction: even an available offer must be rejected
+when its price is infeasible.
+
+This paper asks how an autonomous shopping agent should behave under actual
+hard time, token, API, and purchase-price constraints.  We study a finite,
+adaptive search problem in which merchant-specific price and availability
+forecasts are known, each query consumes a resource vector, and rejected offers
+cannot be recalled.  The optimizer carries the unqueried merchant set and
+remaining resources in its state; it does not replace feasibility constraints
+with monetary penalties.
+
+The current release provides an exact finite-horizon optimizer, middleware APIs,
+a deterministic evidence pipeline, and an inspectable synthetic benchmark.  It
+does not yet establish a novel research result.  The selected open question is
+whether adaptive allocation of enforceable per-call time, token, API-call, and
+API-spend permits can improve purchase loss or success over fixed feasible
+baselines while maintaining zero hard-budget violations under uncertain realized
+usage.  Section~2 defines the benchmark, Section~3 gives the recurrence,
+Section~4 states the evidence required for a future result, and Sections~5--8
+delimit the evaluation still needed.

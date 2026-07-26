@@ -1,0 +1,169 @@
+---
+import type { MerchantForecast } from "autonomous-shopping-optimizer";
+
+interface Props {
+  merchantForecasts: MerchantForecast[];
+  observedPrice: number;
+  failurePenalty: number;
+}
+
+const { merchantForecasts, observedPrice, failurePenalty } = Astro.props;
+---
+
+<div
+  class="workbench"
+  data-planning-workbench
+  data-forecasts={JSON.stringify(merchantForecasts)}
+  data-failure-penalty={failurePenalty}
+>
+  <form class="workbench__form" data-workbench-form>
+    <fieldset>
+      <legend>Offer constraints</legend>
+      <label>
+        <span>Current offer</span>
+        <span class="input-unit"><b>$</b><input name="observedPrice" type="number" min="1" step="1" value={observedPrice} /></span>
+      </label>
+      <label>
+        <span>Maximum purchase price</span>
+        <span class="input-unit"><b>$</b><input name="maxPurchasePrice" type="number" min="1" step="1" value="140" /></span>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Time</legend>
+      <label>
+        <span>Time remaining</span>
+        <span class="input-unit"><input name="timeBudget" type="number" min="0" step="1" value="30" /><b>sec</b></span>
+      </label>
+      <label>
+        <span>Average time per call</span>
+        <span class="input-unit"><input name="averageTime" type="number" min="0" step="1" value="4" /><b>sec</b></span>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Tokens</legend>
+      <label>
+        <span>Tokens remaining</span>
+        <span class="input-unit"><input name="tokenBudget" type="number" min="0" step="100" value="8000" /><b>tok</b></span>
+      </label>
+      <label>
+        <span>Average tokens per response</span>
+        <span class="input-unit"><input name="averageTokens" type="number" min="0" step="100" value="1000" /><b>tok</b></span>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>API</legend>
+      <label>
+        <span>Calls remaining</span>
+        <span class="input-unit"><input name="apiCalls" type="number" min="0" step="1" value="7" /><b>calls</b></span>
+      </label>
+      <label>
+        <span>API spend remaining</span>
+        <span class="input-unit"><b>$</b><input name="apiSpend" type="number" min="0" step="1" value="14" /></span>
+      </label>
+      <label>
+        <span>Average API charge per call</span>
+        <span class="input-unit"><b>$</b><input name="averageApiCost" type="number" min="0" step="1" value="2" /></span>
+      </label>
+    </fieldset>
+  </form>
+
+  <section class="workbench__result" aria-labelledby="workbench-decision-title" aria-live="polite">
+    <div class="workbench__verdict">
+      <div>
+        <span class="eyebrow">Live constrained plan</span>
+        <h3 id="workbench-decision-title">Decision for this offer</h3>
+      </div>
+      <strong class="decision-badge" data-workbench-action>Calculating</strong>
+    </div>
+    <dl class="workbench__metrics">
+      <div><dt>Reservation price</dt><dd data-workbench-reservation>--</dd></div>
+      <div><dt>Next merchant</dt><dd data-workbench-next>--</dd></div>
+      <div><dt>Feasible alternatives</dt><dd data-workbench-feasible>--</dd></div>
+      <div><dt>Calls affordable</dt><dd data-workbench-affordable>--</dd></div>
+    </dl>
+    <p data-workbench-explanation>Computing the exact finite-horizon plan.</p>
+    <p class="workbench__boundary">
+      Uses the registered synthetic price and stockout forecasts. Resource inputs are yours; no data leaves the browser.
+    </p>
+  </section>
+</div>
+
+<script>
+  import { planShoppingDecision } from "autonomous-shopping-optimizer";
+  import type { MerchantForecast } from "autonomous-shopping-optimizer";
+
+  const workbench = document.querySelector<HTMLElement>("[data-planning-workbench]");
+  const form = workbench?.querySelector<HTMLFormElement>("[data-workbench-form]");
+  const forecasts = JSON.parse(workbench?.dataset.forecasts ?? "[]") as MerchantForecast[];
+  const failurePenalty = Number(workbench?.dataset.failurePenalty ?? 220);
+
+  const readInteger = (data: FormData, name: string) => {
+    const value = Number(data.get(name));
+    return Number.isFinite(value) ? Math.max(0, Math.round(value)) : 0;
+  };
+
+  const update = () => {
+    if (!workbench || !form || forecasts.length === 0) return;
+    const data = new FormData(form);
+    const observedPrice = Math.max(1, readInteger(data, "observedPrice"));
+    const maxPurchasePrice = Math.max(1, readInteger(data, "maxPurchasePrice"));
+    const averageTime = readInteger(data, "averageTime");
+    const averageTokens = readInteger(data, "averageTokens");
+    const averageApiCost = readInteger(data, "averageApiCost");
+    const merchants = forecasts.map((forecast, index) => ({
+      ...forecast,
+      time: index === 0 ? 0 : averageTime,
+      tokens: index === 0 ? 0 : averageTokens,
+      api_calls: index === 0 ? 0 : 1,
+      api_cost: index === 0 ? 0 : averageApiCost,
+    }));
+    const budget = {
+      time: readInteger(data, "timeBudget"),
+      tokens: readInteger(data, "tokenBudget"),
+      api_calls: readInteger(data, "apiCalls"),
+      api_cost: readInteger(data, "apiSpend"),
+    };
+    const plan = planShoppingDecision({
+      merchants,
+      budget,
+      observedPrice,
+      maxPurchasePrice,
+      failurePenalty,
+    });
+    const action = workbench.querySelector<HTMLElement>("[data-workbench-action]")!;
+    const label = plan.action === "buy" ? "Buy" : plan.action === "continue" ? "Continue" : "Reject";
+    action.textContent = label;
+    action.className = `decision-badge decision-badge--${plan.action}`;
+    workbench.querySelector<HTMLElement>("[data-workbench-reservation]")!.textContent =
+      `$${plan.reservation_price.toFixed(2)}`;
+    workbench.querySelector<HTMLElement>("[data-workbench-next]")!.textContent =
+      plan.next_merchant_index === null ? "None" : `M${plan.next_merchant_index + 1}`;
+    workbench.querySelector<HTMLElement>("[data-workbench-feasible]")!.textContent =
+      String(plan.feasible_next_merchants.length);
+    const callLimits = [
+      budget.api_calls,
+      averageTime === 0 ? Number.POSITIVE_INFINITY : Math.floor(budget.time / averageTime),
+      averageTokens === 0 ? Number.POSITIVE_INFINITY : Math.floor(budget.tokens / averageTokens),
+      averageApiCost === 0 ? Number.POSITIVE_INFINITY : Math.floor(budget.api_cost / averageApiCost),
+      forecasts.length - 1,
+    ];
+    const affordable = Math.min(...callLimits);
+    workbench.querySelector<HTMLElement>("[data-workbench-affordable]")!.textContent = String(affordable);
+    const explanation = observedPrice > maxPurchasePrice
+      ? plan.action === "continue"
+        ? "The current offer exceeds the hard price cap, so the optimizer searches a feasible future merchant."
+        : "The current offer exceeds the hard price cap and no future merchant is feasible."
+      : plan.action === "buy"
+      ? "The current offer is admissible and no worse than the value of feasible future search."
+      : plan.action === "continue"
+        ? "At least one feasible future merchant has lower expected purchase loss."
+        : "No future query fits the remaining hard budgets.";
+    workbench.querySelector<HTMLElement>("[data-workbench-explanation]")!.textContent = explanation;
+  };
+
+  form?.addEventListener("input", update);
+  update();
+</script>

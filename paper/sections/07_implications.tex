@@ -1,4 +1,14 @@
 \section{Implications}
 
-TODO: Derive implications at the level supported by the model. Separate design
-lessons, empirical predictions, and speculative applications.
+The immediate design implication is that an agent should expose remaining
+resources to its stopping policy rather than hide them behind a single generic
+``search cost.''  A hard limit can remove future actions entirely, while a
+price cap can remove the current buy action.  These are feasibility changes,
+not merely changes in utility.
+
+For deployed systems, the recurrence suggests a separation between forecasting
+and control.  A forecast layer supplies merchant-specific price and availability
+distributions and query requirements; the controller applies the current hard
+budgets and admissibility rules.  The present benchmark verifies the controller
+only.  Whether forecast error, merchant reordering, or parallel queries dominate
+the stopping effect is an empirical question left open.

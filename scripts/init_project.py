@@ -155,18 +155,31 @@ def _sync_package_metadata(root: Path, data: dict[str, Any]) -> None:
             candidates = [
                 path
                 for path in source_root.iterdir()
-                if path.is_dir() and (path / "__init__.py").is_file()
+                if path.is_dir() and (path / "analysis.py").is_file()
             ]
             if len(candidates) != 1:
                 raise ValueError("cannot identify the Python package source directory")
-            candidates[0].rename(target)
-        (target / "__init__.py").write_text(
-            f"from {data['python_import_name']}.analysis import ExpectedDistinct, "
-            "expected_distinct_choices\n\n"
-            '__all__ = ["ExpectedDistinct", "expected_distinct_choices"]\n'
-            f'__version__ = "{data["version"]}"\n',
-            encoding="utf-8",
-        )
+            source = candidates[0]
+            previous_import_name = source.name
+            source.rename(target)
+            for module in source_root.rglob("*.py"):
+                content = module.read_text(encoding="utf-8")
+                updated = content.replace(
+                    f"from {previous_import_name}.",
+                    f"from {data['python_import_name']}.",
+                )
+                if updated != content:
+                    module.write_text(updated, encoding="utf-8")
+        package_init = target / "__init__.py"
+        content = package_init.read_text(encoding="utf-8")
+        version_pattern = re.compile(r'^__version__ = ".*"$', re.MULTILINE)
+        if version_pattern.search(content):
+            content = version_pattern.sub(
+                f'__version__ = "{data["version"]}"', content
+            )
+        else:
+            content = f'{content.rstrip()}\n\n__version__ = "{data["version"]}"\n'
+        package_init.write_text(content, encoding="utf-8")
         (python_root / "pyproject.toml").write_text(
             f'''[build-system]
 requires = ["hatchling>=1.27"]

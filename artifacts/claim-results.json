@@ -1,18 +1,19 @@
 {
   "claims": [
     {
-      "detail": "Absolute difference 0 <= tolerance 1e-12.",
-      "expected": 3.310546875,
-      "id": "EXAMPLE-COMPUTATION-001",
+      "detail": "No executable evaluator; status is documentary.",
+      "expected": null,
+      "id": "MERCHANT-PERMIT-OPEN-001",
       "limitations": [
-        "The choices are independent and uniformly distributed."
+        "The repository does not yet contain a calibrated query-usage trace corpus.",
+        "Zero violations require the host runtime to enforce every permit before invoking a model or merchant tool."
       ],
-      "observed": 3.310546875,
+      "observed": null,
       "passed": true,
-      "scope": "Template fixture only; not a public research contribution.",
-      "site_visible": false,
-      "statement": "For four independent uniform choices among eight options, the expected number of distinct choices is 3.310546875.",
-      "status": "exact-computational"
+      "scope": "Sequential no-recall merchant search with enforceable per-call limits, uncertain resource usage, a hard purchase-price cap, and paired replay traces.",
+      "site_visible": true,
+      "statement": "It remains open whether adaptive pre-call allocation of enforceable time, token, API-call, and API-spend permits improves purchase loss or purchase success over fixed-split and myopic feasible baselines while maintaining zero hard-budget violations under uncertain realized query usage.",
+      "status": "open"
     }
   ]
 }

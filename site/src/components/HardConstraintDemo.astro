@@ -1,0 +1,155 @@
+---
+interface ExactValue {
+  numerator: number;
+  denominator: number;
+  value: number;
+}
+
+type Action = "buy" | "continue" | "reject_without_feasible_query";
+
+interface ConstraintRow {
+  id: string;
+  label: string;
+  budget: Record<string, number>;
+  max_purchase_price: number;
+  observed_price: number;
+  action: Action;
+  reservation_price: ExactValue;
+  remaining_after_observation: Record<string, number>;
+  next_merchant_index: number | null;
+  feasible_next_merchant_count: number;
+}
+
+interface Props {
+  surface: ConstraintRow[];
+  observedPrice: number;
+}
+
+const { surface, observedPrice } = Astro.props;
+const initial = surface[0];
+const actionLabel = (action: Action) =>
+  action === "buy" ? "Buy" : action === "continue" ? "Continue" : "Reject";
+---
+
+<div class="experiment constraint-demo" data-constraint-demo data-surface={JSON.stringify(surface)}>
+  <div class="experiment__toolbar">
+    <div>
+      <span class="eyebrow">Hard-constraint decision console</span>
+      <h3>Should the agent buy at ${observedPrice}?</h3>
+    </div>
+    <strong class:list={["decision-badge", `decision-badge--${initial.action}`]} data-action>
+      {actionLabel(initial.action)}
+    </strong>
+  </div>
+
+  <div class="scenario-control">
+    <label for="constraint-scenario">Operating regime</label>
+    <select id="constraint-scenario" data-scenario>
+      {surface.map((row) => <option value={row.id}>{row.label}</option>)}
+    </select>
+  </div>
+
+  <dl class="budget-grid" aria-label="Hard budgets remaining after observing the offer">
+    <div><dt>Time</dt><dd data-budget="time">{initial.remaining_after_observation.time}</dd></div>
+    <div><dt>Tokens</dt><dd data-budget="tokens">{initial.remaining_after_observation.tokens}</dd></div>
+    <div><dt>API calls</dt><dd data-budget="api_calls">{initial.remaining_after_observation.api_calls}</dd></div>
+    <div><dt>API spend</dt><dd data-budget="api_cost">${initial.remaining_after_observation.api_cost}</dd></div>
+  </dl>
+
+  <dl class="decision-grid" aria-label="Current constrained stopping decision">
+    <div>
+      <dt>Current offer</dt>
+      <dd>${observedPrice.toFixed(2)}</dd>
+      <dd class="decision-grid__note">observed landed price</dd>
+    </div>
+    <div>
+      <dt>Hard price cap</dt>
+      <dd data-price-cap>${initial.max_purchase_price.toFixed(2)}</dd>
+      <dd class="decision-grid__note">never buy above</dd>
+    </div>
+    <div>
+      <dt>Reservation price</dt>
+      <dd data-reservation>${initial.reservation_price.value.toFixed(2)}</dd>
+      <dd class="decision-grid__note">buy at or below</dd>
+    </div>
+    <div>
+      <dt>Next query</dt>
+      <dd data-next-merchant>{initial.next_merchant_index === null ? "None" : `M${initial.next_merchant_index + 1}`}</dd>
+      <dd class="decision-grid__note"><span data-feasible>{initial.feasible_next_merchant_count}</span> feasible alternatives</dd>
+    </div>
+  </dl>
+
+  <p class="experiment__readout" aria-live="polite" data-readout>
+    <strong>{initial.action === "buy" ? "Buy now." : "Search again."}</strong>
+    {initial.action === "buy"
+      ? "A binding operating limit makes the current admissible offer preferable to searching."
+      : "The remaining feasible search has lower expected purchase loss."}
+  </p>
+
+  <div class="exact-table-wrap" role="region" aria-label="Scrollable constraint results" tabindex="0">
+    <table class="exact-table">
+      <caption>Exact decisions for the same offer under registered hard constraints</caption>
+      <thead>
+        <tr>
+          <th scope="col">Regime</th>
+          <th scope="col">Price cap</th>
+          <th scope="col">Next query</th>
+          <th scope="col">Reservation</th>
+          <th scope="col">Decision</th>
+        </tr>
+      </thead>
+      <tbody>
+        {surface.map((row) => (
+          <tr>
+            <th scope="row">{row.label}</th>
+            <td>${row.max_purchase_price}</td>
+            <td>{row.next_merchant_index === null ? "None" : `M${row.next_merchant_index + 1}`}</td>
+            <td>${row.reservation_price.value.toFixed(2)}</td>
+            <td>{actionLabel(row.action)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  type Action = "buy" | "continue" | "reject_without_feasible_query";
+  interface ConstraintRow {
+    id: string;
+    action: Action;
+    max_purchase_price: number;
+    reservation_price: { value: number };
+    remaining_after_observation: Record<string, number>;
+    next_merchant_index: number | null;
+    feasible_next_merchant_count: number;
+  }
+
+  const demo = document.querySelector<HTMLElement>("[data-constraint-demo]");
+  const selector = demo?.querySelector<HTMLSelectElement>("[data-scenario]");
+  const action = demo?.querySelector<HTMLElement>("[data-action]");
+  const readout = demo?.querySelector<HTMLElement>("[data-readout]");
+  const rows = JSON.parse(demo?.dataset.surface ?? "[]") as ConstraintRow[];
+
+  selector?.addEventListener("change", () => {
+    const row = rows.find((candidate) => candidate.id === selector.value);
+    if (!row || !demo || !action || !readout) return;
+    const label = row.action === "buy" ? "Buy" : row.action === "continue" ? "Continue" : "Reject";
+    action.textContent = label;
+    action.className = `decision-badge decision-badge--${row.action}`;
+    demo.querySelector<HTMLElement>("[data-price-cap]")!.textContent = `$${row.max_purchase_price.toFixed(2)}`;
+    demo.querySelector<HTMLElement>("[data-reservation]")!.textContent = `$${row.reservation_price.value.toFixed(2)}`;
+    demo.querySelector<HTMLElement>("[data-next-merchant]")!.textContent =
+      row.next_merchant_index === null ? "None" : `M${row.next_merchant_index + 1}`;
+    demo.querySelector<HTMLElement>("[data-feasible]")!.textContent = String(row.feasible_next_merchant_count);
+    for (const [key, value] of Object.entries(row.remaining_after_observation)) {
+      const target = demo.querySelector<HTMLElement>(`[data-budget="${key}"]`);
+      if (target) target.textContent = key === "api_cost" ? `$${value}` : String(value);
+    }
+    readout.innerHTML = row.action === "buy"
+      ? "<strong>Buy now.</strong> A binding operating limit makes the current admissible offer preferable to searching."
+      : row.action === "continue"
+        ? "<strong>Search again.</strong> The remaining feasible search has lower expected purchase loss."
+        : "<strong>Reject.</strong> The offer violates the hard price cap and no further query is feasible.";
+  });
+</script>

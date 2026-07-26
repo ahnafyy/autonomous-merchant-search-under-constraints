@@ -1,5 +1,15 @@
 \section{Robustness And Extensions}
 
-TODO: Test boundary cases, alternative baselines, dependence assumptions, scale,
-and the cheapest plausible competing explanations. Label finite scans as
-computational patterns.
+The current evidence validates the recurrence and package conformance.  It does
+not establish novelty or empirical robustness.  The first research check replays
+common held-out query-usage traces under adaptive, equal-split, worst-case-reserve,
+greedy feasible, and fixed-depth permit policies.  Experiments must vary total
+budgets, perturb usage forecasts, charge planner latency, and report purchase
+loss, purchase failure, timeout and truncation rates, and hard-budget violations.
+
+Two controls are especially important.  First, every runtime must enforce each
+permit before dispatch and reconcile actual usage afterward.  Second, the same
+merchant outcomes and usage traces must be paired across policies.  If adaptive
+allocation cannot outperform the strongest fixed feasible baseline without an
+overrun, the contribution hypothesis is rejected.  These checks are pending and
+are not included in the primary claim.

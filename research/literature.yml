@@ -1,17 +1,155 @@
 schema_version: 1
 searches:
   - id: "SEARCH-001"
-    searched_on: null
-    source: "TODO: arXiv, Semantic Scholar, Google Scholar, journal index, or repository"
-    query: "TODO: Exact query"
-    result_count_reviewed: 0
-    notes: "TODO: Search boundaries and follow-up queries."
+    searched_on: "2026-07-24"
+    source: "OpenAlex"
+    query: 'fulltext.search:"optimal stopping sampling cost secretary"'
+    result_count_reviewed: 10
+    notes: "Reviewed the first 10 of 3,332 results; identified sampling-cost secretary work."
+  - id: "SEARCH-002"
+    searched_on: "2026-07-24"
+    source: "OpenAlex"
+    query: 'title.search:"Prophet Secretary"'
+    result_count_reviewed: 10
+    notes: "Reviewed the first 10 of 41 results for random-order stopping comparators."
+  - id: "SEARCH-003"
+    searched_on: "2026-07-24"
+    source: "OpenAlex"
+    query: 'title.search:"Pandora''s Box with Order Constraints"'
+    result_count_reviewed: 2
+    notes: "Reviewed both returned works for costly search under constrained order."
+  - id: "SEARCH-004"
+    searched_on: "2026-07-24"
+    source: "OpenAlex"
+    query: 'fulltext.search:"Pandora''s box commitment Singla price information"'
+    result_count_reviewed: 10
+    notes: "Reviewed the first 10 of 15 results for online inspection with commitment."
+  - id: "SEARCH-005"
+    searched_on: "2026-07-24"
+    source: "OpenAlex"
+    query: 'fulltext.search:"knapsack secretary problem Kesselheim Radke Tonnis Vocking"'
+    result_count_reviewed: 6
+    notes: "Reviewed all six results for multidimensional online resource constraints."
+  - id: "SEARCH-006"
+    searched_on: "2026-07-24"
+    source: "OpenAlex"
+    query: 'title.search:"Searching for the Lowest Price When the Distribution of Prices Is Unknown"'
+    result_count_reviewed: 4
+    notes: "Reviewed all four results for consumer search under an unknown price law."
+  - id: "SEARCH-007"
+    searched_on: "2026-07-24"
+    source: "Crossref and publisher DOI records"
+    query: "Targeted metadata verification for the shortlisted works"
+    result_count_reviewed: 10
+    notes: >-
+      Verified title and DOI metadata for ten works. Candidate status remains until
+      priority full texts are read and their model assumptions are checked.
 works:
-  - citation_key: "TODO"
-    title: "TODO: Closest prior work"
-    url: "TODO: Verified URL or DOI"
-    verified_on: null
-    overlap: "TODO: What mechanism, model, or result overlaps?"
-    distinction: "TODO: What remains different after a charitable reading?"
-    confidence: low
+  - citation_key: "elyaniv2001optimal"
+    title: "Optimal Search and One-Way Trading Online Algorithms"
+    url: "https://doi.org/10.1007/s00453-001-0003-0"
+    verified_on: "2026-07-24"
+    overlap: >-
+      Sequential adversarial prices, irrevocable online acceptance, and no assumed
+      price distribution.
+    distinction: >-
+      Uses known price bounds and required selection; does not jointly model
+      availability, inspection-resource vectors, or no-purchase failure.
+    confidence: high
+    status: candidate
+  - citation_key: "esfandiari2019online"
+    title: "Online Pandora's Boxes and Bandits"
+    url: "https://doi.org/10.1609/aaai.v33i01.33011885"
+    verified_on: "2026-07-24"
+    overlap: >-
+      Online box presentation, inspection cost, irrevocable keep-or-pass decisions,
+      and cardinality, matroid, and single-knapsack variants.
+    distinction: >-
+      Uses known value and cost distributions and stochastic reward benchmarks;
+      independence details require full-text confirmation.
+    confidence: medium
+    status: candidate
+  - citation_key: "amanatidis2026pandora"
+    title: "Pandora's Box Problem Over Time"
+    url: "https://doi.org/10.1007/978-3-032-08560-3_28"
+    verified_on: "2026-07-24"
+    overlap: >-
+      Box-specific processing time, time-dependent costs and rewards, and value
+      deterioration after inspection.
+    distinction: >-
+      Uses a stochastic Pandora model; recall and resource-budget semantics require
+      full-text confirmation before making a definitive comparison.
+    confidence: medium
+    status: candidate
+  - citation_key: "lorenzen1981optimal"
+    title: "Optimal Stopping with Sampling Cost: The Secretary Problem"
+    url: "https://doi.org/10.1214/aop/1176994519"
+    verified_on: "2026-07-24"
+    overlap: >-
+      Random-order irrevocable stopping with a cumulative interview or query cost.
+    distinction: >-
+      Uses relative ranks and a single scalar sampling cost rather than availability,
+      multiple hard resource budgets, and an explicit failure-risk constraint.
+    confidence: high
+    status: candidate
+  - citation_key: "boodaghians2020pandora"
+    title: "Pandora's Box Problem with Order Constraints"
+    url: "https://doi.org/10.1145/3391403.3399501"
+    verified_on: "2026-07-24"
+    overlap: "Costly sequential inspection under precedence and order restrictions."
+    distinction: >-
+      Uses known stochastic alternatives and permits selecting the best opened
+      alternative, unlike externally ordered ephemeral offers with no recall.
+    confidence: high
+    status: candidate
+  - citation_key: "berger2024pandora"
+    title: "Pandora's Problem with Deadlines"
+    url: "https://doi.org/10.1609/aaai.v38i18.30015"
+    verified_on: "2026-07-24"
+    overlap: "Deadlines and costly sequential inspection."
+    distinction: >-
+      Uses known distributions and allows choice until a box-specific deadline; the
+      objective is maximum inspected value minus inspection cost.
+    confidence: high
+    status: candidate
+  - citation_key: "weitzman1979optimal"
+    title: "Optimal Search for the Best Alternative"
+    url: "https://doi.org/10.2307/1910412"
+    verified_on: "2026-07-24"
+    overlap: "Sequential inspection cost and reservation-value stopping rules."
+    distinction: >-
+      Assumes known independent distributions, adaptive inspection order, and recall
+      of the best inspected alternative rather than ephemeral no-recall offers.
+    confidence: high
+    status: candidate
+  - citation_key: "rothschild1974searching"
+    title: "Searching for the Lowest Price When the Distribution of Prices Is Unknown"
+    url: "https://doi.org/10.1086/260229"
+    verified_on: "2026-07-24"
+    overlap: "Sequential consumer price search when the price law is initially unknown."
+    distinction: >-
+      Learns an unknown but persistent distribution; recall details require full-text
+      confirmation and differ from a nonstationary trace with no reusable law.
+    confidence: medium
+    status: candidate
+  - citation_key: "esfandiari2017prophet"
+    title: "Prophet Secretary"
+    url: "https://doi.org/10.1137/15M1029394"
+    verified_on: "2026-07-24"
+    overlap: "Random arrival, sequential revelation, and one irrevocable selection."
+    distinction: >-
+      Assumes uniformly random order and known independent nonidentical distributions,
+      with no inspection cost, availability, resource budget, or failure constraint.
+    confidence: high
+    status: candidate
+  - citation_key: "kesselheim2014primal"
+    title: "Primal Beats Dual on Online Packing LPs in the Random-Order Model"
+    url: "https://doi.org/10.1145/2591796.2591810"
+    verified_on: "2026-07-24"
+    overlap: "Irrevocable online decisions under multiple hard resource capacities."
+    distinction: >-
+      Studies random-order packing rather than stopping after one purchase, and has no
+      inspection cost or terminal purchase-failure event.
+    confidence: high
+    status: candidate
     status: candidate
