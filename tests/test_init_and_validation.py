@@ -19,6 +19,13 @@ def test_initializer_is_idempotent(tmp_path: Path) -> None:
     project_root.mkdir()
     shutil.copy(ROOT / "project.yml", project_root / "project.yml")
     shutil.copytree(ROOT / "packages", project_root / "packages")
+    analysis_packages = sorted(
+        path.parent.name
+        for path in (project_root / "packages" / "python" / "src").glob(
+            "*/analysis.py"
+        )
+    )
+    assert analysis_packages == ["autonomous_shopping_optimizer"]
     command = [
         sys.executable,
         str(ROOT / "scripts" / "init_project.py"),
