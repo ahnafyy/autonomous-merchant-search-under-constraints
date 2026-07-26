@@ -1,5 +1,5 @@
 schema_version: 1
-initialized: false
+initialized: true
 project:
   title: "Autonomous Shopping Optimizer"
   subtitle: "Exact stopping decisions under time, token, API, and purchase-price limits"
@@ -22,10 +22,10 @@ project:
   arxiv_categories:
     - "cs.AI"
 authors:
-  - name: "TODO: Author Name"
+  - name: "Ahnaf Prio"
     orcid: null
     affiliations:
-      - "TODO: Affiliation"
+      - "Independent Researcher"
 links:
   repository: "https://github.com/ahnafyy/autonomous-merchant-search-under-constraints"
   site: "https://ahnafyy.github.io/autonomous-merchant-search-under-constraints/"
@@ -36,7 +36,7 @@ release:
 packages:
   python:
     distribution: "autonomous-shopping-optimizer"
-    import_name: "example_study"
+    import_name: "autonomous_shopping_optimizer"
   javascript:
     name: "autonomous-shopping-optimizer"
 licenses:

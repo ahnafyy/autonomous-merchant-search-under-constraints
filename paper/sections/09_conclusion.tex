@@ -6,6 +6,7 @@ resources are part of the Bellman state, and the purchase cap restricts the
 admissible action set.  On the registered synthetic benchmark, binding resource
 regimes change the action for the same offer.
 
-The reusable distinction is between pricing a resource and enforcing its
-feasibility.  Scalar query costs can be useful comparators, but an autonomous
-agent facing actual caps must plan over what remains possible.
+The current implementation issues enforceable per-call permits and replans after
+actual resource use is reconciled.  The open research question is whether adaptive
+permit allocation improves purchase outcomes over fixed feasible allocation while
+maintaining zero hard-budget violations under uncertain query usage.

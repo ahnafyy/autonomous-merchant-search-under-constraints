@@ -6,7 +6,7 @@ import ResultStrip from "../components/ResultStrip.astro";
 import ResearchLayout from "../layouts/ResearchLayout.astro";
 import data from "../generated/site-data.json";
 
-const { project, authors, links, licenses, release, packages, results, claims, initialized } = data;
+const { project, authors, links, licenses, release, packages, results, claims } = data;
 const authorNames = authors.map((author) => author.name).join(", ");
 const affiliations = [...new Set(authors.flatMap((author) => author.affiliations))].join(" · ");
 const constraintSurface = results.hard_constraint_surface.map((row) => ({
@@ -57,19 +57,16 @@ const resultStrip = [
           <span>Version {release.version}</span>
           <span>Optimizer prototype</span>
         </div>
-        {!initialized && <p class="template-state">Research prototype · human gates pending</p>}
         <h1 id="paper-title">{project.title}</h1>
         <p class="subtitle">{project.subtitle}</p>
         <p class="hero-result">
           <span>What it does</span>
           <strong>Plan the next shopping action without violating hard budgets</strong>
         </p>
-        {initialized && (
-          <div class="author-block">
-            <p class="byline">{authorNames}</p>
-            <p class="affiliations">{affiliations}</p>
-          </div>
-        )}
+        <div class="author-block">
+          <p class="byline">{authorNames}</p>
+          <p class="affiliations">{affiliations}</p>
+        </div>
         <div class="abstract-block">
           <p class="abstract-label">Abstract</p>
           <p class="abstract">{project.abstract}</p>
@@ -115,7 +112,7 @@ const resultStrip = [
           <p>
             Each Bellman state records the merchant index and the remaining time, tokens, API calls, and API-spend
             capacity. A query is available only when every resource requirement fits. The purchase-price cap is an
-            admissibility rule, not a penalty that the optimizer may trade away.
+            admissibility rule applied before the optimizer can return a buy action.
           </p>
           <div class="equation">
             <p aria-label="Buy at time t when price is no greater than both the price cap and continuation value under the remaining budget">
@@ -167,33 +164,24 @@ const resultStrip = [
           <h2 id="reproduce-title">Evidence and software travel together</h2>
         </div>
       </div>
-      <div class="reproduce-grid">
-        <pre aria-label="Reproduction commands"><code>make install
-make build
-make check
-make site</code></pre>
-        <div>
-          <p>
-            The canonical Python implementation runs exact finite-horizon backward induction with remaining hard
-            resources in its state and generates the action map as deterministic JSON, CSV, TeX, and conformance
-            outputs. The middleware issues timeout, token, call, and spend permits before dispatch and reconciles
-            actual usage after each call.
-          </p>
-          <dl class="artifact-list">
-            <div><dt>Python</dt><dd>{packages.python.distribution}</dd></div>
-            <div><dt>npm</dt><dd>{packages.javascript.name}</dd></div>
-            <div><dt>Licenses</dt><dd>{licenses.code} · {licenses.content}</dd></div>
-            <div><dt>Seed</dt><dd>{results.random_seed}</dd></div>
-          </dl>
-        </div>
-      </div>
+      <p class="section-intro">
+        One deterministic build produces the evidence ledger, cross-language conformance vectors, manuscript inputs,
+        and static explainer from the canonical Python implementation.
+      </p>
+      <dl class="artifact-list">
+        <div><dt>Evidence</dt><dd><a href={`${links.repository}/tree/main/artifacts`}>Generated artifacts</a></dd></div>
+        <div><dt>Python</dt><dd>{packages.python.distribution}</dd></div>
+        <div><dt>npm</dt><dd>{packages.javascript.name}</dd></div>
+        <div><dt>Licenses</dt><dd>{licenses.code} · {licenses.content}</dd></div>
+        <div><dt>Seed</dt><dd>{results.random_seed}</dd></div>
+      </dl>
     </section>
   </main>
 
   <footer>
     <div>
       <p class="footer-title">{project.title}</p>
-      <p>{initialized ? authorNames : "Working research prototype"} · Version {release.version}</p>
+      <p>{authorNames} · Version {release.version}</p>
     </div>
     <p><a href={links.repository}>Repository</a> · <a href="#claims">Claim ledger</a></p>
   </footer>

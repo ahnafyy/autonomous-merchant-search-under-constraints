@@ -19,5 +19,4 @@ Paper = "https://ahnafyy.github.io/autonomous-merchant-search-under-constraints/
 packages = [
 	"src/autonomous_shopping_optimizer",
 	"src/autonomous_shopping",
-	"src/example_study",
 ]

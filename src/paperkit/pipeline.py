@@ -207,6 +207,15 @@ def build(root: Path, output_dir: Path | None = None) -> Path:
             _conformance_vectors(analysis),
         )
         raw_project = load_yaml(root / "project.yml")
+        public_packages = {
+            "python": {
+                "distribution": raw_project["packages"]["python"]["distribution"],
+                "import_name": raw_project["packages"]["python"]["import_name"],
+            },
+            "javascript": {
+                "name": raw_project["packages"]["javascript"]["name"],
+            },
+        }
         _write_json(
             staging / "site-data.json",
             {
@@ -217,7 +226,7 @@ def build(root: Path, output_dir: Path | None = None) -> Path:
                 "links": raw_project["links"],
                 "licenses": raw_project["licenses"],
                 "release": raw_project["release"],
-                "packages": raw_project["packages"],
+                "packages": public_packages,
                 "results": results,
                 "claims": evaluations,
             },

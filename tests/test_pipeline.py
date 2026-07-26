@@ -28,8 +28,6 @@ def test_build_is_deterministic_and_claims_pass(tmp_path: Path) -> None:
     assert "results.json" in manifest["files"]
     assert "conformance/merchant-search.json" in manifest["files"]
     site_data = json.loads((first / "site-data.json").read_text(encoding="utf-8"))
-    assert site_data["results"]["reservation_surface_monotone"] is True
-    assert site_data["results"]["critical_api_call_weight_numerator"] == 11797021
     assert site_data["results"]["hard_constraint_action_signature"] == (
         "relaxed:continue|time-tight:buy|token-tight:buy|api-tight:buy|"
         "api-spend-tight:buy|combined:buy|price-capped:continue"
@@ -40,6 +38,9 @@ def test_build_is_deterministic_and_claims_pass(tmp_path: Path) -> None:
     assert site_data["claims"][0]["status"] == "open"
     assert site_data["packages"]["python"]["distribution"] == (
         "autonomous-shopping-optimizer"
+    )
+    assert site_data["packages"]["python"]["import_name"] == (
+        "autonomous_shopping_optimizer"
     )
     assert site_data["packages"]["javascript"]["name"] == (
         "autonomous-shopping-optimizer"

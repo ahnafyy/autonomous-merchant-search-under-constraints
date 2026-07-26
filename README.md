@@ -5,7 +5,7 @@ Hard-budget planning middleware for autonomous shopping agents.
 The optimizer decides whether an agent should buy the current offer, continue
 searching, or stop without a purchase. It also selects the next merchant and issues
 enforceable per-call limits for elapsed time, model tokens, API calls, and API spend.
-A hard maximum purchase price is never relaxed into a soft penalty.
+The controller admits only calls and purchases that fit the remaining limits.
 
 The host application remains responsible for LLM calls, merchant tools, credentials,
 timeouts, and purchase execution. The optimizer does not contact merchants or make a

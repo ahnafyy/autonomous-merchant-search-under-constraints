@@ -27,6 +27,7 @@ def test_initializer_is_idempotent(tmp_path: Path) -> None:
         "--config",
         str(ROOT / "tests" / "fixtures" / "init.json"),
         "--non-interactive",
+        "--force",
     ]
 
     first = subprocess.run(command, check=False, capture_output=True, text=True)
@@ -59,24 +60,25 @@ def test_initializer_is_idempotent(tmp_path: Path) -> None:
     assert javascript_project["version"] == "0.2.0"
 
 
-def test_release_validation_blocks_template() -> None:
+def test_release_validation_blocks_pending_gates() -> None:
     development = validate_project(ROOT)
     release = validate_project(ROOT, release=True)
 
     assert development.ok
     assert any("Pending human gates" in warning for warning in development.warnings)
     assert not release.ok
-    assert any("not been initialized" in error for error in release.errors)
+    assert release.errors == (
+        "Pending human gates: novelty, design, evidence, release",
+    )
     assert any("Pending human gates" in error for error in release.errors)
 
 
-def test_release_dry_run_does_not_bypass_template_gates() -> None:
+def test_release_dry_run_does_not_bypass_pending_gates() -> None:
     try:
         release(ROOT, dry_run=True)
     except ReleaseError as error:
         message = str(error)
     else:
-        raise AssertionError("Template release unexpectedly passed")
+        raise AssertionError("Release with pending gates unexpectedly passed")
 
     assert "Pending human gates" in message
-    assert "Project has not been initialized" in message

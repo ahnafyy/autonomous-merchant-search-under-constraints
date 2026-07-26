@@ -1,11 +1,11 @@
 """Compatibility imports for Autonomous Shopping Optimizer."""
 
-from example_study.analysis import adaptive_hard_budget_plan
-from example_study.middleware import (
+from autonomous_shopping_optimizer import (
     AgentDecision,
     AutonomousShoppingOptimizer,
     QueryPermit,
     ShoppingAgentMiddleware,
+    adaptive_hard_budget_plan,
 )
 
 __all__ = [

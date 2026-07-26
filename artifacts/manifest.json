@@ -6,12 +6,12 @@
   "files": {
     "claim-results.json": "90fcf668d749c8f535b3ea4bb23c76ce04fa8a0c11f0d69343a0328501be93dc",
     "conformance/merchant-search.json": "c060ee519cfd320b22679b9e3cf821b4477f42a4869eb58505ab6416d223108f",
-    "data/summary.csv": "fe7740efa5a20af9023d4acf9c418d1b71af0af7b1d82e82d0d5e3a2d8411926",
-    "results.json": "2400ab7210a4f41fd0440e2229fe4da185cf98f4407b231ac43e2a4b2093f326",
-    "site-data.json": "0dba54a04ad2a4401fb157ddf8686e073fe2c9e0ceecb672eac19557a94dcd8f",
+    "data/summary.csv": "88d048b0f0695202ba91f62d20f24c96fff6983aad17e65c9ec0498d6217591d",
+    "results.json": "e81cb9d2e84c456f094a03bfe16e88b56b1bdcc53862f39a0158fe9f5b7bc99a",
+    "site-data.json": "b7870c078267e5607a6073fe8e35076b173bc432eca4ab9a0610745bfa94e3f6",
     "tables/claim_status.tex": "811901ae1a416493702583fc87e1487db35231783cbca6ca965fc7271c044c7b",
-    "tables/project_metadata.tex": "27b1f10faf9b4f0e024c1bfc1ef3f936051b4a6c6e474eae072242ba992494e0",
-    "tables/result_macros.tex": "5d14fbc652852e9d9f545afbed0319a7f5c6dff20dd8c80f07a2079222a87565"
+    "tables/project_metadata.tex": "02619c4f02b9efdfca8a4eb5af59961805658db90fa6a281fc457a3000109027",
+    "tables/result_macros.tex": "2be57f4d0d2635512a4862280733c046b2b751890cfd6d449b1ff86204ad28d2"
   },
   "generator": {
     "name": "paperkit",

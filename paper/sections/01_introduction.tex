@@ -13,8 +13,8 @@ hard time, token, API, and purchase-price constraints.  We study a finite,
 adaptive search problem in which merchant-specific price and availability
 forecasts are known, each query consumes a resource vector, and rejected offers
 cannot be recalled.  The optimizer carries the unqueried merchant set and
-remaining resources in its state; it does not replace feasibility constraints
-with monetary penalties.
+remaining resources in its state and admits a query only when every required
+resource is available.
 
 The current release provides an exact finite-horizon optimizer, middleware APIs,
 a deterministic evidence pipeline, and an inspectable synthetic benchmark.  It

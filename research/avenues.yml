@@ -53,10 +53,10 @@ avenues:
       Shipping, delivery, trust, returns, and condition can reverse merchant rankings
       that appear optimal under item price alone.
     minimal_model: >-
-      Extend the selected scalar-price benchmark with a declared utility function or
+      Extend the selected exact-SKU landed-price benchmark with a declared utility function or
       a Pareto order over a small set of merchant attributes.
     novelty_hypothesis: >-
-      The extension may show which scalar stopping conclusions survive partial orders
+      The extension may show which landed-price stopping conclusions survive partial orders
       and heterogeneous shopper preferences; no novelty is assumed before review.
     decisive_calculation: >-
       Test whether two attributes already produce policy reversals not representable

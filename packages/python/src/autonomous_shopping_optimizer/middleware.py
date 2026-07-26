@@ -4,7 +4,10 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any
 
-from example_study.analysis import RESOURCE_FIELDS, adaptive_hard_budget_plan
+from autonomous_shopping_optimizer.analysis import (
+    RESOURCE_FIELDS,
+    adaptive_hard_budget_plan,
+)
 
 
 @dataclass(frozen=True)

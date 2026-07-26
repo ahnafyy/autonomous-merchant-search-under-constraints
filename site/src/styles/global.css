@@ -160,7 +160,6 @@ footer {
   color: var(--burgundy);
 }
 
-.template-state,
 .eyebrow,
 .abstract-label {
   margin: 0 0 0.65rem;
@@ -376,8 +375,7 @@ h3 {
   color: var(--ink-soft);
 }
 
-.prose-grid,
-.reproduce-grid {
+.prose-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.82fr) minmax(390px, 1.18fr);
   gap: 4rem;
@@ -1034,25 +1032,6 @@ h3 {
   padding-inline: max(1.5rem, calc((100vw - var(--page)) / 2));
 }
 
-.reproduce-grid pre {
-  margin: 0;
-  overflow-x: auto;
-  border: 1px solid var(--line-dark);
-  border-left: 4px solid var(--navy);
-  background: var(--surface);
-  padding: 1.2rem;
-  color: var(--ink);
-  font-size: 0.8rem;
-  line-height: 1.75;
-}
-
-.reproduce-grid > div > p {
-  max-width: 60ch;
-  margin-bottom: 1.75rem;
-  font-family: var(--display);
-  font-size: 1.08rem;
-}
-
 .artifact-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1156,7 +1135,6 @@ footer p {
 
   .result-strip,
   .prose-grid,
-  .reproduce-grid,
   .workbench {
     grid-template-columns: 1fr;
   }
@@ -1193,8 +1171,7 @@ footer p {
     margin-left: 2.75rem;
   }
 
-  .prose-grid,
-  .reproduce-grid {
+  .prose-grid {
     gap: 2.5rem;
   }
 

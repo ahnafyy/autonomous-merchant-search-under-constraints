@@ -28,10 +28,10 @@ R_t(S,b)=\min\{P_{\max},W(S\setminus\{t\},b-c_t)\}.
 The agent buys an available offer exactly when $p_t\leq R_t(b)$.  If this
 condition fails, it continues when another query is feasible and otherwise
 rejects into terminal failure.  Query resources are feasibility constraints;
-they do not appear as additive objective terms.
+the controller must reserve them before dispatch and reconcile realized usage
+after the query completes.
 
 All probabilities and values are represented as rational numbers.  Dynamic
 program states are memoized by the unqueried merchant set and the
-four-dimensional remaining-budget vector.  The scalarized comparator uses the same forecasts
-but adds weighted query-resource costs to the objective and therefore answers
-a different question.
+four-dimensional remaining-budget vector.  This state determines which merchant
+queries remain admissible and the continuation loss after each possible result.

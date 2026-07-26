@@ -65,72 +65,6 @@ class MerchantForecast:
         return self.unavailable_weight + sum(weight for _, weight in self.price_weights)
 
 
-def optimal_stopping_plan(
-    merchants: Sequence[Mapping[str, object]],
-    resource_weights: Mapping[str, object],
-    failure_penalty: int,
-) -> dict[str, Any]:
-    """Compute exact finite-horizon reservation prices by backward induction.
-
-    Prices, the failure penalty, and scalarized query costs share one monetary unit.
-    Resource weights may be integers, Fractions, or ``{numerator, denominator}`` mappings.
-    """
-    parsed_merchants = tuple(_parse_forecast(value) for value in merchants)
-    if not parsed_merchants:
-        raise ValueError("at least one merchant forecast is required")
-    penalty = Fraction(_non_negative_integer(failure_penalty, "failure_penalty"))
-    weights = {
-        field: _non_negative_fraction(resource_weights.get(field, 0), f"{field} weight")
-        for field in RESOURCE_FIELDS
-    }
-
-    continuation = penalty
-    reversed_stages: list[dict[str, Any]] = []
-    for index in range(len(parsed_merchants) - 1, -1, -1):
-        merchant = parsed_merchants[index]
-        query_components = {
-            field: weights[field] * getattr(merchant.resources, field)
-            for field in RESOURCE_FIELDS
-        }
-        query_cost = sum(query_components.values(), start=Fraction())
-        available_weight = sum(weight for _, weight in merchant.price_weights)
-        stop_weight = sum(
-            weight for price, weight in merchant.price_weights if price <= continuation
-        )
-        expected_after_query = Fraction(merchant.unavailable_weight) * continuation
-        expected_after_query += sum(
-            Fraction(weight) * min(Fraction(price), continuation)
-            for price, weight in merchant.price_weights
-        )
-        expected_after_query /= merchant.total_weight
-        value_before_query = query_cost + expected_after_query
-        reversed_stages.append(
-            {
-                "merchant_index": index,
-                "reservation_price": _fraction_dict(continuation),
-                "stop_percentile": _fraction_dict(Fraction(stop_weight, available_weight)),
-                "query_cost": _fraction_dict(query_cost),
-                "query_cost_components": {
-                    field: _fraction_dict(value) for field, value in query_components.items()
-                },
-                "value_before_query": _fraction_dict(value_before_query),
-                "availability_probability": _fraction_dict(
-                    Fraction(available_weight, merchant.total_weight)
-                ),
-            }
-        )
-        continuation = value_before_query
-
-    stages = list(reversed(reversed_stages))
-    return {
-        "expected_loss": _fraction_dict(continuation),
-        "failure_penalty": failure_penalty,
-        "merchant_count": len(parsed_merchants),
-        "rule": "buy_if_price_lte_reservation_price",
-        "stages": stages,
-    }
-
-
 def hard_budget_stopping_plan(
     merchants: Sequence[Mapping[str, object]],
     budget: Mapping[str, object],
@@ -357,112 +291,6 @@ def hard_constraint_surface(
     return rows
 
 
-def stopping_decision(
-    plan: Mapping[str, object], merchant_index: int, price: int
-) -> dict[str, Any]:
-    """Apply a generated reservation-price plan to one observed offer."""
-    price = _positive_integer(price, "price")
-    stages = plan.get("stages")
-    if not isinstance(stages, list) or not 0 <= merchant_index < len(stages):
-        raise ValueError("merchant_index is outside the stopping plan")
-    stage = stages[merchant_index]
-    if not isinstance(stage, dict):
-        raise ValueError("invalid stopping plan stage")
-    reservation = stage.get("reservation_price")
-    if not isinstance(reservation, dict):
-        raise ValueError("invalid reservation price")
-    threshold = Fraction(
-        _non_negative_integer(reservation.get("numerator"), "reservation numerator"),
-        _positive_integer(reservation.get("denominator"), "reservation denominator"),
-    )
-    margin = Fraction(price) - threshold
-    return {
-        "action": "buy" if margin <= 0 else "continue",
-        "observed_price": price,
-        "reservation_price": _fraction_dict(threshold),
-        "net_value_of_continuing": _fraction_dict(margin),
-    }
-
-
-def reservation_surface(
-    merchants: Sequence[Mapping[str, object]],
-    base_resource_weights: Mapping[str, object],
-    api_call_weights: Sequence[int],
-    failure_penalty: int,
-    observed_price: int,
-    merchant_index: int = 0,
-) -> list[dict[str, Any]]:
-    """Evaluate an observed offer over an exact API-call shadow-cost grid."""
-    if not api_call_weights:
-        raise ValueError("api_call_weights must not be empty")
-    rows: list[dict[str, Any]] = []
-    for api_call_weight in api_call_weights:
-        parsed_weight = _non_negative_integer(api_call_weight, "api_call_weight")
-        weights = dict(base_resource_weights)
-        weights["api_calls"] = parsed_weight
-        plan = optimal_stopping_plan(merchants, weights, failure_penalty)
-        decision = stopping_decision(plan, merchant_index, observed_price)
-        stage = plan["stages"][merchant_index]
-        rows.append(
-            {
-                "api_call_weight": parsed_weight,
-                "action": decision["action"],
-                "reservation_price": decision["reservation_price"],
-                "net_value_of_continuing": decision["net_value_of_continuing"],
-                "stop_percentile": stage["stop_percentile"],
-                "next_query_cost": plan["stages"][merchant_index + 1]["query_cost"],
-                "next_query_cost_components": plan["stages"][merchant_index + 1][
-                    "query_cost_components"
-                ],
-                "expected_loss_before_first_query": plan["expected_loss"],
-            }
-        )
-    return rows
-
-
-def break_even_api_call_weight(
-    merchants: Sequence[Mapping[str, object]],
-    base_resource_weights: Mapping[str, object],
-    failure_penalty: int,
-    observed_price: int,
-    lower_weight: int,
-    upper_weight: int,
-    merchant_index: int = 0,
-) -> dict[str, Any]:
-    """Solve an exact affine Bellman segment where buy and continue have equal loss."""
-    lower = Fraction(_non_negative_integer(lower_weight, "lower_weight"))
-    upper = Fraction(_non_negative_integer(upper_weight, "upper_weight"))
-    if lower >= upper:
-        raise ValueError("lower_weight must be less than upper_weight")
-
-    def reservation_at(api_weight: Fraction) -> Fraction:
-        weights = dict(base_resource_weights)
-        weights["api_calls"] = api_weight
-        plan = optimal_stopping_plan(merchants, weights, failure_penalty)
-        stage = plan["stages"][merchant_index]
-        reservation = stage["reservation_price"]
-        return Fraction(reservation["numerator"], reservation["denominator"])
-
-    lower_reservation = reservation_at(lower)
-    upper_reservation = reservation_at(upper)
-    price = Fraction(_positive_integer(observed_price, "observed_price"))
-    if not lower_reservation < price <= upper_reservation:
-        raise ValueError("weight interval does not bracket a continue-to-buy switch")
-    slope = (upper_reservation - lower_reservation) / (upper - lower)
-    if slope <= 0:
-        raise ValueError("reservation price must increase inside the bracket")
-    critical = lower + (price - lower_reservation) / slope
-    if reservation_at(critical) != price:
-        raise ValueError("weight interval crosses a Bellman policy breakpoint")
-    return {
-        "critical_api_call_weight": _fraction_dict(critical),
-        "lower_weight": _fraction_dict(lower),
-        "upper_weight": _fraction_dict(upper),
-        "observed_price": observed_price,
-        "rule": "continue_below_critical_weight_buy_at_or_above",
-    }
-
-
 def simulate_policy(
     offers: Sequence[Mapping[str, object]],
     policy: str,
@@ -521,17 +349,6 @@ def simulate_policy(
         resources=resources,
         terminal_reason="merchants_exhausted",
     )
-
-
-def weighted_loss(outcome: SearchOutcome, weights: Mapping[str, object]) -> int:
-    """Score price, resource use, and purchase failure with integer shadow prices."""
-    failure_penalty = _non_negative_integer(weights.get("failure_penalty"), "failure_penalty")
-    loss = outcome.accepted_price if outcome.purchased else failure_penalty
-    assert loss is not None
-    for field in RESOURCE_FIELDS:
-        weight = _non_negative_integer(weights.get(field, 0), f"{field} weight")
-        loss += weight * getattr(outcome.resources, field)
-    return loss
 
 
 def run_analysis(seed: int) -> dict[str, Any]:
@@ -780,23 +597,6 @@ def _positive_integer(value: object, name: str) -> int:
     if value == 0:
         raise ValueError(f"{name} must be positive")
     return value
-
-
-def _non_negative_fraction(value: object, name: str) -> Fraction:
-    if isinstance(value, bool):
-        raise ValueError(f"{name} must be a non-negative rational number")
-    if isinstance(value, int | Fraction):
-        result = Fraction(value)
-    elif isinstance(value, Mapping):
-        result = Fraction(
-            _non_negative_integer(value.get("numerator"), f"{name} numerator"),
-            _positive_integer(value.get("denominator"), f"{name} denominator"),
-        )
-    else:
-        raise ValueError(f"{name} must be a non-negative rational number")
-    if result < 0:
-        raise ValueError(f"{name} must be a non-negative rational number")
-    return result
 
 
 def _fraction_dict(value: Fraction) -> dict[str, int | float]:

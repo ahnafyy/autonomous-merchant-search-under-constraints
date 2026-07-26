@@ -4,17 +4,12 @@ import json
 from pathlib import Path
 
 import pytest
-from example_study import (
+from autonomous_shopping_optimizer import (
     AutonomousShoppingOptimizer,
     adaptive_hard_budget_plan,
-    break_even_api_call_weight,
     hard_budget_stopping_plan,
     hard_constraint_surface,
-    optimal_stopping_plan,
-    reservation_surface,
     simulate_policy,
-    stopping_decision,
-    weighted_loss,
 )
 
 from paperkit.pipeline import build
@@ -36,7 +31,6 @@ def test_rejected_offers_expire() -> None:
     assert outcome.accepted_price is None
     assert outcome.queries == 2
     assert outcome.terminal_reason == "merchants_exhausted"
-    assert weighted_loss(outcome, {"failure_penalty": 100}) == 100
 
 
 def test_resource_aware_policy_accepts_before_budget_exhaustion() -> None:
@@ -63,90 +57,6 @@ def test_resource_aware_policy_accepts_before_budget_exhaustion() -> None:
     assert aware.accepted_index == 0
     assert fixed.purchased is False
     assert fixed.terminal_reason == "resource_exhausted"
-
-
-def test_backward_induction_produces_actionable_reservation_prices() -> None:
-    merchants = [
-        {
-            "price_weights": [
-                {"price": 70, "weight": 1},
-                {"price": 100, "weight": 2},
-                {"price": 140, "weight": 1},
-            ],
-            "unavailable_weight": 1,
-            "api_calls": 1,
-        },
-        {
-            "price_weights": [
-                {"price": 60, "weight": 1},
-                {"price": 90, "weight": 2},
-                {"price": 130, "weight": 1},
-            ],
-            "unavailable_weight": 1,
-            "api_calls": 1,
-        },
-        {
-            "price_weights": [
-                {"price": 50, "weight": 1},
-                {"price": 80, "weight": 2},
-                {"price": 120, "weight": 1},
-            ],
-            "unavailable_weight": 1,
-            "api_calls": 1,
-        },
-    ]
-
-    free = optimal_stopping_plan(merchants, {"api_calls": 0}, failure_penalty=180)
-    costly = optimal_stopping_plan(merchants, {"api_calls": 20}, failure_penalty=180)
-
-    assert free["stages"][0]["reservation_price"] == {
-        "numerator": 444,
-        "denominator": 5,
-        "value": 88.8,
-    }
-    assert costly["stages"][0]["reservation_price"] == {
-        "numerator": 584,
-        "denominator": 5,
-        "value": 116.8,
-    }
-    assert free["stages"][0]["stop_percentile"]["value"] == 0.25
-    assert costly["stages"][0]["stop_percentile"]["value"] == 0.75
-    assert stopping_decision(free, 0, 110)["action"] == "continue"
-    assert stopping_decision(costly, 0, 110)["action"] == "buy"
-
-    surface = reservation_surface(
-        merchants,
-        base_resource_weights={},
-        api_call_weights=[0, 20],
-        failure_penalty=180,
-        observed_price=110,
-    )
-    assert [row["action"] for row in surface] == ["continue", "buy"]
-    assert surface[0]["net_value_of_continuing"]["value"] == 21.2
-    assert surface[1]["net_value_of_continuing"]["value"] == -6.8
-    assert surface[1]["next_query_cost"] == {
-        "numerator": 20,
-        "denominator": 1,
-        "value": 20.0,
-    }
-    assert surface[1]["next_query_cost_components"]["api_calls"] == {
-        "numerator": 20,
-        "denominator": 1,
-        "value": 20.0,
-    }
-    break_even = break_even_api_call_weight(
-        merchants,
-        base_resource_weights={},
-        failure_penalty=180,
-        observed_price=110,
-        lower_weight=0,
-        upper_weight=20,
-    )
-    assert break_even["critical_api_call_weight"] == {
-        "numerator": 106,
-        "denominator": 7,
-        "value": 106 / 7,
-    }
 
 
 def test_hard_budget_state_changes_the_stopping_decision() -> None:
