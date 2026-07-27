@@ -22,7 +22,7 @@ def test_build_is_deterministic_and_claims_pass(tmp_path: Path) -> None:
 
     assert _snapshot(first) == _snapshot(second)
     claim_results = json.loads((first / "claim-results.json").read_text(encoding="utf-8"))
-    assert claim_results["claims"][0]["passed"] is True
+    assert all(claim["passed"] for claim in claim_results["claims"])
     manifest = json.loads((first / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["all_executable_claims_passed"] is True
     assert "results.json" in manifest["files"]
@@ -32,10 +32,12 @@ def test_build_is_deterministic_and_claims_pass(tmp_path: Path) -> None:
         "relaxed:continue|time-tight:buy|token-tight:buy|api-tight:buy|"
         "api-spend-tight:buy|combined:buy|price-capped:continue"
     )
-    assert {claim["id"] for claim in site_data["claims"]} == {
-            "MERCHANT-PERMIT-OPEN-001"
+    claim_statuses = {claim["id"]: claim["status"] for claim in site_data["claims"]}
+    assert claim_statuses == {
+        "MERCHANT-PERMIT-OPEN-001": "open",
+        "MERCHANT-PERMIT-SAFETY-CONJECTURE-001": "conjecture",
+        "MERCHANT-PERMIT-SOLVER-OPEN-001": "open",
     }
-    assert site_data["claims"][0]["status"] == "open"
     assert site_data["packages"]["python"]["distribution"] == (
         "autonomous-shopping-optimizer"
     )

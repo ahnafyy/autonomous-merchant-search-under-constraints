@@ -1,15 +1,19 @@
 \section{Robustness And Extensions}
 
-The current evidence validates the recurrence and package conformance.  It does
-not establish novelty or empirical robustness.  The first research check replays
-common held-out query-usage traces under adaptive, equal-split, worst-case-reserve,
-greedy feasible, and fixed-depth permit policies.  Experiments must vary total
-budgets, perturb usage forecasts, charge planner latency, and report purchase
-loss, purchase failure, timeout and truncation rates, and hard-budget violations.
+The current evidence validates the fixed-requirement recurrence, Python permit
+lifecycle, metric definitions, and existing package conformance.  It does not
+establish novelty or empirical robustness.  The first research check will replay
+frozen held-out UCP panels under constrained ARVP, the same policy with
+nonbinding budgets, equal-split, tuned fixed-split, worst-case-reserve, myopic
+feasible, fixed-depth, and routing and permit ablations.  Experiments must vary
+total budgets, perturb usage forecasts, charge planner latency, and report
+purchase loss, purchase failure, oracle regret, timeout and truncation rates,
+and hard-budget violations.
 
-Two controls are especially important.  First, every runtime must enforce each
-permit before dispatch and reconcile actual usage afterward.  Second, the same
-merchant outcomes and usage traces must be paired across policies.  If adaptive
+Three controls are especially important.  First, every runtime must enforce each
+permit before dispatch and conservatively reconcile censored usage.  Second, the
+same merchant outcomes and usage traces must be paired across policies.  Third,
+the constrained-versus-nonbinding gap, nonbinding-versus-oracle gap, and total
+constrained-versus-oracle gap must be reported separately.  If adaptive
 allocation cannot outperform the strongest fixed feasible baseline without an
-overrun, the contribution hypothesis is rejected.  These checks are pending and
-are not included in the primary claim.
+overrun, the contribution hypothesis is rejected.  These checks are pending.

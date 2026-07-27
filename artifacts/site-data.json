@@ -12,16 +12,46 @@
     {
       "detail": "No executable evaluator; status is documentary.",
       "expected": null,
-      "id": "MERCHANT-PERMIT-OPEN-001",
+      "id": "MERCHANT-PERMIT-SAFETY-CONJECTURE-001",
       "limitations": [
-        "The repository does not yet contain a calibrated query-usage trace corpus.",
-        "Zero violations require the host runtime to enforce every permit before invoking a model or merchant tool."
+        "The current evidence is implementation testing, not yet a manuscript proof.",
+        "The claim does not apply when an upstream service can spend beyond an issued permit."
       ],
       "observed": null,
       "passed": true,
-      "scope": "Sequential no-recall merchant search with enforceable per-call limits, uncertain resource usage, a hard purchase-price cap, and paired replay traces.",
+      "scope": "Sequential merchant calls whose host runtime enforces each issued permit and whose reconciliation records cannot be forged, reused, or omitted.",
+      "site_visible": false,
+      "statement": "Conjecture: atomic reservation of every enforceable resource permit, followed by exact reclamation for known usage and permit-level charging for censored usage, keeps cumulative conservative resource charges within every initial episode budget on every execution path.",
+      "status": "conjecture"
+    },
+    {
+      "detail": "No executable evaluator; status is documentary.",
+      "expected": null,
+      "id": "MERCHANT-PERMIT-SOLVER-OPEN-001",
+      "limitations": [
+        "The joint-action reference solver and exhaustive enumerator are not implemented yet."
+      ],
+      "observed": null,
+      "passed": true,
+      "scope": "Finite exact-SKU UCP panels, integer resource budgets, a finite permit grid, and separately evaluated no-recall and held-offer modes.",
+      "site_visible": false,
+      "statement": "It remains open whether an exact finite-horizon solver over joint merchant and discrete vector-permit actions agrees with exhaustive policy enumeration for the registered reduced domain, including censored usage and terminal purchase failure.",
+      "status": "open"
+    },
+    {
+      "detail": "No executable evaluator; status is documentary.",
+      "expected": null,
+      "id": "MERCHANT-PERMIT-OPEN-001",
+      "limitations": [
+        "The repository does not yet contain an eligible, permission-checked UCP panel corpus.",
+        "Zero violations require the host runtime to enforce every permit before invoking a model or merchant tool.",
+        "Live exhaustive-oracle scoring is conditional on endpoint permissions and rate limits."
+      ],
+      "observed": null,
+      "passed": true,
+      "scope": "Sequential exact-SKU UCP merchant search with enforceable per-call limits, uncertain resource usage, a hard purchase-price cap, and paired held-out replay; no-recall is primary and held-offer behavior is a separate robustness mode.",
       "site_visible": true,
-      "statement": "It remains open whether adaptive pre-call allocation of enforceable time, token, API-call, and API-spend permits improves purchase loss or purchase success over fixed-split and myopic feasible baselines while maintaining zero hard-budget violations under uncertain realized query usage.",
+      "statement": "It remains open whether joint adaptive UCP merchant selection and enforceable time, token, API-call, and genuine API-spend permit allocation improves the preregistered purchase outcome over the strongest fixed feasible baseline while maintaining zero hard-budget violations on frozen held-out merchant panels.",
       "status": "open"
     }
   ],
@@ -44,7 +74,7 @@
     }
   },
   "project": {
-    "abstract": "Autonomous Shopping Optimizer is middleware for sequential merchant search under hard time, token, API-call, API-spend, and purchase-price limits. Its exact finite-horizon planner tracks remaining resources, chooses the next feasible merchant, and returns buy, continue, or reject without executing an LLM call or a purchase. Before each call it can issue enforceable timeout, token, call, and spend permits, then reconcile actual usage. The current research asks whether adaptive permit allocation improves purchase quality or success over fixed feasible baselines while maintaining zero hard-budget violations.",
+    "abstract": "Autonomous Shopping Optimizer is middleware for sequential merchant search under hard time, token, API-call, API-spend, and purchase-price limits. Its exact finite-horizon planner tracks remaining resources, chooses the next feasible merchant, and returns buy, continue, or reject without executing an LLM call or a purchase. Its Python permit ledger atomically reserves enforceable call limits, reconciles exact or censored usage, and reclaims known unused capacity. The current research asks whether joint UCP merchant selection and permit allocation improves a preregistered purchase outcome over fixed feasible baselines on frozen held-out panels while maintaining zero hard-budget violations.",
     "arxiv_categories": [
       "cs.AI"
     ],

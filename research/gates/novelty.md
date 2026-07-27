@@ -12,12 +12,14 @@ prices, sampling-cost secretary problems, online Pandora inspection with commitm
 deadlines and time-varying rewards, consumer search under an unknown stable law,
 prophet-secretary selection, and multidimensional online packing.
 
-The observation that hard constraints change actions is implementation validation,
-not a contribution. The revised candidate studies adaptive allocation of enforceable
-per-call timeout, token, call, and spend permits under uncertain realized usage. A
-publishable result requires paired trace evidence that improves purchase loss or
-success over strong feasible baselines while retaining zero hard-budget violations.
-No such result is currently claimed.
+The observation that hard constraints change actions, and the implementation of an
+atomic reservation ledger, are validation rather than novelty by themselves. The
+revised candidate treats `(merchant, enforceable vector permit)` as one online action
+under censored multi-resource feedback. A publishable result requires either a
+genuinely distinct algorithmic or analytic result after closest-work review, or a
+calibrated framework/application contribution supported by frozen held-out UCP panels,
+strong feasible baselines, and zero hard-budget violations. No such result is currently
+claimed.
 
 Priority full-text reads before approval are:
 
@@ -32,5 +34,10 @@ availability. All literature entries remain candidates until those checks are co
 They must also cover safe LLM inference, token-budget allocation, anytime agent
 planning, online stochastic knapsack, deadline-aware tool routing, and per-episode
 rather than average-cost agent evaluation.
+
+The novelty decision must explicitly classify the contribution as an algorithm,
+analytic boundary, benchmark/framework, application, or negative result. Implementing
+Bandits with Knapsacks or optimal stopping behind a commerce API is not by itself
+evidence of novelty.
 
 Record approval in `status.yml`. Agents may prepare this gate but may not approve it.

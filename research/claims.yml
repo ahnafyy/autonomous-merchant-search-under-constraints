@@ -1,19 +1,54 @@
 schema_version: 1
 claims:
-  - id: "MERCHANT-PERMIT-OPEN-001"
+  - id: "MERCHANT-PERMIT-SAFETY-CONJECTURE-001"
     statement: >-
-      It remains open whether adaptive pre-call allocation of enforceable time, token,
-      API-call, and API-spend permits improves purchase loss or purchase success over
-      fixed-split and myopic feasible baselines while maintaining zero hard-budget
-      violations under uncertain realized query usage.
+      Conjecture: atomic reservation of every enforceable resource permit, followed by
+      exact reclamation for known usage and permit-level charging for censored usage,
+      keeps cumulative conservative resource charges within every initial episode
+      budget on every execution path.
+    status: "conjecture"
+    scope: >-
+      Sequential merchant calls whose host runtime enforces each issued permit and
+      whose reconciliation records cannot be forged, reused, or omitted.
+    evidence:
+      - "packages/python/src/autonomous_shopping_optimizer/permits.py"
+      - "tests/test_permits.py"
+    manuscript_labels: []
+    site_visible: false
+    limitations:
+      - "The current evidence is implementation testing, not yet a manuscript proof."
+      - "The claim does not apply when an upstream service can spend beyond an issued permit."
+  - id: "MERCHANT-PERMIT-SOLVER-OPEN-001"
+    statement: >-
+      It remains open whether an exact finite-horizon solver over joint merchant and
+      discrete vector-permit actions agrees with exhaustive policy enumeration for the
+      registered reduced domain, including censored usage and terminal purchase failure.
     status: "open"
     scope: >-
-      Sequential no-recall merchant search with enforceable per-call limits, uncertain
-      resource usage, a hard purchase-price cap, and paired replay traces.
+      Finite exact-SKU UCP panels, integer resource budgets, a finite permit grid, and
+      separately evaluated no-recall and held-offer modes.
+    evidence:
+      - "research/question.md"
+    manuscript_labels: []
+    site_visible: false
+    limitations:
+      - "The joint-action reference solver and exhaustive enumerator are not implemented yet."
+  - id: "MERCHANT-PERMIT-OPEN-001"
+    statement: >-
+      It remains open whether joint adaptive UCP merchant selection and enforceable
+      time, token, API-call, and genuine API-spend permit allocation improves the
+      preregistered purchase outcome over the strongest fixed feasible baseline while
+      maintaining zero hard-budget violations on frozen held-out merchant panels.
+    status: "open"
+    scope: >-
+      Sequential exact-SKU UCP merchant search with enforceable per-call limits,
+      uncertain resource usage, a hard purchase-price cap, and paired held-out replay;
+      no-recall is primary and held-offer behavior is a separate robustness mode.
     evidence:
       - "research/literature.yml"
     manuscript_labels: []
     site_visible: true
     limitations:
-      - "The repository does not yet contain a calibrated query-usage trace corpus."
+      - "The repository does not yet contain an eligible, permission-checked UCP panel corpus."
       - "Zero violations require the host runtime to enforce every permit before invoking a model or merchant tool."
+      - "Live exhaustive-oracle scoring is conditional on endpoint permissions and rate limits."

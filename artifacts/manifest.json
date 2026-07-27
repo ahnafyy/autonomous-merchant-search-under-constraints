@@ -1,16 +1,18 @@
 {
   "all_executable_claims_passed": true,
   "claims": [
+    "MERCHANT-PERMIT-SAFETY-CONJECTURE-001",
+    "MERCHANT-PERMIT-SOLVER-OPEN-001",
     "MERCHANT-PERMIT-OPEN-001"
   ],
   "files": {
-    "claim-results.json": "90fcf668d749c8f535b3ea4bb23c76ce04fa8a0c11f0d69343a0328501be93dc",
+    "claim-results.json": "d726c5f56670f93c1f7e7ce29d06d4ac34da6ad31e75824a9df99bb4595d4ae9",
     "conformance/merchant-search.json": "c060ee519cfd320b22679b9e3cf821b4477f42a4869eb58505ab6416d223108f",
     "data/summary.csv": "88d048b0f0695202ba91f62d20f24c96fff6983aad17e65c9ec0498d6217591d",
     "results.json": "e81cb9d2e84c456f094a03bfe16e88b56b1bdcc53862f39a0158fe9f5b7bc99a",
-    "site-data.json": "b7870c078267e5607a6073fe8e35076b173bc432eca4ab9a0610745bfa94e3f6",
-    "tables/claim_status.tex": "811901ae1a416493702583fc87e1487db35231783cbca6ca965fc7271c044c7b",
-    "tables/project_metadata.tex": "02619c4f02b9efdfca8a4eb5af59961805658db90fa6a281fc457a3000109027",
+    "site-data.json": "71d43379ae7878ca01a2b67e82c3b771bd7c3c1c498c2cebb5bffe789c32031a",
+    "tables/claim_status.tex": "3b1966dd51d3f10b9ad03fd31fe5ac1abb491ffca29746a83299fe015180761e",
+    "tables/project_metadata.tex": "237118425d7f99cc3dcb6203ff91d9e59ed223265fcad5d5c196df80c8204a57",
     "tables/result_macros.tex": "2be57f4d0d2635512a4862280733c046b2b751890cfd6d449b1ff86204ad28d2"
   },
   "generator": {

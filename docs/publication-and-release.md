@@ -30,8 +30,9 @@ npm run test:e2e --prefix site
 ## Registry packages
 
 The Python distribution in `packages/python/` is the canonical scientific
-implementation. The npm package in `packages/javascript/` implements the same public
-operations and is checked against `artifacts/conformance/`.
+implementation. The npm package in `packages/javascript/` implements the shared
+operations covered by `artifacts/conformance/`. Python-only operations are not
+cross-language contracts until generated vectors and matching npm behavior are added.
 
 ```bash
 python -m build packages/python
@@ -60,6 +61,7 @@ Before release, verify that:
 - every claim has accurate scope, status, limitations, and evidence;
 - literature records and bibliography entries are verifiable;
 - the extracted arXiv source compiles in a clean environment;
-- Python and JavaScript package APIs pass the generated conformance vectors;
+- every declared shared Python and JavaScript operation passes generated conformance
+	vectors, and Python-only operations are documented as such;
 - wheel, sdist, and npm tarball contain only intended public files;
 - the repository and site links in `project.yml` resolve to the public project.

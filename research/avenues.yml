@@ -1,25 +1,27 @@
 schema_version: 1
 avenues:
   - id: "AVENUE-001"
-    title: "Adaptive hard-budget allocation for autonomous shopping agents"
+    title: "Joint merchant routing and enforceable permit allocation"
     status: selected
     mechanism: >-
-      Before each model or merchant-tool call, the optimizer chooses both a merchant
-      and enforceable limits for time, tokens, calls, and spend. Conserving resources
-      preserves later search, while overly strict permits can cause truncation,
-      timeout, and purchase failure.
+      Before each UCP merchant call, the optimizer jointly chooses a merchant and
+      enforceable limits for time, tokens, calls, and genuine API spend. The runtime
+      atomically reserves the permit, conservatively reconciles censored usage, and
+      reclaims known unused capacity. Conserving resources preserves later search,
+      while overly strict permits can cause truncation, timeout, and purchase failure.
     minimal_model: >-
       A finite no-recall merchant-search episode with stochastic correlated query
       usage, enforceable per-call permits, a hard total resource vector, and a hard
       purchase-price cap.
     novelty_hypothesis: >-
-      Jointly routing merchants and sizing enforceable call permits may improve
-      purchase quality or success over fixed splitting and myopic feasible policies
-      without any hard-limit violations.
+      Treating the merchant and its enforceable observation limit as one online action
+      under censored multi-resource feedback may improve purchase quality or success
+      over fixed splitting and myopic feasible policies without hard-limit violations.
     decisive_calculation: >-
-      On paired held-out traces, compare adaptive permits with equal split, greedy
-      feasible, fixed-depth, worst-case reserve, and clairvoyant controls. Reject the
-      avenue if adaptive allocation does not improve purchase loss or success at zero
+      On frozen held-out UCP panels, compare constrained ARVP, the same policy with
+      nonbinding budgets, equal split, greedy feasible, fixed-depth, worst-case reserve,
+      routing and permit ablations, and an exhaustive panel oracle. Reject the avenue
+      if adaptive allocation does not improve the preregistered outcome at zero
       violations after planner overhead and forecast error are included.
     expected_value: >-
       The result would give deployable guidance for timeout, max-token, call, and spend

@@ -9,10 +9,11 @@ project:
     hard time, token, API-call, API-spend, and purchase-price limits. Its exact
     finite-horizon planner tracks remaining resources, chooses the next feasible
     merchant, and returns buy, continue, or reject without executing an LLM call or a
-    purchase. Before each call it can issue enforceable timeout, token, call, and spend
-    permits, then reconcile actual usage. The current research asks whether adaptive
-    permit allocation improves purchase quality or success over fixed feasible
-    baselines while maintaining zero hard-budget violations.
+    purchase. Its Python permit ledger atomically reserves enforceable call limits,
+    reconciles exact or censored usage, and reclaims known unused capacity. The current
+    research asks whether joint UCP merchant selection and permit allocation improves a
+    preregistered purchase outcome over fixed feasible baselines on frozen held-out
+    panels while maintaining zero hard-budget violations.
   keywords:
     - "autonomous shopping"
     - "online search"

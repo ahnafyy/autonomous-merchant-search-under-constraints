@@ -1,4 +1,7 @@
 .DS_Store
+.env
+.env.*
+!.env.example
 .venv/
 __pycache__/
 *.py[cod]
@@ -16,6 +19,9 @@ site/playwright-report/
 packages/javascript/*.tgz
 packages/javascript/node_modules/
 packages/python/dist/
+data/ucp/inventory.json
+data/ucp/private/
+data/ucp/raw/
 paper/*.aux
 paper/*.bbl
 paper/*.blg

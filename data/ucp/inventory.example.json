@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "endpoints": [
+    {
+      "endpoint_id": "merchant-example",
+      "merchant_id": "merchant-example",
+      "capability_url": "https://merchant.example/.well-known/ucp",
+      "protocol_version": "unknown",
+      "read_operation": "product_lookup",
+      "auth_env_var": null,
+      "rate_limit_per_minute": 10,
+      "permission_status": "unknown",
+      "exact_product_lookup": true,
+      "side_effect_free": true
+    }
+  ]
+}

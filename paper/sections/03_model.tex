@@ -28,10 +28,18 @@ R_t(S,b)=\min\{P_{\max},W(S\setminus\{t\},b-c_t)\}.
 The agent buys an available offer exactly when $p_t\leq R_t(b)$.  If this
 condition fails, it continues when another query is feasible and otherwise
 rejects into terminal failure.  Query resources are feasibility constraints;
-the controller must reserve them before dispatch and reconcile realized usage
-after the query completes.
+the Python controller atomically reserves them before dispatch and reconciles
+realized usage once after the query completes.  Known unused capacity is
+reclaimed.  A component left unknown by cancellation is conservatively charged
+at its reserved amount.
 
 All probabilities and values are represented as rational numbers.  Dynamic
 program states are memoized by the unqueried merchant set and the
 four-dimensional remaining-budget vector.  This state determines which merchant
 queries remain admissible and the continuation loss after each possible result.
+
+The implemented recurrence treats $c_t$ as a fixed merchant requirement.  The
+registered joint-action extension instead chooses $(t,p)$, where $p\leq b$ is a
+permit on a finite grid and may change completion, truncation, and observation
+probabilities.  That transition model and exact solver are not implemented in
+the current release; agreement with exhaustive policy enumeration remains open.

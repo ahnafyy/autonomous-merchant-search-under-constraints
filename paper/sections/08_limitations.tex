@@ -2,10 +2,17 @@
 
 The benchmark is synthetic and its forecast weights are not calibrated to a
 merchant market.  Forecasts are known, discrete, and independent across the
-fixed query order.  Query requirements are deterministic, offers cannot be
+merchant set.  Query requirements are deterministic, offers cannot be
 recalled, and the objective uses a declared terminal failure penalty.  The
-model omits merchant selection, parallel calls, belief updating, substitutions,
-shipping quality, trust, returns, strategic pricing, and execution failures.
+current exact model omits adaptive permit sizing, parallel calls, belief updating,
+substitutions, shipping quality, trust, returns, strategic pricing, and execution
+failures.  A held-offer variant is planned as robustness but is not implemented.
+
+The repository does not yet contain a permission-checked UCP inventory, exact-SKU
+cohort, calibrated usage corpus, or frozen test panels.  API spend is a live hard
+dimension only when an upstream protocol exposes a genuine enforceable cap; it
+must otherwise remain a labeled synthetic or sandbox dimension.  JavaScript
+conformance currently excludes reservation receipts and censored reconciliation.
 
 The registered scenarios also align several resource caps with a shortened
 reachable horizon.  A policy that uses only the number of reachable merchants

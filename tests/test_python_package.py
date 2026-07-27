@@ -151,6 +151,10 @@ def test_agent_middleware_routes_accounts_and_stops() -> None:
     unavailable = middleware.observe(0, None)
     assert unavailable.action == "continue"
     assert unavailable.next_merchant_index == 1
+
+    second_permit = middleware.next_query_permit()
+    assert second_permit is not None
+    assert second_permit.merchant_index == 1
     decision = middleware.observe(1, 70)
 
     assert decision.action == "buy"
@@ -163,6 +167,40 @@ def test_agent_middleware_routes_accounts_and_stops() -> None:
     }
     with pytest.raises(RuntimeError):
         middleware.observe(1, 70)
+
+
+def test_middleware_requires_and_reconciles_active_reservation() -> None:
+    middleware = AutonomousShoppingOptimizer(
+        [{"price_weights": [{"price": 70, "weight": 1}], "time": 5, "tokens": 10}],
+        {"time": 5, "tokens": 10, "api_calls": 1, "api_cost": 0},
+        max_purchase_price=100,
+        failure_penalty=180,
+    )
+
+    with pytest.raises(ValueError, match="no matching active reservation"):
+        middleware.observe(0, 70)
+
+    reserved = middleware.reserve_next_query()
+    assert reserved is not None
+    assert middleware.remaining_budget == {
+        "time": 0,
+        "tokens": 0,
+        "api_calls": 0,
+        "api_cost": 0,
+    }
+    decision = middleware.reconcile(
+        reserved.reservation,
+        70,
+        actual_resources={"time": 3, "tokens": 6, "api_calls": 1, "api_cost": 0},
+    )
+
+    assert decision.action == "buy"
+    assert decision.remaining_budget == {
+        "time": 2,
+        "tokens": 4,
+        "api_calls": 0,
+        "api_cost": 0,
+    }
 
 
 def test_public_optimizer_import_and_compatibility_alias() -> None:

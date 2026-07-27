@@ -8,6 +8,13 @@ from autonomous_shopping_optimizer.analysis import (
     RESOURCE_FIELDS,
     adaptive_hard_budget_plan,
 )
+from autonomous_shopping_optimizer.permits import (
+    ExecutionStatus,
+    PermitLedger,
+    PermitReservation,
+    ResourceVector,
+    UsageObservation,
+)
 
 
 @dataclass(frozen=True)
@@ -49,6 +56,20 @@ class QueryPermit:
             "max_api_spend": self.max_api_spend,
         }
 
+    def resource_vector(self) -> ResourceVector:
+        return ResourceVector(
+            time=self.timeout,
+            tokens=self.max_tokens,
+            api_calls=self.max_api_calls,
+            api_cost=self.max_api_spend,
+        )
+
+
+@dataclass(frozen=True)
+class ReservedQuery:
+    permit: QueryPermit
+    reservation: PermitReservation
+
 
 class AutonomousShoppingOptimizer:
     """Stateful hard-budget optimizer for an external shopping-agent loop.
@@ -68,10 +89,11 @@ class AutonomousShoppingOptimizer:
         if not merchants:
             raise ValueError("at least one merchant forecast is required")
         self._merchants = [dict(merchant) for merchant in merchants]
-        self._remaining = {
+        initial_budget = {
             field: _non_negative_integer(budget.get(field, 0), f"{field} budget")
             for field in RESOURCE_FIELDS
         }
+        self._ledger = PermitLedger(initial_budget)
         self._max_purchase_price = _positive_integer(
             max_purchase_price, "max_purchase_price"
         )
@@ -80,10 +102,11 @@ class AutonomousShoppingOptimizer:
         )
         self._unqueried = list(range(len(self._merchants)))
         self._terminal = False
+        self._pending: ReservedQuery | None = None
 
     @property
     def remaining_budget(self) -> dict[str, int]:
-        return dict(self._remaining)
+        return self._ledger.remaining_budget.as_dict()
 
     @property
     def unqueried_merchants(self) -> tuple[int, ...]:
@@ -91,12 +114,14 @@ class AutonomousShoppingOptimizer:
 
     def next_query(self) -> int | None:
         """Return the best feasible merchant index without consuming resources."""
+        if self._pending is not None:
+            raise RuntimeError("a reserved query must be reconciled before planning again")
         if self._terminal or not self._unqueried:
             return None
         local_merchants = [self._merchants[index] for index in self._unqueried]
         plan = adaptive_hard_budget_plan(
             local_merchants,
-            self._remaining,
+            self.remaining_budget,
             max_purchase_price=self._max_purchase_price,
             failure_penalty=self._failure_penalty,
         )
@@ -104,34 +129,43 @@ class AutonomousShoppingOptimizer:
         return None if local_index is None else self._unqueried[local_index]
 
     def next_query_permit(self) -> QueryPermit | None:
-        """Return enforceable per-call limits for the next selected merchant."""
+        """Reserve and return enforceable limits for the next selected merchant."""
+        reserved = self.reserve_next_query()
+        return None if reserved is None else reserved.permit
+
+    def reserve_next_query(self) -> ReservedQuery | None:
+        """Atomically reserve the next query permit and return its receipt."""
         merchant_index = self.next_query()
         if merchant_index is None:
             return None
         forecast = self._merchants[merchant_index]
-        return QueryPermit(
+        remaining = self.remaining_budget
+        permit = QueryPermit(
             merchant_index=merchant_index,
             timeout=min(
-                self._remaining["time"],
+                remaining["time"],
                 _non_negative_integer(forecast.get("time", 0), "merchant time"),
             ),
             max_tokens=min(
-                self._remaining["tokens"],
+                remaining["tokens"],
                 _non_negative_integer(forecast.get("tokens", 0), "merchant tokens"),
             ),
             max_api_calls=min(
-                self._remaining["api_calls"],
+                remaining["api_calls"],
                 _non_negative_integer(
                     forecast.get("api_calls", 1), "merchant api_calls"
                 ),
             ),
             max_api_spend=min(
-                self._remaining["api_cost"],
+                remaining["api_cost"],
                 _non_negative_integer(
                     forecast.get("api_cost", 0), "merchant api_cost"
                 ),
             ),
         )
+        reservation = self._ledger.reserve(str(merchant_index), permit.resource_vector())
+        self._pending = ReservedQuery(permit=permit, reservation=reservation)
+        return self._pending
 
     def observe(
         self,
@@ -140,27 +174,55 @@ class AutonomousShoppingOptimizer:
         *,
         actual_resources: Mapping[str, object] | None = None,
     ) -> AgentDecision:
-        """Record one completed query and return the constrained next action."""
+        """Reconcile one completed reserved query and return the next action."""
         if self._terminal:
             raise RuntimeError("shopping session is already terminal")
-        if merchant_index not in self._unqueried:
-            raise ValueError("merchant has already been queried or is unknown")
+        if self._pending is None or self._pending.permit.merchant_index != merchant_index:
+            raise ValueError("merchant query has no matching active reservation")
+        forecast = self._merchants[merchant_index]
+        usage_source = actual_resources or forecast
+        return self.reconcile(
+            self._pending.reservation,
+            observed_price,
+            actual_resources=usage_source,
+        )
+
+    def reconcile(
+        self,
+        reservation: PermitReservation,
+        observed_price: int | None,
+        *,
+        actual_resources: Mapping[str, object],
+        exact_resources: frozenset[str] = frozenset(RESOURCE_FIELDS),
+        status: ExecutionStatus = "completed",
+    ) -> AgentDecision:
+        """Reconcile a reserved call, conservatively charging censored resources."""
+        if self._terminal:
+            raise RuntimeError("shopping session is already terminal")
+        if self._pending is None or self._pending.reservation is not reservation:
+            raise ValueError("reservation is not the active merchant query")
+        merchant_index = self._pending.permit.merchant_index
         if observed_price is not None:
             observed_price = _positive_integer(observed_price, "observed_price")
 
-        forecast = self._merchants[merchant_index]
-        usage_source = actual_resources or forecast
-        usage = {
+        usage = ResourceVector(
+            **{
             field: _non_negative_integer(
-                usage_source.get(field, 1 if field == "api_calls" else 0),
+                actual_resources.get(field, 1 if field == "api_calls" else 0),
                 f"actual {field}",
             )
             for field in RESOURCE_FIELDS
-        }
-        if any(usage[field] > self._remaining[field] for field in RESOURCE_FIELDS):
-            raise ValueError("actual query resources exceed the remaining budget")
-        for field in RESOURCE_FIELDS:
-            self._remaining[field] -= usage[field]
+            }
+        )
+        self._ledger.reconcile(
+            reservation,
+            UsageObservation(
+                usage=usage,
+                exact_resources=exact_resources,
+                status=status,
+            ),
+        )
+        self._pending = None
         self._unqueried.remove(merchant_index)
 
         next_index, continuation, reservation = self._continuation()
@@ -208,7 +270,7 @@ class AutonomousShoppingOptimizer:
         local_merchants = [self._merchants[index] for index in self._unqueried]
         plan = adaptive_hard_budget_plan(
             local_merchants,
-            self._remaining,
+            self.remaining_budget,
             max_purchase_price=self._max_purchase_price,
             failure_penalty=self._failure_penalty,
         )

@@ -5,7 +5,8 @@ Hard-budget planning middleware for autonomous shopping agents.
 The optimizer decides whether an agent should buy the current offer, continue
 searching, or stop without a purchase. It also selects the next merchant and issues
 enforceable per-call limits for elapsed time, model tokens, API calls, and API spend.
-The controller admits only calls and purchases that fit the remaining limits.
+The Python controller atomically reserves those limits before dispatch, reconciles
+exact or censored usage once, and reclaims only known unused capacity.
 
 The host application remains responsible for LLM calls, merchant tools, credentials,
 timeouts, and purchase execution. The optimizer does not contact merchants or make a
@@ -30,7 +31,7 @@ vectors. The browser-safe npm implementation must pass those same vectors.
 ## Agent loop
 
 ```text
-optimizer.next_query_permit()
+optimizer.reserve_next_query()
 						|
 						v
 host enforces timeout / token / call / spend ceilings
@@ -39,14 +40,16 @@ host enforces timeout / token / call / spend ceilings
 host invokes the LLM or merchant tool
 						|
 						v
-optimizer.observe(merchant, price, actual resource use)
+optimizer.reconcile(receipt, price, actual resource use)
 						|
 						v
 buy | continue | reject_without_feasible_query
 ```
 
-The pre-call enforcement step is essential. Rejecting an overrun after a call has
-already completed cannot preserve a hard budget.
+The pre-call reservation and enforcement steps are essential. Rejecting an overrun
+after a call has already completed cannot preserve a hard budget. If cancellation
+leaves a resource component unknown, the Python ledger charges the full reserved
+amount for that component rather than treating the lower bound as exact usage.
 
 ## Python usage
 
@@ -79,11 +82,12 @@ optimizer = AutonomousShoppingOptimizer(
 		failure_penalty=180,
 )
 
-permit = optimizer.next_query_permit()
-if permit is not None:
-		# Apply permit.timeout and permit.max_tokens to the host call before dispatch.
-		decision = optimizer.observe(
-				permit.merchant_index,
+reserved = optimizer.reserve_next_query()
+if reserved is not None:
+		permit = reserved.permit
+		# Apply every permit ceiling to the host call before dispatch.
+		decision = optimizer.reconcile(
+				reserved.reservation,
 				observed_price=92,
 				actual_resources={
 						"time": 3,
@@ -95,10 +99,19 @@ if permit is not None:
 		print(decision.action)
 ```
 
+For completed calls, `next_query_permit()` and `observe()` remain guarded convenience
+methods. `next_query_permit()` reserves the returned permit, and every `observe()` must
+match an active reservation. The receipt API is required for timeout, cancellation,
+truncation, or partially censored resource observations.
+
 The Python distribution is `autonomous-shopping-optimizer`; its public import is
 `autonomous_shopping_optimizer`.
 
 ## JavaScript usage
+
+The npm package currently conforms for the existing planner and completed-call
+middleware operations. Atomic reservation receipts and censored reconciliation are
+implemented in Python first and remain pending JavaScript conformance work.
 
 ```js
 import { AutonomousShoppingOptimizer } from "autonomous-shopping-optimizer";
@@ -155,15 +168,18 @@ open `http://127.0.0.1:4321/`.
 
 ## Research status
 
-The software currently demonstrates an exact hard-budget optimizer and matching
-Python/JavaScript middleware. Constraint sensitivity is implementation validation,
-not a novel result.
+The software currently includes an exact hard-budget optimizer, an atomic Python
+permit ledger, commerce-native product and offer types, frozen-panel exhaustive-oracle
+metrics, and offline UCP endpoint-inventory screening. The JavaScript package still
+matches the existing planner vectors but not the new receipt lifecycle. Constraint
+sensitivity and passing unit tests are implementation validation, not novel findings.
 
-The registered open claim, `MERCHANT-PERMIT-OPEN-001`, asks whether adaptive pre-call
-permit allocation improves purchase loss or purchase success over fixed-split and
-myopic feasible baselines while maintaining zero hard-budget violations under
-uncertain realized query usage. The held-out usage traces and comparative evaluation
-needed to resolve that claim have not yet been completed.
+Three claims are preregistered. Pathwise permit safety remains a conjecture pending a
+manuscript proof; agreement between the planned joint `(merchant, permit)` solver and
+exhaustive enumeration remains open; and `MERCHANT-PERMIT-OPEN-001` asks whether joint
+adaptive routing and permit allocation improves the preregistered outcome over the
+strongest fixed feasible baseline on frozen held-out UCP panels at zero violations.
+No UCP performance result is currently claimed.
 
 Gate status:
 
@@ -183,6 +199,7 @@ Only a human may approve a research gate.
 | --- | --- |
 | `packages/python/` | Canonical optimizer and Python middleware |
 | `packages/javascript/` | Browser-safe npm optimizer and conformance tests |
+| `data/ucp/` | Public-safe UCP inventory templates and snapshot documentation |
 | `research/` | Question, avenues, claims, literature, and human gates |
 | `artifacts/` | Deterministically generated evidence and conformance vectors |
 | `paper/` | Claim-aware LaTeX manuscript |
@@ -205,6 +222,7 @@ Only a human may approve a research gate.
 - [Research cycle](docs/research-cycle.md)
 - [Claim taxonomy](docs/claim-taxonomy.md)
 - [Publication and release](docs/publication-and-release.md)
+- [UCP input data](data/ucp/README.md)
 - [Contributing](CONTRIBUTING.md)
 
 The interactive explainer is configured for
