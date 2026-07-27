@@ -1,12 +1,17 @@
 # Autonomous Shopping Optimizer
 
-Hard-budget planning middleware for autonomous shopping agents.
+An exact finite-horizon merchant-search algorithm with reusable open-source Python
+and npm implementations.
 
-The optimizer decides whether an agent should buy the current offer, continue
-searching, or stop without a purchase. It also selects the next merchant and issues
-enforceable per-call limits for elapsed time, model tokens, API calls, and API spend.
-The Python controller atomically reserves those limits before dispatch, reconciles
-exact or censored usage once, and reclaims only known unused capacity.
+The algorithm decides which merchant an autonomous shopping agent should query next
+and whether it should buy the current offer, continue searching, or stop without a
+purchase under hard time, token, API-call, API-spend, and purchase-price limits.
+
+The Python and npm packages implement the current exact fixed-requirement planner and
+expose permits that a host can enforce around each merchant or model call. The Python
+package additionally provides atomic reservation receipts, exact or censored usage
+reconciliation, and reclamation of known unused capacity. Equivalent receipt behavior
+in the npm package remains open work.
 
 The host application remains responsible for LLM calls, merchant tools, credentials,
 timeouts, and purchase execution. The optimizer does not contact merchants or make a
@@ -25,8 +30,8 @@ choice as an exact finite-horizon decision problem with:
 - hard time, token, API-call, API-spend, and purchase-price limits; and
 - an explicit penalty for ending without a purchase.
 
-The canonical Python implementation generates deterministic evidence and conformance
-vectors. The browser-safe npm implementation must pass those same vectors.
+The canonical Python package generates deterministic evidence and shared conformance
+vectors. The browser-safe npm package is checked against those same planner vectors.
 
 ## Agent loop
 
@@ -168,18 +173,18 @@ open `http://127.0.0.1:4321/`.
 
 ## Research status
 
-The software currently includes an exact hard-budget optimizer, an atomic Python
-permit ledger, commerce-native product and offer types, frozen-panel exhaustive-oracle
-metrics, and offline UCP endpoint-inventory screening. The JavaScript package still
-matches the existing planner vectors but not the new receipt lifecycle. Constraint
+The open-source release includes an exact hard-budget planner in Python and JavaScript,
+an atomic Python permit ledger, commerce-native product and offer types, frozen-panel
+exhaustive-oracle metrics, and offline endpoint-inventory screening. The npm package
+matches the existing planner vectors but not the Python receipt lifecycle. Constraint
 sensitivity and passing unit tests are implementation validation, not novel findings.
 
 Three claims are preregistered. Pathwise permit safety remains a conjecture pending a
 manuscript proof; agreement between the planned joint `(merchant, permit)` solver and
 exhaustive enumeration remains open; and `MERCHANT-PERMIT-OPEN-001` asks whether joint
 adaptive routing and permit allocation improves the preregistered outcome over the
-strongest fixed feasible baseline on frozen held-out UCP panels at zero violations.
-No UCP performance result is currently claimed.
+strongest fixed feasible baseline on frozen held-out merchant panels at zero
+violations. No empirical performance result is currently claimed.
 
 Gate status:
 
@@ -197,8 +202,8 @@ Only a human may approve a research gate.
 
 | Path | Purpose |
 | --- | --- |
-| `packages/python/` | Canonical optimizer and Python middleware |
-| `packages/javascript/` | Browser-safe npm optimizer and conformance tests |
+| `packages/python/` | Canonical Python optimizer, permit ledger, and evidence source |
+| `packages/javascript/` | Browser-safe npm optimizer and shared conformance tests |
 | `data/ucp/` | Public-safe UCP inventory templates and snapshot documentation |
 | `research/` | Question, avenues, claims, literature, and human gates |
 | `artifacts/` | Deterministically generated evidence and conformance vectors |

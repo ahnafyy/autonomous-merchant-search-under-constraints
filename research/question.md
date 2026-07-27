@@ -14,13 +14,13 @@ of constraints as a separate problem obscures the common online stopping mechani
 
 ## Research Question
 
-Can an autonomous shopping agent jointly choose which UCP merchant to query and what
+Can an autonomous shopping agent jointly choose which merchant to query and what
 enforceable resource permit to issue so that it captures more exhaustive-search value
 than fixed feasible allocation under hard episode budgets?
 
 ## Minimal Benchmark
 
-An episode contains one exact SKU and a known finite set of eligible UCP merchants.
+An episode contains one exact SKU and a known finite set of eligible merchants.
 Calls are sequential, and the policy chooses the next feasible merchant and a permit
 vector adaptively. Querying merchant \(t\) consumes elapsed time, response or model
 tokens, API-call count, and genuine monetary API cost when the protocol exposes it,
@@ -30,7 +30,7 @@ reserves enforceable limits for every active resource. Realized usage may be low
 known unused capacity is reclaimed, while usage left unknown by cancellation is
 charged conservatively at its permit.
 
-Early randomized UCP rounds are calibration data. Chronologically later rounds are
+Early randomized merchant-query rounds are calibration data. Chronologically later rounds are
 frozen as held-out merchant panels before policy comparison. Every policy is replayed
 against the same latent panel. Unqueried merchant outcomes remain hidden from online
 policies, preventing the exhaustive oracle from leaking into routing or stopping.
@@ -86,9 +86,11 @@ zero.
 
 The selected hypothesis is that joint adaptive merchant and permit selection can
 improve a preregistered purchase outcome over deployable fixed-split and myopic
-baselines while maintaining zero hard-budget violations under uncertain realized UCP
-usage. The result is not established until frozen held-out panels include planner
-overhead, timeouts, truncation, forecast error, and terminal purchase failure.
+baselines while maintaining zero hard-budget violations under uncertain realized
+query-resource usage. UCP is the proposed data-access specification rather than part
+of the optimization problem. The result is not established until frozen held-out
+panels include planner overhead, timeouts, truncation, forecast error, and terminal
+purchase failure.
 
 ## Falsifiers
 

@@ -8,20 +8,26 @@ spend, or leave the agent without an admissible purchase.  A hard purchase-price
 cap creates the opposite restriction: even an available offer must be rejected
 when its price is infeasible.
 
-This paper asks whether an autonomous shopping agent can jointly choose a UCP
-merchant and an enforceable resource permit so that it captures more
-exhaustive-search value than fixed feasible allocation under actual hard time,
-token, API, and purchase-price constraints.  The primary model is finite,
-sequential, and no-recall.  The optimizer carries the unqueried merchant set and
-remaining resources in its state and admits a query only when every reserved
-resource is available.
+This paper studies whether an autonomous shopping agent can jointly choose the
+next merchant and an enforceable resource permit so that it captures more
+exhaustive-search value than fixed feasible allocation under hard time, token,
+API, and purchase-price constraints.  The primary model is finite, sequential,
+and no-recall.  The optimizer carries the unqueried merchant set and remaining
+resources in its state and admits a query only when every reserved resource is
+available.
 
-The current release provides an exact fixed-requirement finite-horizon optimizer,
-an atomic Python permit ledger, commerce-native data contracts, frozen-panel
-oracle metrics, a deterministic evidence pipeline, and an inspectable synthetic
-validation benchmark.  It does not yet provide the joint merchant-and-permit
-solver, UCP corpus, adaptive policy comparison, or a novel research result.
-Section~2 separates the current fixture from the planned UCP benchmark,
-Section~3 gives the implemented recurrence and planned extension, Section~4
-states the evidence required for a future result, and Sections~5--8 delimit the
-evaluation still needed.
+Alongside the research formulation, we release reusable open-source Python and
+npm packages for integrating the optimizer into shopping agents.  Both packages
+implement the current exact fixed-requirement planner and expose host-facing
+permit interfaces while leaving calls, credentials, and purchase execution to
+the application.  The Python package additionally implements atomic reservation
+receipts and conservative reconciliation of exact or censored usage; equivalent
+JavaScript receipt behavior remains open.  The release also includes shared
+conformance vectors, frozen-panel oracle metrics, a deterministic evidence
+pipeline, and an inspectable synthetic validation benchmark.  It does not yet
+provide the joint merchant-and-permit solver, a calibrated merchant corpus,
+adaptive policy comparison, or a novel research result.  Section~2 separates
+the current fixture from the planned empirical benchmark, Section~3 gives the
+implemented recurrence and planned extension, Section~4 states the evidence
+required for a future result, and Sections~5--8 delimit the evaluation still
+needed.

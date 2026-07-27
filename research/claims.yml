@@ -25,7 +25,7 @@ claims:
       registered reduced domain, including censored usage and terminal purchase failure.
     status: "open"
     scope: >-
-      Finite exact-SKU UCP panels, integer resource budgets, a finite permit grid, and
+      Finite exact-SKU merchant panels, integer resource budgets, a finite permit grid, and
       separately evaluated no-recall and held-offer modes.
     evidence:
       - "research/question.md"
@@ -35,13 +35,13 @@ claims:
       - "The joint-action reference solver and exhaustive enumerator are not implemented yet."
   - id: "MERCHANT-PERMIT-OPEN-001"
     statement: >-
-      It remains open whether joint adaptive UCP merchant selection and enforceable
+      It remains open whether joint adaptive merchant selection and enforceable
       time, token, API-call, and genuine API-spend permit allocation improves the
       preregistered purchase outcome over the strongest fixed feasible baseline while
       maintaining zero hard-budget violations on frozen held-out merchant panels.
     status: "open"
     scope: >-
-      Sequential exact-SKU UCP merchant search with enforceable per-call limits,
+      Sequential exact-SKU merchant search with enforceable per-call limits,
       uncertain resource usage, a hard purchase-price cap, and paired held-out replay;
       no-recall is primary and held-offer behavior is a separate robustness mode.
     evidence:
@@ -49,6 +49,6 @@ claims:
     manuscript_labels: []
     site_visible: true
     limitations:
-      - "The repository does not yet contain an eligible, permission-checked UCP panel corpus."
+      - "The repository does not yet contain an eligible, permission-checked merchant panel corpus."
       - "Zero violations require the host runtime to enforce every permit before invoking a model or merchant tool."
       - "Live exhaustive-oracle scoring is conditional on endpoint permissions and rate limits."

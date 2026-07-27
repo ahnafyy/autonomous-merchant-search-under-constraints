@@ -6,9 +6,12 @@ resources are part of the Bellman state, and the purchase cap restricts the
 admissible action set.  On the registered synthetic benchmark, binding resource
 regimes change the action for the same offer.
 
-The current Python implementation atomically reserves enforceable per-call
-permits, conservatively reconciles censored usage, and provides frozen-panel
-oracle metrics and UCP inventory screening.  These are implementation steps, not
-the paper's result.  The joint merchant-and-permit solver, calibrated UCP panels,
-paired policy comparison, JavaScript receipt parity, and safety proof remain
-open before the contribution can be evaluated.
+The accompanying open-source Python and npm packages provide reusable
+implementations of the current exact fixed-requirement planner and host-facing
+permit contract.  The Python implementation also atomically reserves
+enforceable per-call permits, conservatively reconciles censored usage, and
+provides frozen-panel oracle metrics and endpoint-inventory screening.  These
+are implementation contributions, not evidence for the open empirical claim.
+The joint merchant-and-permit solver, calibrated merchant panels, paired policy
+comparison, JavaScript receipt parity, and safety proof remain open before that
+claim can be evaluated.

@@ -33,7 +33,7 @@
       ],
       "observed": null,
       "passed": true,
-      "scope": "Finite exact-SKU UCP panels, integer resource budgets, a finite permit grid, and separately evaluated no-recall and held-offer modes.",
+      "scope": "Finite exact-SKU merchant panels, integer resource budgets, a finite permit grid, and separately evaluated no-recall and held-offer modes.",
       "site_visible": false,
       "statement": "It remains open whether an exact finite-horizon solver over joint merchant and discrete vector-permit actions agrees with exhaustive policy enumeration for the registered reduced domain, including censored usage and terminal purchase failure.",
       "status": "open"
@@ -43,15 +43,15 @@
       "expected": null,
       "id": "MERCHANT-PERMIT-OPEN-001",
       "limitations": [
-        "The repository does not yet contain an eligible, permission-checked UCP panel corpus.",
+        "The repository does not yet contain an eligible, permission-checked merchant panel corpus.",
         "Zero violations require the host runtime to enforce every permit before invoking a model or merchant tool.",
         "Live exhaustive-oracle scoring is conditional on endpoint permissions and rate limits."
       ],
       "observed": null,
       "passed": true,
-      "scope": "Sequential exact-SKU UCP merchant search with enforceable per-call limits, uncertain resource usage, a hard purchase-price cap, and paired held-out replay; no-recall is primary and held-offer behavior is a separate robustness mode.",
+      "scope": "Sequential exact-SKU merchant search with enforceable per-call limits, uncertain resource usage, a hard purchase-price cap, and paired held-out replay; no-recall is primary and held-offer behavior is a separate robustness mode.",
       "site_visible": true,
-      "statement": "It remains open whether joint adaptive UCP merchant selection and enforceable time, token, API-call, and genuine API-spend permit allocation improves the preregistered purchase outcome over the strongest fixed feasible baseline while maintaining zero hard-budget violations on frozen held-out merchant panels.",
+      "statement": "It remains open whether joint adaptive merchant selection and enforceable time, token, API-call, and genuine API-spend permit allocation improves the preregistered purchase outcome over the strongest fixed feasible baseline while maintaining zero hard-budget violations on frozen held-out merchant panels.",
       "status": "open"
     }
   ],
@@ -74,7 +74,7 @@
     }
   },
   "project": {
-    "abstract": "Autonomous Shopping Optimizer is middleware for sequential merchant search under hard time, token, API-call, API-spend, and purchase-price limits. Its exact finite-horizon planner tracks remaining resources, chooses the next feasible merchant, and returns buy, continue, or reject without executing an LLM call or a purchase. Its Python permit ledger atomically reserves enforceable call limits, reconciles exact or censored usage, and reclaims known unused capacity. The current research asks whether joint UCP merchant selection and permit allocation improves a preregistered purchase outcome over fixed feasible baselines on frozen held-out panels while maintaining zero hard-budget violations.",
+    "abstract": "Autonomous shopping poses a finite-horizon decision problem: which merchant should an agent search next, how should it spend limited query resources, and when should it buy? We formulate sequential merchant search under hard time, token, API-call, API-spend, and purchase-price limits. An exact dynamic program for fixed merchant query requirements tracks remaining resources, selects the next feasible merchant, and returns buy, continue, or reject. We release reusable open-source Python and npm packages that implement the planner and expose host-facing permit interfaces without controlling calls, credentials, or purchases. The Python package additionally provides atomic reservation and conservative reconciliation for exact or censored usage. The broader research asks whether extending the algorithm to jointly select merchants and query permits improves a preregistered purchase outcome over fixed feasible baselines on frozen held-out panels while maintaining zero hard-budget violations.",
     "arxiv_categories": [
       "cs.AI"
     ],

@@ -22,9 +22,9 @@ const resultStrip = [
     tone: "gold" as const,
   },
   {
-    label: "Planner actions",
-    value: "3",
-    note: "buy, continue, or reject",
+    label: "Open-source packages",
+    value: "2",
+    note: "Python and npm implementations",
     tone: "teal" as const,
   },
   {
@@ -40,7 +40,7 @@ const resultStrip = [
   <header class="topbar">
     <div class="journal-mark">
       <a class="wordmark" href="#top" aria-label={`${project.title}, back to top`}>{project.slug}</a>
-      <span>Open research release</span>
+      <span>Open algorithm and software release</span>
     </div>
     <nav aria-label="Primary navigation">
       <a href="#benchmark">Method</a>
@@ -55,13 +55,13 @@ const resultStrip = [
         <div class="article-kicker">
           <span>Computational research</span>
           <span>Version {release.version}</span>
-          <span>Optimizer prototype</span>
+          <span>Open-source Python + npm</span>
         </div>
         <h1 id="paper-title">{project.title}</h1>
         <p class="subtitle">{project.subtitle}</p>
         <p class="hero-result">
-          <span>What it does</span>
-          <strong>Plan the next shopping action without violating hard budgets</strong>
+          <span>Algorithm + implementation</span>
+          <strong>Choose the next merchant and when to buy under hard budgets</strong>
         </p>
         <div class="author-block">
           <p class="byline">{authorNames}</p>
@@ -73,6 +73,7 @@ const resultStrip = [
         </div>
         <div class="paper-links" aria-label="Paper resources">
           <a href="#workbench">Try the optimizer</a>
+          <a href="#reproduce">Python + npm packages</a>
           <a href={links.repository}>Source and evidence</a>
           <a href="#reproduce">Reproduction record</a>
         </div>
@@ -149,9 +150,9 @@ const resultStrip = [
         </div>
       </div>
       <p class="section-intro">
-        Constraint sensitivity is implementation validation, not novelty. The open question is whether adaptive,
-        enforceable per-call limits improve purchase quality or success over fixed feasible allocation without ever
-        exceeding the episode's hard budgets.
+        Constraint sensitivity is implementation validation, not novelty. The open question is whether jointly
+        adapting merchant selection and enforceable per-call permits improves purchase quality or success over fixed
+        feasible allocation without ever exceeding the episode's hard budgets.
       </p>
       <ClaimLedger claims={displayedClaims} />
     </section>
@@ -160,18 +161,20 @@ const resultStrip = [
       <div class="section__heading">
         <p class="section-number">4</p>
         <div>
-          <span class="eyebrow">Data and code availability</span>
-          <h2 id="reproduce-title">Evidence and software travel together</h2>
+          <span class="eyebrow">Open-source implementations and evidence</span>
+          <h2 id="reproduce-title">Run the optimizer or reproduce the research</h2>
         </div>
       </div>
       <p class="section-intro">
-        One deterministic build produces the evidence ledger, cross-language conformance vectors, manuscript inputs,
-        and static explainer from the canonical Python implementation.
+        The Python and npm packages provide reusable implementations of the current exact planner. Python additionally
+        supports atomic reservation receipts and censored-usage reconciliation; npm currently covers planner and
+        completed-call behavior. One deterministic build produces shared conformance vectors, the evidence ledger,
+        manuscript inputs, and this explainer from the canonical Python package.
       </p>
       <dl class="artifact-list">
         <div><dt>Evidence</dt><dd><a href={`${links.repository}/tree/main/artifacts`}>Generated artifacts</a></dd></div>
-        <div><dt>Python</dt><dd>{packages.python.distribution}</dd></div>
-        <div><dt>npm</dt><dd>{packages.javascript.name}</dd></div>
+        <div><dt>Python</dt><dd><a href={`${links.repository}/tree/main/packages/python`}>{packages.python.distribution}</a></dd></div>
+        <div><dt>npm</dt><dd><a href={`${links.repository}/tree/main/packages/javascript`}>{packages.javascript.name}</a></dd></div>
         <div><dt>Licenses</dt><dd>{licenses.code} · {licenses.content}</dd></div>
         <div><dt>Seed</dt><dd>{results.random_seed}</dd></div>
       </dl>

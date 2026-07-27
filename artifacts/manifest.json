@@ -6,13 +6,13 @@
     "MERCHANT-PERMIT-OPEN-001"
   ],
   "files": {
-    "claim-results.json": "d726c5f56670f93c1f7e7ce29d06d4ac34da6ad31e75824a9df99bb4595d4ae9",
+    "claim-results.json": "c1e7c731113b485198df9581612a132c59bff5cc5cc6c1264f8a272ec5d8b859",
     "conformance/merchant-search.json": "c060ee519cfd320b22679b9e3cf821b4477f42a4869eb58505ab6416d223108f",
     "data/summary.csv": "88d048b0f0695202ba91f62d20f24c96fff6983aad17e65c9ec0498d6217591d",
     "results.json": "e81cb9d2e84c456f094a03bfe16e88b56b1bdcc53862f39a0158fe9f5b7bc99a",
-    "site-data.json": "71d43379ae7878ca01a2b67e82c3b771bd7c3c1c498c2cebb5bffe789c32031a",
-    "tables/claim_status.tex": "3b1966dd51d3f10b9ad03fd31fe5ac1abb491ffca29746a83299fe015180761e",
-    "tables/project_metadata.tex": "237118425d7f99cc3dcb6203ff91d9e59ed223265fcad5d5c196df80c8204a57",
+    "site-data.json": "94fb589278a94f2e6bd567e6c4ed1f7b62e54abc37a9b9684646bca7369adebe",
+    "tables/claim_status.tex": "f20678ff42370cc93280f6bbda14865ad89b954f960951349550c30ce24c9c4f",
+    "tables/project_metadata.tex": "5cebfaf4a1a1e364a277f8405f3e8bbba5fd7c5394f343bea217ad579a2da568",
     "tables/result_macros.tex": "2be57f4d0d2635512a4862280733c046b2b751890cfd6d449b1ff86204ad28d2"
   },
   "generator": {
