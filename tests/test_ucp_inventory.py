@@ -7,6 +7,7 @@ import pytest
 from autonomous_shopping_optimizer import EndpointCapability as PublicEndpointCapability
 from autonomous_shopping_optimizer.ucp import (
     EndpointCapability,
+    EndpointExclusion,
     load_endpoint_inventory,
     screen_endpoint_inventory,
 )
@@ -41,6 +42,24 @@ def test_screen_inventory_excludes_unverified_or_inexact_endpoints() -> None:
     assert [endpoint.endpoint_id for endpoint in report.eligible] == ["endpoint-a"]
     assert report.excluded[0].reasons == ("permission_unknown",)
     assert report.excluded[1].reasons == ("no_exact_product_lookup",)
+
+
+def test_screen_inventory_accepts_declared_capability_as_eligible() -> None:
+    report = screen_endpoint_inventory(
+        [
+            _endpoint(),
+            _endpoint(endpoint_id="endpoint-b", permission_status="declared_capability"),
+            _endpoint(endpoint_id="endpoint-c", permission_status="denied"),
+        ]
+    )
+
+    assert sorted(endpoint.endpoint_id for endpoint in report.eligible) == [
+        "endpoint-a",
+        "endpoint-b",
+    ]
+    assert report.excluded == (
+        EndpointExclusion("endpoint-c", ("permission_denied",)),
+    )
 
 
 def test_inventory_rejects_duplicate_endpoint_ids() -> None:

@@ -8,8 +8,10 @@ from pathlib import Path
 from typing import Literal
 from urllib.parse import urlparse
 
-PermissionStatus = Literal["verified", "unknown", "denied"]
+PermissionStatus = Literal["verified", "declared_capability", "unknown", "denied"]
 _ENVIRONMENT_VARIABLE = re.compile(r"^[A-Z][A-Z0-9_]*$")
+_PERMISSION_STATUSES = {"verified", "declared_capability", "unknown", "denied"}
+_ELIGIBLE_PERMISSION_STATUSES = {"verified", "declared_capability"}
 
 
 @dataclass(frozen=True)
@@ -28,8 +30,10 @@ class EndpointCapability:
     @classmethod
     def from_mapping(cls, value: Mapping[str, object]) -> EndpointCapability:
         permission = value.get("permission_status")
-        if permission not in {"verified", "unknown", "denied"}:
-            raise ValueError("permission_status must be verified, unknown, or denied")
+        if permission not in _PERMISSION_STATUSES:
+            raise ValueError(
+                "permission_status must be verified, declared_capability, unknown, or denied"
+            )
         auth_env_var = value.get("auth_env_var")
         if auth_env_var is not None and not isinstance(auth_env_var, str):
             raise ValueError("auth_env_var must be a string or null")
@@ -102,7 +106,7 @@ def screen_endpoint_inventory(
     excluded: list[EndpointExclusion] = []
     for endpoint in sorted(endpoints, key=lambda item: item.endpoint_id):
         reasons: list[str] = []
-        if endpoint.permission_status != "verified":
+        if endpoint.permission_status not in _ELIGIBLE_PERMISSION_STATUSES:
             reasons.append(f"permission_{endpoint.permission_status}")
         if not endpoint.exact_product_lookup:
             reasons.append("no_exact_product_lookup")

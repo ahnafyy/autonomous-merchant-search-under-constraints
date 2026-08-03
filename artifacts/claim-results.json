@@ -34,7 +34,7 @@
       "expected": null,
       "id": "MERCHANT-PERMIT-OPEN-001",
       "limitations": [
-        "The repository does not yet contain an eligible, permission-checked merchant panel corpus.",
+        "A declared-capability merchant panel candidate now exists (data/ucp/inventory-declared-capability-2026-08-02.json, 240 domains, 68 confirmed cross-merchant same-ISBN episodes with real price spread as of 2026-08-02), but it relies on a documented declared-capability assumption rather than case-by-case verified permission, and no calibration/held-out split or policy replay has been run against it.",
         "Zero violations require the host runtime to enforce every permit before invoking a model or merchant tool.",
         "Live exhaustive-oracle scoring is conditional on endpoint permissions and rate limits."
       ],

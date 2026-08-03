@@ -9,12 +9,16 @@ substitutions, shipping quality, trust, returns, strategic pricing, and executio
 failures.  A held-offer variant is planned as robustness but is not implemented.
 
 The repository does not yet contain a permission-checked merchant inventory,
-exact-SKU cohort, calibrated usage corpus, or frozen test panels.  The planned
-inventory collection uses UCP endpoints, but the benchmark is not intended to
-depend on that specification.  API spend is a live hard dimension only when an
-upstream protocol exposes a genuine enforceable cap; it must otherwise remain a
-labeled synthetic or sandbox dimension.  JavaScript conformance currently
-excludes reservation receipts and censored reconciliation.
+exact-SKU cohort, calibrated usage corpus, or frozen test panels.  A
+declared-capability candidate panel (Appendix~B) has been produced from live
+UCP protocol probing, but that status is a documented assumption rather than
+case-by-case verified permission, and no calibration/held-out split or policy
+replay has been run against it.  The planned inventory collection uses UCP
+endpoints, but the benchmark is not intended to depend on that specification.
+API spend is a live hard dimension only when an upstream protocol exposes a
+genuine enforceable cap; it must otherwise remain a labeled synthetic or
+sandbox dimension.  JavaScript conformance currently excludes reservation
+receipts and censored reconciliation.
 
 The registered scenarios also align several resource caps with a shortened
 reachable horizon.  A policy that uses only the number of reachable merchants

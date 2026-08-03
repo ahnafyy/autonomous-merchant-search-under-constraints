@@ -31,8 +31,11 @@ Every planned public claim should have a claim ID before the main analysis begin
 
 ## Approval Blockers
 
-- The UCP endpoint inventory, permissions, exact-SKU overlap cohorts, round cadence,
-	and sample sizes are not yet registered.
+- A declared-capability merchant panel candidate now exists (240 domains, live
+	UCP `search_catalog` probing, 2026-08-02), but case-by-case verified
+	permission, exact-SKU overlap cohort sampling depth beyond the current
+	pagination-limited sample, round cadence, and sample sizes are not yet
+	registered.
 - The calibration/test cutoff, frozen snapshot hashes, budget grid, primary outcome,
 	and paired uncertainty procedure are not yet registered.
 - Live exhaustive shadow collection remains conditional on endpoint permission and

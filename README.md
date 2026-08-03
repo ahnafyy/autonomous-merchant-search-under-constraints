@@ -175,9 +175,19 @@ open `http://127.0.0.1:4321/`.
 
 The open-source release includes an exact hard-budget planner in Python and JavaScript,
 an atomic Python permit ledger, commerce-native product and offer types, frozen-panel
-exhaustive-oracle metrics, and offline endpoint-inventory screening. The npm package
-matches the existing planner vectors but not the Python receipt lifecycle. Constraint
-sensitivity and passing unit tests are implementation validation, not novel findings.
+exhaustive-oracle metrics, and offline and live endpoint-inventory screening. The npm
+package matches the existing planner vectors but not the Python receipt lifecycle.
+Constraint sensitivity and passing unit tests are implementation validation, not novel
+findings.
+
+A declared-capability merchant panel candidate (240 domains, `data/ucp/inventory-
+declared-capability-2026-08-02.json`) has been produced from live UCP protocol
+probing, including 68 confirmed cross-merchant same-ISBN episodes with real price
+spread. This validates the data-collection pipeline; it relies on a documented
+declared-capability assumption rather than case-by-case verified permission, and no
+calibration/held-out split or policy comparison has been run against it. See
+[UCP input data](data/ucp/README.md) for what `declared_capability` does and does not
+mean.
 
 Three claims are preregistered. Pathwise permit safety remains a conjecture pending a
 manuscript proof; agreement between the planned joint `(merchant, permit)` solver and

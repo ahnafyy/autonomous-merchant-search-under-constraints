@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "scan_date": "2026-08-02",
+  "domains_reprobed": 220,
+  "total_gtin_like_skus_observed": 4303,
+  "unique_gtin_values_observed": 4142,
+  "cross_merchant_matches": {
+    "9781837588213": [
+      {
+        "domain": "cartovia.com",
+        "sku": "9781837588213",
+        "title": "Guide de voyage (en anglais) - Shikoku Pilgrimage Journey 2026 | Lonely Planet",
+        "url": "https://cartovia.com/products/guide-de-voyage-en-anglais-shikoku-pilgrimage-journey-lonely-planet",
+        "price_amount": 2495,
+        "price_currency": "EUR",
+        "size": "Default Title"
+      },
+      {
+        "domain": "shop.lonelyplanet.com",
+        "sku": "9781837588213",
+        "title": "Journey Shikoku Pilgrimage - Book",
+        "url": "https://shop.lonelyplanet.com/products/journey-shikoku-pilgrimage",
+        "price_amount": 2699,
+        "price_currency": "USD",
+        "size": "Book"
+      }
+    ],
+    "9781837588206": [
+      {
+        "domain": "cartovia.com",
+        "sku": "9781837588206",
+        "title": "Guide de voyage (en anglais) - Okinawa & Southwest Islands 2026 | Lonely Planet",
+        "url": "https://cartovia.com/products/guide-de-voyage-en-anglais-okinawa-southwest-islands-lonely-planet",
+        "price_amount": 2495,
+        "price_currency": "EUR",
+        "size": "Default Title"
+      },
+      {
+        "domain": "shop.lonelyplanet.com",
+        "sku": "9781837588206",
+        "title": "Okinawa & the Southwest Islands - Book",
+        "url": "https://shop.lonelyplanet.com/products/okinawa-the-southwest-islands",
+        "price_amount": 2699,
+        "price_currency": "USD",
+        "size": "Book"
+      }
+    ],
+    "9781837588190": [
+      {
+        "domain": "cartovia.com",
+        "sku": "9781837588190",
+        "title": "Guide de voyage (en anglais) - Hokkaido 2026 | Lonely Planet",
+        "url": "https://cartovia.com/products/guide-de-voyage-en-anglais-hokkaido-lonely-planet",
+        "price_amount": 2495,
+        "price_currency": "EUR",
+        "size": "Default Title"
+      },
+      {
+        "domain": "shop.lonelyplanet.com",
+        "sku": "9781837588190",
+        "title": "Hokkaido - Book",
+        "url": "https://shop.lonelyplanet.com/products/hokkaido",
+        "price_amount": 2699,
+        "price_currency": "USD",
+        "size": "Book"
+      }
+    ],
+    "9798992254372": [
+      {
+        "domain": "pastforward.org",
+        "sku": "9798992254372",
+        "title": "Wanted Boys",
+        "url": "https://pastforward.org/products/wanted-boys-9798992254372",
+        "price_amount": 1614,
+        "price_currency": "USD",
+        "size": "Default Title"
+      },
+      {
+        "domain": "whiterainbookhouse.com",
+        "sku": "9798992254372",
+        "title": "Wanted Boys",
+        "url": "https://www.whiterainbookhouse.com/products/wanted-boys-s-e-mcpherson-9798992254372",
+        "price_amount": 1899,
+        "price_currency": "USD",
+        "size": "Paperback"
+      }
+    ],
+    "9798992254365": [
+      {
+        "domain": "pastforward.org",
+        "sku": "9798992254365",
+        "title": "Wanted Boys",
+        "url": "https://pastforward.org/products/wanted-boys-9798992254365",
+        "price_amount": 2549,
+        "price_currency": "USD",
+        "size": "Default Title"
+      },
+      {
+        "domain": "whiterainbookhouse.com",
+        "sku": "9798992254365",
+        "title": "Wanted Boys",
+        "url": "https://www.whiterainbookhouse.com/products/wanted-boys-s-e-mcpherson-9798992254365",
+        "price_amount": 2999,
+        "price_currency": "USD",
+        "size": "Hardcover"
+      }
+    ]
+  },
+  "same_company_subdomain_duplicates_excluded": 73,
+  "note_on_matching": "cross_merchant_matches now excludes pairs that share the same base (registrable) domain, e.g. johnnie-o.com vs checkout.johnnie-o.com -- those are the same company, not independent merchants."
+}

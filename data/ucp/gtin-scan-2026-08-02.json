@@ -1,0 +1,2370 @@
+{
+  "schema_version": 1,
+  "scan_date": "2026-08-02",
+  "method": "live search_catalog(query='') call per MCP-capable candidate domain; variant skus matched against ^\\d{12,14}$",
+  "total_probed": 3025,
+  "ok": 2943,
+  "error": 80,
+  "no_mcp_endpoint": 2,
+  "gtin_like_domain_count": 220,
+  "note": "gtin_like means observed variant SKUs match a 12-14 digit numeric pattern in this sample; it is a signal for follow-up manual confirmation, not a guarantee of true GTIN semantics or of permission_status. No permission_status here is 'verified'.",
+  "domains": [
+    {
+      "domain": "keenfootwear.com",
+      "mcp_endpoint": "https://us-keenfootwear.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 100,
+      "gtin_like_sample": [
+        "199289097846",
+        "199289097839",
+        "199289097822"
+      ]
+    },
+    {
+      "domain": "kswiss.co.uk",
+      "mcp_endpoint": "https://kswiss-uk.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 100,
+      "gtin_like_sample": [
+        "199286120981",
+        "199286120998",
+        "199286121001"
+      ]
+    },
+    {
+      "domain": "russells.com",
+      "mcp_endpoint": "https://russellswestern.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 97,
+      "gtin_like_sample": [
+        "884882888426",
+        "884882888402",
+        "884882888389"
+      ]
+    },
+    {
+      "domain": "barenecessities.com",
+      "mcp_endpoint": "https://0f7345-9b.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 89,
+      "gtin_like_sample": [
+        "5400977246879",
+        "5400977246886",
+        "5400977246893"
+      ]
+    },
+    {
+      "domain": "checkout.johnnie-o.com",
+      "mcp_endpoint": "https://johnnie-oadmin.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 88,
+      "gtin_like_sample": [
+        "196775678312",
+        "196775678329",
+        "196775678336"
+      ]
+    },
+    {
+      "domain": "johnnie-o.com",
+      "mcp_endpoint": "https://johnnie-oadmin.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 88,
+      "gtin_like_sample": [
+        "196775678312",
+        "196775678329",
+        "196775678336"
+      ]
+    },
+    {
+      "domain": "helloslippers.com",
+      "mcp_endpoint": "https://helloslippers.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 86,
+      "gtin_like_sample": [
+        "5605659573933",
+        "5605659573935",
+        "5605659573926"
+      ]
+    },
+    {
+      "domain": "veronicabeard.com",
+      "mcp_endpoint": "https://veronicabeard.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 85,
+      "gtin_like_sample": [
+        "197787426823",
+        "197787426830",
+        "197787426847"
+      ]
+    },
+    {
+      "domain": "psychobunny.com",
+      "mcp_endpoint": "https://psychobunny-com.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 80,
+      "gtin_like_sample": [
+        "990308925108",
+        "990308925115",
+        "990308925122"
+      ]
+    },
+    {
+      "domain": "varley.com",
+      "mcp_endpoint": "https://vvarley.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 80,
+      "gtin_like_sample": [
+        "197959552008",
+        "197959552190",
+        "197959552442"
+      ]
+    },
+    {
+      "domain": "grivetoutdoors.com",
+      "mcp_endpoint": "https://grass-monkey.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 79,
+      "gtin_like_sample": [
+        "7615537018836",
+        "7615537938028",
+        "7615537938035"
+      ]
+    },
+    {
+      "domain": "forever21.com",
+      "mcp_endpoint": "https://godmanco.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 75,
+      "gtin_like_sample": [
+        "014097470101",
+        "014097470102",
+        "014097470103"
+      ]
+    },
+    {
+      "domain": "doversaddlery.com",
+      "mcp_endpoint": "https://dover-saddlery.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 74,
+      "gtin_like_sample": [
+        "0352078334340",
+        "0352078334320",
+        "0352078334300"
+      ]
+    },
+    {
+      "domain": "levinehat.com",
+      "mcp_endpoint": "https://levinehat.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 71,
+      "gtin_like_sample": [
+        "105639369135",
+        "105639369136",
+        "105639369137"
+      ]
+    },
+    {
+      "domain": "muji.us",
+      "mcp_endpoint": "https://muji-us.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 69,
+      "gtin_like_sample": [
+        "4550723268110",
+        "4550723442312",
+        "4550723442350"
+      ]
+    },
+    {
+      "domain": "uk.oneractive.com",
+      "mcp_endpoint": "https://oner-uk.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 68,
+      "gtin_like_sample": [
+        "9010715497874",
+        "9010715497881",
+        "9010715497898"
+      ]
+    },
+    {
+      "domain": "creeperssocks.co.uk",
+      "mcp_endpoint": "https://creeperssocks.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 67,
+      "gtin_like_sample": [
+        "09421908537299",
+        "09421908537251",
+        "09421908537305"
+      ]
+    },
+    {
+      "domain": "fox.co.il",
+      "mcp_endpoint": "https://ade851-5.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 64,
+      "gtin_like_sample": [
+        "535483690018",
+        "535483690038",
+        "535483690040"
+      ]
+    },
+    {
+      "domain": "harajukustreetwear.com",
+      "mcp_endpoint": "https://harajukustreets.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 62,
+      "gtin_like_sample": [
+        "5987201521033",
+        "5987201521035",
+        "5987201521037"
+      ]
+    },
+    {
+      "domain": "dailypaperclothing.com",
+      "mcp_endpoint": "https://daily-paper.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 60,
+      "gtin_like_sample": [
+        "8719797380289",
+        "8719797380296",
+        "8719797380302"
+      ]
+    },
+    {
+      "domain": "southerntide.com",
+      "mcp_endpoint": "https://southerntidellc.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 60,
+      "gtin_like_sample": [
+        "196709629939",
+        "196709629915",
+        "196709629908"
+      ]
+    },
+    {
+      "domain": "elevateyoursole.co.uk",
+      "mcp_endpoint": "https://elevate-your-sole-shoe-shop.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 59,
+      "gtin_like_sample": [
+        "4064217811558",
+        "4064217811565",
+        "4064217811572"
+      ]
+    },
+    {
+      "domain": "mellowsleep.com",
+      "mcp_endpoint": "https://3ed0wp-fx.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 58,
+      "gtin_like_sample": [
+        "810218041630",
+        "810218041647",
+        "810218041654"
+      ]
+    },
+    {
+      "domain": "orleansshoes.com",
+      "mcp_endpoint": "https://good-feet-new-orleans.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 57,
+      "gtin_like_sample": [
+        "198605985072",
+        "198605985065",
+        "198605985096"
+      ]
+    },
+    {
+      "domain": "rddesignerwear.com",
+      "mcp_endpoint": "https://retro-designer-wear.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 56,
+      "gtin_like_sample": [
+        "170108607801",
+        "170108607802",
+        "170108607803"
+      ]
+    },
+    {
+      "domain": "corralwestern.com",
+      "mcp_endpoint": "https://d0tbnw-wu.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 50,
+      "gtin_like_sample": [
+        "210000130989",
+        "210000130990",
+        "210000130991"
+      ]
+    },
+    {
+      "domain": "tmlewin.co.uk",
+      "mcp_endpoint": "https://tmlewinuk.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 50,
+      "gtin_like_sample": [
+        "5054662954206",
+        "5054662954213",
+        "5054662954220"
+      ]
+    },
+    {
+      "domain": "d2ichi.com",
+      "mcp_endpoint": "https://d2ichi.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 49,
+      "gtin_like_sample": [
+        "655670001234",
+        "655680001234",
+        "655690001234"
+      ]
+    },
+    {
+      "domain": "theskimonster.com",
+      "mcp_endpoint": "https://172e29-7b.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 48,
+      "gtin_like_sample": [
+        "79418041028815",
+        "79418041161583",
+        "79418041294351"
+      ]
+    },
+    {
+      "domain": "volcom.co.uk",
+      "mcp_endpoint": "https://volcom-uk.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 48,
+      "gtin_like_sample": [
+        "886608287674",
+        "886608287681",
+        "886608287698"
+      ]
+    },
+    {
+      "domain": "volcom.fr",
+      "mcp_endpoint": "https://volcom-fr.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 46,
+      "gtin_like_sample": [
+        "886608288374",
+        "886608288381",
+        "886608288398"
+      ]
+    },
+    {
+      "domain": "amiri.com",
+      "mcp_endpoint": "https://michael-amiri.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 45,
+      "gtin_like_sample": [
+        "197916600049",
+        "197916600032",
+        "197916600025"
+      ]
+    },
+    {
+      "domain": "insiderstore.com",
+      "mcp_endpoint": "https://insider-world.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 44,
+      "gtin_like_sample": [
+        "2211801010104",
+        "2211801010105",
+        "2211801010106"
+      ]
+    },
+    {
+      "domain": "cocopellii.com",
+      "mcp_endpoint": "https://mtakxf-8w.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 40,
+      "gtin_like_sample": [
+        "7698685921338",
+        "7698685925031",
+        "7698685928724"
+      ]
+    },
+    {
+      "domain": "perryellis.com",
+      "mcp_endpoint": "https://perryellis.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 40,
+      "gtin_like_sample": [
+        "821419316045",
+        "821419316038",
+        "821419315741"
+      ]
+    },
+    {
+      "domain": "everstridesocks.com",
+      "mcp_endpoint": "https://e22dd3-7e.myshopify.com/api/ucp/mcp",
+      "product_count": 6,
+      "gtin_like_count": 38,
+      "gtin_like_sample": [
+        "5061106430875",
+        "5061106430813",
+        "5061106430837"
+      ]
+    },
+    {
+      "domain": "titlemtb.com",
+      "mcp_endpoint": "https://title-mtb.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 38,
+      "gtin_like_sample": [
+        "661317992411",
+        "661317992428",
+        "661317992435"
+      ]
+    },
+    {
+      "domain": "kilentar.com",
+      "mcp_endpoint": "https://kilentar.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 37,
+      "gtin_like_sample": [
+        "49849346752810",
+        "49849346752810",
+        "49849346752810"
+      ]
+    },
+    {
+      "domain": "netrition.com",
+      "mcp_endpoint": "https://netrition.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 37,
+      "gtin_like_sample": [
+        "8684041306639",
+        "8684041306592",
+        "8684041306615"
+      ]
+    },
+    {
+      "domain": "tennisracquets.com",
+      "mcp_endpoint": "https://the-tennis-golf-company.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 37,
+      "gtin_like_sample": [
+        "196304685286",
+        "196304685262",
+        "196304685255"
+      ]
+    },
+    {
+      "domain": "villagehatshop.com",
+      "mcp_endpoint": "https://sombreros-y-gorras.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 34,
+      "gtin_like_sample": [
+        "199541636936",
+        "199541636639",
+        "199541635434"
+      ]
+    },
+    {
+      "domain": "hollandscountryclothing.co.uk",
+      "mcp_endpoint": "https://hollands-country-clothing.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 32,
+      "gtin_like_sample": [
+        "4081100320048",
+        "4081100320050",
+        "4081100320052"
+      ]
+    },
+    {
+      "domain": "rocksteppers.com",
+      "mcp_endpoint": "https://rocksteppers.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 32,
+      "gtin_like_sample": [
+        "4589603349717",
+        "4589603353653",
+        "4589603358160"
+      ]
+    },
+    {
+      "domain": "driesvannoten.com",
+      "mcp_endpoint": "https://driesvannoten.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 31,
+      "gtin_like_sample": [
+        "8411061145883",
+        "8411061096307",
+        "8411061096420"
+      ]
+    },
+    {
+      "domain": "flotte.fr",
+      "mcp_endpoint": "https://flotte-paris.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 31,
+      "gtin_like_sample": [
+        "3760315874495",
+        "3760315865691",
+        "3760315865684"
+      ]
+    },
+    {
+      "domain": "tokyopenshop.com",
+      "mcp_endpoint": "https://tokyo-pen-shop.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 31,
+      "gtin_like_sample": [
+        "4901681123018",
+        "4901681123025",
+        "4901681123032"
+      ]
+    },
+    {
+      "domain": "us.nothing.tech",
+      "mcp_endpoint": "https://nothing-us.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 31,
+      "gtin_like_sample": [
+        "6974434228757",
+        "6974434228740",
+        "6974434228764"
+      ]
+    },
+    {
+      "domain": "ashleystewart.com",
+      "mcp_endpoint": "https://ashleystewart1.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 30,
+      "gtin_like_sample": [
+        "618718716849",
+        "618718716856",
+        "618718716863"
+      ]
+    },
+    {
+      "domain": "authenticauras.store",
+      "mcp_endpoint": "https://c9a6d5-96.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 30,
+      "gtin_like_sample": [
+        "21552941720577",
+        "21553171546306",
+        "21554970416561"
+      ]
+    },
+    {
+      "domain": "kiichin.com",
+      "mcp_endpoint": "https://kitchen-jp.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 30,
+      "gtin_like_sample": [
+        "4953794016022",
+        "4953794000489",
+        "4953794000014"
+      ]
+    },
+    {
+      "domain": "versobooks.com",
+      "mcp_endpoint": "https://versobooks.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 30,
+      "gtin_like_sample": [
+        "9781836741107",
+        "9781836741121",
+        "9781836741138"
+      ]
+    },
+    {
+      "domain": "windsorstore.com",
+      "mcp_endpoint": "https://windsor-us.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 29,
+      "gtin_like_sample": [
+        "400000639048",
+        "400000639055",
+        "400000639062"
+      ]
+    },
+    {
+      "domain": "aboutface.com",
+      "mcp_endpoint": "https://hasaboutface.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 27,
+      "gtin_like_sample": [
+        "810049328597",
+        "810049328603",
+        "810049328610"
+      ]
+    },
+    {
+      "domain": "cho.co.uk",
+      "mcp_endpoint": "https://cho-vs.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 27,
+      "gtin_like_sample": [
+        "3617077670905",
+        "3617077670912",
+        "3617077670929"
+      ]
+    },
+    {
+      "domain": "enroutejewelry.com",
+      "mcp_endpoint": "https://en-route-jewels.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 26,
+      "gtin_like_sample": [
+        "810201456397",
+        "810201456939",
+        "810201456526"
+      ]
+    },
+    {
+      "domain": "evalm.com",
+      "mcp_endpoint": "https://33ae88-4a.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 26,
+      "gtin_like_sample": [
+        "663260665732",
+        "663260664759",
+        "663260664766"
+      ]
+    },
+    {
+      "domain": "nillkin.com",
+      "mcp_endpoint": "https://nillkinguanwang.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 24,
+      "gtin_like_sample": [
+        "6902048310452",
+        "6902048310452",
+        "6902048310469"
+      ]
+    },
+    {
+      "domain": "xiilegions.com",
+      "mcp_endpoint": "https://e06ce6-bf.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 24,
+      "gtin_like_sample": [
+        "46653845143606",
+        "46653845176374",
+        "46653845209142"
+      ]
+    },
+    {
+      "domain": "blkandbold.com",
+      "mcp_endpoint": "https://blk-bold-specialty-beverages.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 23,
+      "gtin_like_sample": [
+        "810060902486",
+        "810060902493",
+        "810060902462"
+      ]
+    },
+    {
+      "domain": "neweracap.co.uk",
+      "mcp_endpoint": "https://uk-neweracap.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 23,
+      "gtin_like_sample": [
+        "197882944130",
+        "199843612478",
+        "199843612485"
+      ]
+    },
+    {
+      "domain": "mod-bikes.com",
+      "mcp_endpoint": "https://mod-bikes.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 22,
+      "gtin_like_sample": [
+        "725414556096",
+        "725414556102",
+        "725414556072"
+      ]
+    },
+    {
+      "domain": "thebroglo.com",
+      "mcp_endpoint": "https://theglobro.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 21,
+      "gtin_like_sample": [
+        "00850066070130",
+        "00850066070147",
+        "00850066070154"
+      ]
+    },
+    {
+      "domain": "shop.justbee.us",
+      "mcp_endpoint": "https://just-bee-cosmetics.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 20,
+      "gtin_like_sample": [
+        "810171191304",
+        "810171191632",
+        "810171191458"
+      ]
+    },
+    {
+      "domain": "swedishcandyland.com",
+      "mcp_endpoint": "https://d4e71d-ca.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 20,
+      "gtin_like_sample": [
+        "19893943621419",
+        "19883041461704",
+        "19883041461705"
+      ]
+    },
+    {
+      "domain": "vhlistings.com",
+      "mcp_endpoint": "https://8493c9.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 20,
+      "gtin_like_sample": [
+        "5432818125370",
+        "5432818125371",
+        "5432818125372"
+      ]
+    },
+    {
+      "domain": "halobeauty.com",
+      "mcp_endpoint": "https://halobeauty.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 19,
+      "gtin_like_sample": [
+        "644216697823",
+        "644216698028",
+        "644216698226"
+      ]
+    },
+    {
+      "domain": "totalcricketcentre.co.uk",
+      "mcp_endpoint": "https://totalcricket.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 18,
+      "gtin_like_sample": [
+        "0198688226291",
+        "0198688226314",
+        "0198688226307"
+      ]
+    },
+    {
+      "domain": "vitafy.at",
+      "mcp_endpoint": "https://vitafy-prod.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 18,
+      "gtin_like_sample": [
+        "4262398014021",
+        "4262398014007",
+        "4262398014014"
+      ]
+    },
+    {
+      "domain": "duohook.ie",
+      "mcp_endpoint": "https://dh-duo-hook.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 17,
+      "gtin_like_sample": [
+        "5055478714497",
+        "5055478714503",
+        "5055478713667"
+      ]
+    },
+    {
+      "domain": "sentisenti.com",
+      "mcp_endpoint": "https://oo35mm.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 17,
+      "gtin_like_sample": [
+        "819677029296",
+        "810112560039",
+        "850067194040"
+      ]
+    },
+    {
+      "domain": "insiderstore.com.br",
+      "mcp_endpoint": "https://insider-store-loja.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 16,
+      "gtin_like_sample": [
+        "11113981010103",
+        "11113981010104",
+        "11113981010105"
+      ]
+    },
+    {
+      "domain": "philosophy.com",
+      "mcp_endpoint": "https://philosophy-com.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 16,
+      "gtin_like_sample": [
+        "3616308023183",
+        "3616308019537",
+        "3616308019551"
+      ]
+    },
+    {
+      "domain": "reshmabeauty.com",
+      "mcp_endpoint": "https://reshmabeauty.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 16,
+      "gtin_like_sample": [
+        "855144003192",
+        "855144003253",
+        "855144003208"
+      ]
+    },
+    {
+      "domain": "hellotushy.com",
+      "mcp_endpoint": "https://tushyme.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 15,
+      "gtin_like_sample": [
+        "810072162649",
+        "810072162984",
+        "810072163028"
+      ]
+    },
+    {
+      "domain": "hibobbie.com",
+      "mcp_endpoint": "https://hellobobbie.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 15,
+      "gtin_like_sample": [
+        "850000000303",
+        "850016001001",
+        "850017001001"
+      ]
+    },
+    {
+      "domain": "naturesspecialties.com",
+      "mcp_endpoint": "https://natures-specialties.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 14,
+      "gtin_like_sample": [
+        "765114001243",
+        "765114001236",
+        "765114001229"
+      ]
+    },
+    {
+      "domain": "nutstoyou.com",
+      "mcp_endpoint": "https://nuts-2-you.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 14,
+      "gtin_like_sample": [
+        "181068749879",
+        "181066143907",
+        "181063270255"
+      ]
+    },
+    {
+      "domain": "polartech.com.au",
+      "mcp_endpoint": "https://polar-tech-australia.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 14,
+      "gtin_like_sample": [
+        "50718358798559",
+        "50717010723039",
+        "50624138772703"
+      ]
+    },
+    {
+      "domain": "shopthreadonline.com",
+      "mcp_endpoint": "https://thread-on-grandview.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 14,
+      "gtin_like_sample": [
+        "210000119372",
+        "210000119360",
+        "210000119361"
+      ]
+    },
+    {
+      "domain": "boroughkitchen.com",
+      "mcp_endpoint": "https://borough-kitchen.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 13,
+      "gtin_like_sample": [
+        "7350091790025",
+        "4002293137940",
+        "4006664147651"
+      ]
+    },
+    {
+      "domain": "dialupgames.com",
+      "mcp_endpoint": "https://thisisgameroom.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 13,
+      "gtin_like_sample": [
+        "045496960322",
+        "045496960322",
+        "045496960018"
+      ]
+    },
+    {
+      "domain": "sturdysports.co.uk",
+      "mcp_endpoint": "https://sturdy-sports.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 13,
+      "gtin_like_sample": [
+        "4994807834202",
+        "9312555298353",
+        "9312555298360"
+      ]
+    },
+    {
+      "domain": "whacksports.com.au",
+      "mcp_endpoint": "https://whack-sports.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 13,
+      "gtin_like_sample": [
+        "9312555022767",
+        "9421028072519",
+        "9421028072502"
+      ]
+    },
+    {
+      "domain": "yeungmancooking.com",
+      "mcp_endpoint": "https://yeungmancooking-com.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 13,
+      "gtin_like_sample": [
+        "9781999176266",
+        "9781999176273",
+        "0027829918644"
+      ]
+    },
+    {
+      "domain": "allseasonsfeeders.com",
+      "mcp_endpoint": "https://all-seasons-feeders.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 12,
+      "gtin_like_sample": [
+        "765665990033",
+        "765665204391",
+        "765665801798"
+      ]
+    },
+    {
+      "domain": "ship.erewhon.com",
+      "mcp_endpoint": "https://erewhonmarket.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 12,
+      "gtin_like_sample": [
+        "810149487507",
+        "810149487507",
+        "810149487460"
+      ]
+    },
+    {
+      "domain": "naturehike.com",
+      "mcp_endpoint": "https://naturehike-official-store.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 11,
+      "gtin_like_sample": [
+        "6975641886907",
+        "6927595749654",
+        "6927595748961"
+      ]
+    },
+    {
+      "domain": "shop.stlartsupply.com",
+      "mcp_endpoint": "https://south-city.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 11,
+      "gtin_like_sample": [
+        "785366202311",
+        "785366202304",
+        "8809708768548"
+      ]
+    },
+    {
+      "domain": "uv-blocker.com",
+      "mcp_endpoint": "https://uv-blocker.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 11,
+      "gtin_like_sample": [
+        "786726030117",
+        "786726030118",
+        "786726030119"
+      ]
+    },
+    {
+      "domain": "1234gorecords.shop",
+      "mcp_endpoint": "https://1234gorecords.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "810096651297",
+        "810017640171",
+        "620953715310"
+      ]
+    },
+    {
+      "domain": "agwayct.com",
+      "mcp_endpoint": "https://agriventures-agway-pickup-delivery.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "727332176912",
+        "810164520692",
+        "035585506760"
+      ]
+    },
+    {
+      "domain": "aurafragrance.com",
+      "mcp_endpoint": "https://aura-fragrances.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "614514177013",
+        "3386460171496",
+        "3616307113724"
+      ]
+    },
+    {
+      "domain": "beta.barnesandnoble.com",
+      "mcp_endpoint": "https://e9c22f-3.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "2940185517284",
+        "9781502554901",
+        "2940185517291"
+      ]
+    },
+    {
+      "domain": "billabong.com",
+      "mcp_endpoint": "https://billabong-us-o5.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "810055708833",
+        "810055708796",
+        "810055708758"
+      ]
+    },
+    {
+      "domain": "booksby.splitshops.com",
+      "mcp_endpoint": "https://c2086e-23.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "9781788992893",
+        "9781788837613",
+        "9781947456600"
+      ]
+    },
+    {
+      "domain": "brighton.com",
+      "mcp_endpoint": "https://brighton-collectibles.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "747708520224",
+        "747708548334",
+        "747708548341"
+      ]
+    },
+    {
+      "domain": "cartovia.com",
+      "mcp_endpoint": "https://lacompagniedescartes.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "9781837588213",
+        "9781837588206",
+        "9781837588190"
+      ]
+    },
+    {
+      "domain": "culinaryapple.com",
+      "mcp_endpoint": "https://culinary-apple.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "8000409001839",
+        "719812045146",
+        "5028420200287"
+      ]
+    },
+    {
+      "domain": "dbjourney.com",
+      "mcp_endpoint": "https://dbjourney-no.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "5000637004901",
+        "5000604004901",
+        "5000602004901"
+      ]
+    },
+    {
+      "domain": "drbrandtskincare.com",
+      "mcp_endpoint": "https://dr-brandt-skincare-2.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "100000011449",
+        "100000000369",
+        "100000000363"
+      ]
+    },
+    {
+      "domain": "drownedworldrecords.com",
+      "mcp_endpoint": "https://drownedworldrecords.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "801390023712",
+        "602547885081",
+        "715187946613"
+      ]
+    },
+    {
+      "domain": "duppescents.com",
+      "mcp_endpoint": "https://n4uvfb-sy.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "49610048635160",
+        "51586758213912",
+        "51548544532760"
+      ]
+    },
+    {
+      "domain": "ecualama.com",
+      "mcp_endpoint": "https://ecualamashop.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "178269204619",
+        "188563142351",
+        "178255488830"
+      ]
+    },
+    {
+      "domain": "ergodebooks.com",
+      "mcp_endpoint": "https://akvudq-f6.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "9781963183146",
+        "9781963183184",
+        "9781944515096"
+      ]
+    },
+    {
+      "domain": "exoticsnackguys.com",
+      "mcp_endpoint": "https://exotic-snack-guys.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "8851019001784",
+        "4711931037411",
+        "4711931037428"
+      ]
+    },
+    {
+      "domain": "islandrecords.com",
+      "mcp_endpoint": "https://island-records-official-store.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "00602567505778",
+        "00602478707520",
+        "00602475914754"
+      ]
+    },
+    {
+      "domain": "japan-figure.com",
+      "mcp_endpoint": "https://japan-toy-and-figure.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "4904790910081",
+        "4904790910067",
+        "4573347240263"
+      ]
+    },
+    {
+      "domain": "kitepaddlesurf.com",
+      "mcp_endpoint": "https://kite-paddle-surf.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "210000018623",
+        "210000018622",
+        "210000018619"
+      ]
+    },
+    {
+      "domain": "kiyoko.ca",
+      "mcp_endpoint": "https://spring-beauty-shop.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "8800344073324",
+        "8800344073300",
+        "8800253022413"
+      ]
+    },
+    {
+      "domain": "liltulips.com",
+      "mcp_endpoint": "https://liltulips1.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "9781836051862",
+        "9781805078869",
+        "9781836051893"
+      ]
+    },
+    {
+      "domain": "massivebookshop.com",
+      "mcp_endpoint": "https://massive-book-co-op.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "9798895658970",
+        "9798888450284",
+        "9798904670443"
+      ]
+    },
+    {
+      "domain": "matchperfumesus.com",
+      "mcp_endpoint": "https://19dxdk-6a.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "6287020283673",
+        "6287020284748",
+        "6287020281945"
+      ]
+    },
+    {
+      "domain": "neweracap.com",
+      "mcp_endpoint": "https://us-neweracap.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "827922899914",
+        "827922899907",
+        "827922899884"
+      ]
+    },
+    {
+      "domain": "paradisebeautycompany.com",
+      "mcp_endpoint": "https://3244c3-09.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "850078824165",
+        "850078824158",
+        "850078824141"
+      ]
+    },
+    {
+      "domain": "pastforward.org",
+      "mcp_endpoint": "https://without-books.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "9798992254372",
+        "9798992254365",
+        "9798349664939"
+      ]
+    },
+    {
+      "domain": "petmarketnyc.com",
+      "mcp_endpoint": "https://pet-market-nyc.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "000338032278",
+        "000338039277",
+        "000338034272"
+      ]
+    },
+    {
+      "domain": "proper-shops.com",
+      "mcp_endpoint": "https://proper-shops.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "122803105758",
+        "121203301005",
+        "122803105765"
+      ]
+    },
+    {
+      "domain": "ruffledfeather.com",
+      "mcp_endpoint": "https://ruffled-feather-6993.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "793918105805",
+        "850784001553",
+        "850784001546"
+      ]
+    },
+    {
+      "domain": "shop-us.taschen.com",
+      "mcp_endpoint": "https://taschen-us-stable.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "9783754407790",
+        "9783754404409",
+        "9783754404393"
+      ]
+    },
+    {
+      "domain": "shop.courtauld.ac.uk",
+      "mcp_endpoint": "https://the-courtauld-shop.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "5027455450148",
+        "5027455414690",
+        "5061062367864"
+      ]
+    },
+    {
+      "domain": "shop.lonelyplanet.com",
+      "mcp_endpoint": "https://lonelyplanetguides.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "9781837588145",
+        "9781837588138",
+        "9781806532971"
+      ]
+    },
+    {
+      "domain": "shop.udiscovermusic.com",
+      "mcp_endpoint": "https://udiscover.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "00600574198891",
+        "00600574198921",
+        "00881061026105"
+      ]
+    },
+    {
+      "domain": "shop.universalmusic.it",
+      "mcp_endpoint": "https://umg-italy.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "0199957930796",
+        "0602475922322",
+        "0199957930826"
+      ]
+    },
+    {
+      "domain": "shophavenhive.com",
+      "mcp_endpoint": "https://shopbittybee.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "9781836052234",
+        "9781836052104",
+        "9781805078432"
+      ]
+    },
+    {
+      "domain": "shulphink.com",
+      "mcp_endpoint": "https://shulph-ink.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "9780252089350",
+        "9789937624176",
+        "9781917159333"
+      ]
+    },
+    {
+      "domain": "sockologie.com",
+      "mcp_endpoint": "https://sockologie.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "740107114117",
+        "740107114476",
+        "740107112991"
+      ]
+    },
+    {
+      "domain": "sonsanddaughtersbooks.com",
+      "mcp_endpoint": "https://42f227-44.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "9781668234051",
+        "9780262518383",
+        "9781904846208"
+      ]
+    },
+    {
+      "domain": "thebookmarkpr.com",
+      "mcp_endpoint": "https://the-bookmark-books-gifts.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "9781623175153",
+        "9798994607220",
+        "9781668241929"
+      ]
+    },
+    {
+      "domain": "thedailygraceco.com",
+      "mcp_endpoint": "https://kristin-schmucker.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "817461026063",
+        "817461021235",
+        "817461025776"
+      ]
+    },
+    {
+      "domain": "theyetee.com",
+      "mcp_endpoint": "https://theyetee.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "5061002406639",
+        "617308049503",
+        "617308050288"
+      ]
+    },
+    {
+      "domain": "vysn.com",
+      "mcp_endpoint": "https://senditures.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "9781603297318",
+        "9781941753934",
+        "9781849354349"
+      ]
+    },
+    {
+      "domain": "whiterainbookhouse.com",
+      "mcp_endpoint": "https://wr-book-house.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 10,
+      "gtin_like_sample": [
+        "9798999925602",
+        "9798999733016",
+        "9798996010219"
+      ]
+    },
+    {
+      "domain": "artdepartmentsupply.com",
+      "mcp_endpoint": "https://art-department-llc.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 9,
+      "gtin_like_sample": [
+        "810104680202",
+        "810078037941",
+        "810104681605"
+      ]
+    },
+    {
+      "domain": "bellavitaluxe.com",
+      "mcp_endpoint": "https://bellavita-bangladesh.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 9,
+      "gtin_like_sample": [
+        "8904512103421",
+        "8906150348776",
+        "8906150348776"
+      ]
+    },
+    {
+      "domain": "extoolsjapan.com",
+      "mcp_endpoint": "https://ex-tool-japan.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 9,
+      "gtin_like_sample": [
+        "4582237531442",
+        "4549980649923",
+        "4549980809549"
+      ]
+    },
+    {
+      "domain": "perfectpotion.com",
+      "mcp_endpoint": "https://perfect-potion-usa.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 9,
+      "gtin_like_sample": [
+        "9333360033465",
+        "9333360033014",
+        "9333360032895"
+      ]
+    },
+    {
+      "domain": "twc.health",
+      "mcp_endpoint": "https://the-wellness-comp.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 9,
+      "gtin_like_sample": [
+        "601100063100",
+        "106000056100",
+        "603000111100"
+      ]
+    },
+    {
+      "domain": "bootjack.com",
+      "mcp_endpoint": "https://the-boot-jack.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 8,
+      "gtin_like_sample": [
+        "121212390153",
+        "121212390154",
+        "121212390146"
+      ]
+    },
+    {
+      "domain": "chamber13nyc.com",
+      "mcp_endpoint": "https://chamber-13.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 8,
+      "gtin_like_sample": [
+        "596330036369",
+        "319366612597",
+        "482146095878"
+      ]
+    },
+    {
+      "domain": "forcekiteandwake.com",
+      "mcp_endpoint": "https://force-kite-wake.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 8,
+      "gtin_like_sample": [
+        "210000016014",
+        "210000016013",
+        "210000016012"
+      ]
+    },
+    {
+      "domain": "planttherapy.com",
+      "mcp_endpoint": "https://plant-therapy.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 8,
+      "gtin_like_sample": [
+        "680912066730",
+        "680912075459",
+        "680912075503"
+      ]
+    },
+    {
+      "domain": "bigidesign.com",
+      "mcp_endpoint": "https://bigidesign-usa.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 7,
+      "gtin_like_sample": [
+        "850085563309",
+        "850040735802",
+        "850040735819"
+      ]
+    },
+    {
+      "domain": "fishing-ocean-kuma.com",
+      "mcp_endpoint": "https://fishing-ocean-kuma.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 7,
+      "gtin_like_sample": [
+        "4996578472188",
+        "4996578472188",
+        "4996578472188"
+      ]
+    },
+    {
+      "domain": "girlwiththedogs.com",
+      "mcp_endpoint": "https://gwtd.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 7,
+      "gtin_like_sample": [
+        "199284839489",
+        "199284337978",
+        "199284722248"
+      ]
+    },
+    {
+      "domain": "luckyfours.com",
+      "mcp_endpoint": "https://ae7214.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 7,
+      "gtin_like_sample": [
+        "53198209646889",
+        "53198209679657",
+        "53198209712425"
+      ]
+    },
+    {
+      "domain": "mocastore.org",
+      "mcp_endpoint": "https://mocastore.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 7,
+      "gtin_like_sample": [
+        "9781837251681",
+        "9780691284729",
+        "9781797239880"
+      ]
+    },
+    {
+      "domain": "seidoknives.com",
+      "mcp_endpoint": "https://seidoknives.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 7,
+      "gtin_like_sample": [
+        "527804391260",
+        "310276498523",
+        "308629475182"
+      ]
+    },
+    {
+      "domain": "tecisoft.com",
+      "mcp_endpoint": "https://elecstore-com.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 7,
+      "gtin_like_sample": [
+        "210000116443",
+        "210000011911",
+        "210000124938"
+      ]
+    },
+    {
+      "domain": "trailheadbooks.com",
+      "mcp_endpoint": "https://f460c4.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 7,
+      "gtin_like_sample": [
+        "9781404753631",
+        "9781617934520",
+        "9780739443132"
+      ]
+    },
+    {
+      "domain": "veganessentials.com",
+      "mcp_endpoint": "https://veganessentialscom.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 7,
+      "gtin_like_sample": [
+        "748485780092",
+        "748485780085",
+        "860008548016"
+      ]
+    },
+    {
+      "domain": "biome.com.au",
+      "mcp_endpoint": "https://biome-au.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 6,
+      "gtin_like_sample": [
+        "9336995337595",
+        "9336995442251",
+        "011964482252"
+      ]
+    },
+    {
+      "domain": "cardshq.com",
+      "mcp_endpoint": "https://44d3e8-2.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 6,
+      "gtin_like_sample": [
+        "810059782044",
+        "820650105128",
+        "820650104534"
+      ]
+    },
+    {
+      "domain": "gnmart.com",
+      "mcp_endpoint": "https://gnmart-9114.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 6,
+      "gtin_like_sample": [
+        "9509872551661",
+        "7061114180982",
+        "850011900161"
+      ]
+    },
+    {
+      "domain": "gooseberryintimates.com",
+      "mcp_endpoint": "https://gooseberry-intimates.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 6,
+      "gtin_like_sample": [
+        "53833874440556",
+        "53833868378476",
+        "53833865036140"
+      ]
+    },
+    {
+      "domain": "lewisandpine.com",
+      "mcp_endpoint": "https://lewisandpine.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 6,
+      "gtin_like_sample": [
+        "9780735376243",
+        "9780735383579",
+        "9780735353527"
+      ]
+    },
+    {
+      "domain": "loveshackfancy.com",
+      "mcp_endpoint": "https://loveshackfancy.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 6,
+      "gtin_like_sample": [
+        "816518035164",
+        "816518035126",
+        "816518035157"
+      ]
+    },
+    {
+      "domain": "mimosaspirit.com",
+      "mcp_endpoint": "https://mimosa-books-gifts.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 6,
+      "gtin_like_sample": [
+        "9780738753232",
+        "9780738727288",
+        "9780738778198"
+      ]
+    },
+    {
+      "domain": "ohmycream.com",
+      "mcp_endpoint": "https://ohmycream-store.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 6,
+      "gtin_like_sample": [
+        "6970006973254",
+        "3770031809084",
+        "3662263330750"
+      ]
+    },
+    {
+      "domain": "shop.rmg.co.uk",
+      "mcp_endpoint": "https://royal-museums-greenwich.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 6,
+      "gtin_like_sample": [
+        "9781849077545",
+        "9780008815776",
+        "9780008794989"
+      ]
+    },
+    {
+      "domain": "store.oliviarodrigo.com",
+      "mcp_endpoint": "https://olivia-rodrigo-official.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 6,
+      "gtin_like_sample": [
+        "05702018069677",
+        "05702018069684",
+        "05702018069691"
+      ]
+    },
+    {
+      "domain": "tropicalfruitbox.com",
+      "mcp_endpoint": "https://tropicalfruitbox.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 6,
+      "gtin_like_sample": [
+        "00879502003884",
+        "00879502003891",
+        "00879502003907"
+      ]
+    },
+    {
+      "domain": "goldenhourgiftco.com",
+      "mcp_endpoint": "https://birdfolk-collective.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 5,
+      "gtin_like_sample": [
+        "9781784886950",
+        "9780735382732",
+        "9781797218762"
+      ]
+    },
+    {
+      "domain": "swedishgiftstore.com",
+      "mcp_endpoint": "https://swedish-gift-store.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 5,
+      "gtin_like_sample": [
+        "9781838698539",
+        "9781464289422",
+        "9781728285566"
+      ]
+    },
+    {
+      "domain": "worldwidestereo.com",
+      "mcp_endpoint": "https://worldwidestereo.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 5,
+      "gtin_like_sample": [
+        "7427255403500",
+        "715187940017",
+        "603497850921"
+      ]
+    },
+    {
+      "domain": "bstephstore.com",
+      "mcp_endpoint": "https://0fa17e.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 4,
+      "gtin_like_sample": [
+        "740016268680",
+        "740016268673",
+        "740016268703"
+      ]
+    },
+    {
+      "domain": "ca.carinaorganics.com",
+      "mcp_endpoint": "https://anthony-barber-supply.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 4,
+      "gtin_like_sample": [
+        "061354013603",
+        "061354235012",
+        "061354000009"
+      ]
+    },
+    {
+      "domain": "chaptersbookstore.com",
+      "mcp_endpoint": "https://chapters-ie.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 4,
+      "gtin_like_sample": [
+        "9780008750428",
+        "9781784742805",
+        "9781473684157"
+      ]
+    },
+    {
+      "domain": "cricketshop.eu",
+      "mcp_endpoint": "https://53e58b-cb.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 4,
+      "gtin_like_sample": [
+        "20231010001072",
+        "20231010001552",
+        "20231010001668"
+      ]
+    },
+    {
+      "domain": "mukama.com",
+      "mcp_endpoint": "https://mukama-oy.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 4,
+      "gtin_like_sample": [
+        "850073746790",
+        "850073746806",
+        "850040735925"
+      ]
+    },
+    {
+      "domain": "reformcarry.com",
+      "mcp_endpoint": "https://reformcarry.myshopify.com/api/ucp/mcp",
+      "product_count": 7,
+      "gtin_like_count": 4,
+      "gtin_like_sample": [
+        "8719327109618",
+        "8719327109601",
+        "8719327074473"
+      ]
+    },
+    {
+      "domain": "shopmoviehub.com",
+      "mcp_endpoint": "https://5325f4.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 4,
+      "gtin_like_sample": [
+        "542532532532",
+        "543254253255",
+        "589208372008"
+      ]
+    },
+    {
+      "domain": "the-dailee.com",
+      "mcp_endpoint": "https://by-sophia-lee.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 4,
+      "gtin_like_sample": [
+        "615678729506",
+        "615678835047",
+        "615678836112"
+      ]
+    },
+    {
+      "domain": "therealfoodcompany.org.uk",
+      "mcp_endpoint": "https://the-real-food-company-ltd.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 4,
+      "gtin_like_sample": [
+        "3483130025568",
+        "5060018513157",
+        "5065017858056"
+      ]
+    },
+    {
+      "domain": "3dprintingcanada.com",
+      "mcp_endpoint": "https://3d-printing-canada.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 3,
+      "gtin_like_sample": [
+        "8770620001979",
+        "8770620001962",
+        "8770620001955"
+      ]
+    },
+    {
+      "domain": "capitalkidz.com",
+      "mcp_endpoint": "https://capitalkidz.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 3,
+      "gtin_like_sample": [
+        "04079632200070",
+        "06079632980070",
+        "00079632920070"
+      ]
+    },
+    {
+      "domain": "colescomputers.com",
+      "mcp_endpoint": "https://rzkq69-yp.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 3,
+      "gtin_like_sample": [
+        "685381730748",
+        "685381730749",
+        "685381558786"
+      ]
+    },
+    {
+      "domain": "durexindia.com",
+      "mcp_endpoint": "https://durex-in.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 3,
+      "gtin_like_sample": [
+        "8901396602446",
+        "8901396603078",
+        "8901396603092"
+      ]
+    },
+    {
+      "domain": "edgewatercandles.com",
+      "mcp_endpoint": "https://edgewater-candles.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 3,
+      "gtin_like_sample": [
+        "9798217182817",
+        "9781368076937",
+        "9781368076500"
+      ]
+    },
+    {
+      "domain": "ferment-pro.com",
+      "mcp_endpoint": "https://t8mqmv-0f.myshopify.com/api/ucp/mcp",
+      "product_count": 5,
+      "gtin_like_count": 3,
+      "gtin_like_sample": [
+        "735380004972",
+        "735380319373",
+        "735380376826"
+      ]
+    },
+    {
+      "domain": "liv-happyfood.com",
+      "mcp_endpoint": "https://liv-happyfood.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 3,
+      "gtin_like_sample": [
+        "43204580802204",
+        "43204580802205",
+        "43204580802206"
+      ]
+    },
+    {
+      "domain": "thevinylstore.com.au",
+      "mcp_endpoint": "https://thevinylstoreau.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 3,
+      "gtin_like_sample": [
+        "075678584671",
+        "5054429209747",
+        "198704834639"
+      ]
+    },
+    {
+      "domain": "comerfordcollection.com",
+      "mcp_endpoint": "https://comerfordcollection.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "9781837290932",
+        "9780500029527"
+      ]
+    },
+    {
+      "domain": "fromrebel.com",
+      "mcp_endpoint": "https://rebelstork-us.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "04063846478132",
+        "04063846505685"
+      ]
+    },
+    {
+      "domain": "geneticprotocol.com",
+      "mcp_endpoint": "https://genetic-protocol-1.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "850001681056",
+        "850001681865"
+      ]
+    },
+    {
+      "domain": "getswishables.com",
+      "mcp_endpoint": "https://50e78a-01.myshopify.com/api/ucp/mcp",
+      "product_count": 7,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "00850075795086",
+        "00850075795093"
+      ]
+    },
+    {
+      "domain": "lushessence.store",
+      "mcp_endpoint": "https://tqdvkq-ib.myshopify.com/api/ucp/mcp",
+      "product_count": 3,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "51210262348080",
+        "49776026976560"
+      ]
+    },
+    {
+      "domain": "magnolia.com",
+      "mcp_endpoint": "https://magnoliamom.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "9781510747739",
+        "9781958395646"
+      ]
+    },
+    {
+      "domain": "neweracycle.com",
+      "mcp_endpoint": "https://3f0fdc-cc.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "6970232532393",
+        "6970232532225"
+      ]
+    },
+    {
+      "domain": "redmond.life",
+      "mcp_endpoint": "https://real-salt.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "43401258565680",
+        "43401258631216"
+      ]
+    },
+    {
+      "domain": "shevibe.com",
+      "mcp_endpoint": "https://49274c.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "7350167260346",
+        "7350167260339"
+      ]
+    },
+    {
+      "domain": "store.dailystoic.com",
+      "mcp_endpoint": "https://daily-stoic-prints.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "9780140449464",
+        "9780679642602"
+      ]
+    },
+    {
+      "domain": "store.sabrinacarpenter.com",
+      "mcp_endpoint": "https://sabrina-carpenter-official.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "00602455911377",
+        "00199957545839"
+      ]
+    },
+    {
+      "domain": "surprisecastle.com",
+      "mcp_endpoint": "https://surprise-castle.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "9781302967093",
+        "9781302968168"
+      ]
+    },
+    {
+      "domain": "theanalogstationer.com",
+      "mcp_endpoint": "https://drrbv5-md.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "5600343981599",
+        "5600343981605"
+      ]
+    },
+    {
+      "domain": "thekombuchashop.com",
+      "mcp_endpoint": "https://the-kombucha-shop-llc.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "195893440801",
+        "195893916580"
+      ]
+    },
+    {
+      "domain": "uppercasemagazine.com",
+      "mcp_endpoint": "https://uppercase.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 2,
+      "gtin_like_sample": [
+        "72527486315070",
+        "72527486315069"
+      ]
+    },
+    {
+      "domain": "american-fire-bbq-and-grilling-supply.myshopify.com",
+      "mcp_endpoint": "https://american-fire-bbq-and-grilling-supply.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "860015421203"
+      ]
+    },
+    {
+      "domain": "begreenbathandbody.com",
+      "mcp_endpoint": "https://be-green-bath-and-body.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "196704954425"
+      ]
+    },
+    {
+      "domain": "bmshouston.com",
+      "mcp_endpoint": "https://bmshouston.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "9781454962977"
+      ]
+    },
+    {
+      "domain": "cbsdeals.com",
+      "mcp_endpoint": "https://cbs-deals-knocking.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "100000000174"
+      ]
+    },
+    {
+      "domain": "davproco.com",
+      "mcp_endpoint": "https://davidson-provision-co.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "600074851838"
+      ]
+    },
+    {
+      "domain": "fillhappy-va.com",
+      "mcp_endpoint": "https://fill-happy.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "0794712835394"
+      ]
+    },
+    {
+      "domain": "goldendiscs.ie",
+      "mcp_endpoint": "https://golden-discs.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "5026854610450"
+      ]
+    },
+    {
+      "domain": "homestorepr.com",
+      "mcp_endpoint": "https://tu-herramienta-online-pr.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "195306471844"
+      ]
+    },
+    {
+      "domain": "jupiterwatersports.com",
+      "mcp_endpoint": "https://u7s5cq-0g.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "8715738751873"
+      ]
+    },
+    {
+      "domain": "lawnsynergy.com",
+      "mcp_endpoint": "https://lawnsynergy.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "49139394117770"
+      ]
+    },
+    {
+      "domain": "leagueoutfitters.com",
+      "mcp_endpoint": "https://league-outfitters.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "702026943582"
+      ]
+    },
+    {
+      "domain": "meltonian.com",
+      "mcp_endpoint": "https://meltonian.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "031600026008"
+      ]
+    },
+    {
+      "domain": "pepegangaonline.com",
+      "mcp_endpoint": "https://pepe-ganga-pr-2.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "7702148203628"
+      ]
+    },
+    {
+      "domain": "problkhealth.com",
+      "mcp_endpoint": "https://problk-health.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "47376967794918"
+      ]
+    },
+    {
+      "domain": "sbmastore.net",
+      "mcp_endpoint": "https://sbmastore.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "9780771099410"
+      ]
+    },
+    {
+      "domain": "shop.cheerfulflowersandgifts.com",
+      "mcp_endpoint": "https://cheerfulflowersandgifts.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "195002537507"
+      ]
+    },
+    {
+      "domain": "theconfidence.co",
+      "mcp_endpoint": "https://the-confidence-company-llc.myshopify.com/api/ucp/mcp",
+      "product_count": 1,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "4783814770733"
+      ]
+    },
+    {
+      "domain": "thecreameryutah.com",
+      "mcp_endpoint": "https://dfa-the-creamery.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "641939149875"
+      ]
+    },
+    {
+      "domain": "thescholarssourcebookstore.co",
+      "mcp_endpoint": "https://ws0ywq-ac.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "5011921232680"
+      ]
+    },
+    {
+      "domain": "thesuccessfulman.co.uk",
+      "mcp_endpoint": "https://6462ca-4.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "7829455619042"
+      ]
+    },
+    {
+      "domain": "titanx.co",
+      "mcp_endpoint": "https://xcases1.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "44087007903787"
+      ]
+    },
+    {
+      "domain": "tridentflyfishing.com",
+      "mcp_endpoint": "https://x8hq1a-0u.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "51605681242345"
+      ]
+    },
+    {
+      "domain": "us.sourcebmx.com",
+      "mcp_endpoint": "https://sourcebmx-us.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "5060247028118"
+      ]
+    },
+    {
+      "domain": "worldspice.com",
+      "mcp_endpoint": "https://worldspicemerchants.myshopify.com/api/ucp/mcp",
+      "product_count": 10,
+      "gtin_like_count": 1,
+      "gtin_like_sample": [
+        "400000002613"
+      ]
+    }
+  ]
+}

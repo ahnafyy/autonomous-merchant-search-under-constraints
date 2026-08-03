@@ -12,6 +12,11 @@ unresolved blocking finding.
 	their permit values; focused tests cover these implementation invariants.
 - Commerce-native exact-SKU and price types, frozen-panel exhaustive-oracle metrics,
 	and offline UCP endpoint eligibility screening are implemented and unit tested.
+- Live UCP discovery and read-only `search_catalog` invocation are implemented and
+	were run against 246 real merchant endpoints on 2026-08-02, producing a 240-domain
+	declared-capability inventory and 68 confirmed cross-merchant same-ISBN episodes
+	with real price spread. This validates the data-collection pipeline; it is not a
+	completed empirical claim evaluation.
 - Python and JavaScript still conform for the existing planner and completed-call
 	operations. JavaScript reservation receipts and censored reconciliation are pending.
 - Deterministic build, package conformance, unit tests, static-site checks, and
@@ -20,7 +25,9 @@ unresolved blocking finding.
 
 ## Approval Blockers
 
-- No permission-checked UCP endpoint inventory, exact-SKU cohort, calibration corpus,
+- The 240-domain declared-capability inventory is a documented assumption, not
+	case-by-case verified permission (see data/ucp/README.md); no permission-checked,
+	case-by-case-verified merchant inventory, exact-SKU cohort, calibration corpus,
 	or frozen held-out panel corpus has been added.
 - The exact joint merchant-and-permit solver, exhaustive reduced-domain enumeration,
 	ARVP policy, declared feasible baselines, and JavaScript receipt lifecycle are not
