@@ -57,9 +57,10 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
       <span>Open algorithm and software release</span>
     </div>
     <nav aria-label="Primary navigation">
-      <a href="#benchmark">Method</a>
       <a href="#rule">Rule</a>
-      <a href="#claims">Evidence</a>
+      <a href="#claims">Results</a>
+      <a href="#workbench">Try it</a>
+      <a href="#benchmark">Method</a>
       <a href="#reproduce">Materials</a>
     </nav>
   </header>
@@ -206,31 +207,12 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
       </div>
     </section>
 
-    <section class="section section--rule" id="workbench" aria-labelledby="workbench-title">
+    <section class="section section--claims" id="claims" aria-labelledby="claims-title">
       <div class="section__heading">
         <p class="section-number">3</p>
         <div>
-          <span class="eyebrow">Try the rule</span>
-          <h2 id="workbench-title">Give your agent the limits of this shopping task</h2>
-        </div>
-      </div>
-      <p class="section-intro">
-        Set the current offer, the shopper's maximum price, and what the agent can still spend on checking other stores.
-        The planner shows the buy-now price and whether searching again is worthwhile.
-      </p>
-      <PlanningWorkbench
-        merchantForecasts={results.merchant_forecasts}
-        observedPrice={results.observed_price}
-        failurePenalty={results.failure_penalty}
-      />
-    </section>
-
-    <section class="section section--claims" id="claims" aria-labelledby="claims-title">
-      <div class="section__heading">
-        <p class="section-number">4</p>
-        <div>
-          <span class="eyebrow">Result · When it is worth it</span>
-          <h2 id="claims-title">Where adaptive stopping pays for itself</h2>
+          <span class="eyebrow">Evidence from live panels</span>
+          <h2 id="claims-title">When should an agent keep looking?</h2>
         </div>
       </div>
       <p class="section-intro">
@@ -239,7 +221,7 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
         below zero and {results.hard_budget_violations} budget violations. The gain is real, but not universal: the median
         episode has only {results.median_merchant_count} merchants and a price ratio of
         {results.median_price_dispersion_ratio}, which is exactly why the advantage is modest in practice. The table below
-        shows where the extra complexity is worth it and where a fixed threshold is the better operational choice.
+        shows when another check is worth its cost and when a fixed threshold is the better choice.
       </p>
       <p class="decision-context">
         Calibrated from the live dataset, not a universal retail rule.
@@ -271,6 +253,25 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
         </figcaption>
       </figure>
       <ClaimLedger claims={displayedClaims} />
+    </section>
+
+    <section class="section section--rule" id="workbench" aria-labelledby="workbench-title">
+      <div class="section__heading">
+        <p class="section-number">4</p>
+        <div>
+          <span class="eyebrow">Try the rule</span>
+          <h2 id="workbench-title">Give your agent the limits of this shopping task</h2>
+        </div>
+      </div>
+      <p class="section-intro">
+        Set the current offer, the shopper's maximum price, and what the agent can still spend on checking other stores.
+        The planner shows the buy-now price and whether searching again is worthwhile.
+      </p>
+      <PlanningWorkbench
+        merchantForecasts={results.merchant_forecasts}
+        observedPrice={results.observed_price}
+        failurePenalty={results.failure_penalty}
+      />
     </section>
 
     <section class="section section--materials" id="reproduce" aria-labelledby="reproduce-title">

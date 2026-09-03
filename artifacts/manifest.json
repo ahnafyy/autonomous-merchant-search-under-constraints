@@ -16,11 +16,11 @@
     "conformance/merchant-search.json": "8d42ae2a7c254fd1a64d1757ba30a67f93a065a79c307081586ae44170375a1e",
     "data/summary.csv": "b08df8c1a830db0346ef64d69ee7d858f55e464b18275b1eec496390b919e273",
     "results.json": "5f0efc6fadfc98eb17cdb49ea48db4159a87802daf50616f6261c2559320f171",
-    "site-data.json": "d02ae43e3bc27c25fd998db33fa9f42a0bcaa73eb66e6939e16d43071a847933",
+    "site-data.json": "d5f300d0e7c471125b3ba5103b1c5ad4c77c1d78d58a9cede0c9516d1e56ba42",
     "tables/arm_comparison.tex": "5e45eb5760332e18788a8b7ca023fc75fc5db88e3f07bd48ead42ffb896a8976",
     "tables/claim_status.tex": "5d6825c3709b95229f102d3a65c5a545560531c5b78b8d7eeecd7ab1a39cdee0",
     "tables/decision_table.tex": "86e9aaaec016d4012126665c10e9e9887bc98869be19835217bb187aaea5b347",
-    "tables/project_metadata.tex": "4db64b71c52648cef4a9ffcf17db8208f91e5602c753a79810cd7bf0297cc652",
+    "tables/project_metadata.tex": "da75bcf54020cb1396856f2f5d7c6d1923205e88eca2cfacca9601c992a5db86",
     "tables/references.bib": "986366bf5f8496263da317d2d62724690081f71ac15be82ffc2eb3d9a81899f7",
     "tables/result_macros.tex": "69bf0b80ab66208ca044682de5f7ea2ad8f36e059b25f2269c4eab281efcc895",
     "tables/rule_comparison.tex": "7d623f87fce282feb5b5fb8a697acc28ee297c051ed8c85211932d2de1b60ee2"
