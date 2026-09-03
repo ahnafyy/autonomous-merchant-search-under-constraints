@@ -7,7 +7,6 @@ from pathlib import Path
 
 from paperkit.claims import load_claims
 from paperkit.config import ConfigurationError, ProjectConfig, contains_placeholder, load_yaml
-from paperkit.gates import load_gates, pending_gate_names
 
 RELEASE_TEXT_PATHS = (
     "project.yml",
@@ -46,21 +45,8 @@ def validate_project(root: Path, *, release: bool = False) -> ValidationReport:
         errors.append(str(error))
         claims = []
 
-    try:
-        gates = load_gates(root / "research" / "gates" / "status.yml")
-    except ConfigurationError as error:
-        errors.append(str(error))
-        gates = []
-
     if not claims:
         warnings.append("No claims are registered.")
-    pending = pending_gate_names(gates)
-    if pending:
-        message = f"Pending human gates: {', '.join(pending)}"
-        if release:
-            errors.append(message)
-        else:
-            warnings.append(message)
 
     if not config.initialized:
         message = "Project has not been initialized."

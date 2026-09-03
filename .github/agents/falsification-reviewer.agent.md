@@ -1,6 +1,6 @@
 ---
 name: "Falsification Reviewer"
-description: "Adversarially review registered research claims by running checks, seeking counterexamples, testing boundaries, and comparing publication artifacts with generated evidence. Use after analysis and before the evidence or release gate."
+description: "Adversarially review registered research claims by running checks, seeking counterexamples, testing boundaries, and comparing publication artifacts with generated evidence. Use after analysis and before packaging a release."
 tools: [read, search, execute]
 user-invocable: false
 agents: []

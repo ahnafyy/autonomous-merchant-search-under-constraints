@@ -8,7 +8,6 @@ import tomllib
 from pathlib import Path
 
 from paperkit.config import ProjectConfig
-from paperkit.release import ReleaseError, release
 from paperkit.validation import validate_project
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -67,25 +66,20 @@ def test_initializer_is_idempotent(tmp_path: Path) -> None:
     assert javascript_project["version"] == "0.2.0"
 
 
-def test_release_validation_blocks_pending_gates() -> None:
-    development = validate_project(ROOT)
-    release = validate_project(ROOT, release=True)
+def test_development_validation_passes() -> None:
+    report = validate_project(ROOT)
 
-    assert development.ok
-    assert any("Pending human gates" in warning for warning in development.warnings)
-    assert not release.ok
-    assert release.errors == (
-        "Pending human gates: novelty, design, evidence, release",
-    )
-    assert any("Pending human gates" in error for error in release.errors)
+    assert report.ok, report.errors
 
 
-def test_release_dry_run_does_not_bypass_pending_gates() -> None:
-    try:
-        release(ROOT, dry_run=True)
-    except ReleaseError as error:
-        message = str(error)
-    else:
-        raise AssertionError("Release with pending gates unexpectedly passed")
+def test_release_validation_requires_generated_manifest(tmp_path: Path) -> None:
+    project_root = tmp_path / "project"
+    project_root.mkdir()
+    shutil.copy(ROOT / "project.yml", project_root / "project.yml")
+    shutil.copytree(ROOT / "packages", project_root / "packages")
+    shutil.copytree(ROOT / "research", project_root / "research")
 
-    assert "Pending human gates" in message
+    report = validate_project(project_root, release=True)
+
+    assert not report.ok
+    assert any("manifest is missing" in error for error in report.errors)

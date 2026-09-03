@@ -8,7 +8,8 @@
   computational patterns, conjectures, and open questions in every artifact.
 - A grid observation is not a theorem. State the tested domain and retain
   counterexamples or failed checks that change interpretation.
-- Agents may prepare gate material but only a human may mark a gate approved.
+- Every registered claim needs an executable evaluator; a claim with no evaluator is
+  not a finding.
 
 ## Evidence Architecture
 

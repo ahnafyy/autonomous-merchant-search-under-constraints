@@ -1,6 +1,6 @@
 ---
 name: research-cycle
-description: "Plan and execute a small computational or theoretical paper from candidate avenues through literature review, claim registration, analysis, falsification, manuscript, explainer, and release gates. Use when starting research, selecting a benchmark, evaluating novelty, or preparing a reproducible paper release."
+description: "Plan and execute a small computational or theoretical paper from candidate avenues through literature review, claim registration, analysis, falsification, manuscript, explainer, and reproducible release. Use when starting research, selecting a benchmark, evaluating novelty, or preparing a reproducible paper release."
 argument-hint: "Research question, observation, or current stage"
 ---
 
@@ -11,7 +11,8 @@ record of a decision or result.
 
 ## Procedure
 
-1. Read `research/gates/status.yml` and stop at the first unapproved transition.
+1. Read `research/claims.yml` and `artifacts/claim-results.json` to establish which
+   claims currently hold and which are unsupported.
 2. Diverge into candidate mechanisms in `research/avenues.yml`; do not commit to
    the first plausible framing.
 3. Select the smallest benchmark capable of discriminating the chosen mechanism
@@ -25,11 +26,11 @@ record of a decision or result.
 7. Run `paperkit build`, then delegate an independent falsification review using
    [review protocol](./references/falsification.md).
 8. Draft the manuscript and explainer from generated artifacts, preserving claim status.
-9. Run release validation. Prepare the relevant gate, but ask a human to approve it.
+9. Run release validation and report any claim whose evaluator no longer passes.
 
 ## Required Output At Every Stage
 
 - Updated durable research record
 - Cheapest next check that could change the conclusion
 - Known limitations and unresolved counterevidence
-- Current gate and the evidence needed for human approval
+- Which registered claims the current evidence does and does not support

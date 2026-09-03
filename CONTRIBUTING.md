@@ -23,4 +23,4 @@ npm run test:e2e --prefix site
 
 Use `python -m pytest` so the tests run under the selected virtual environment. Keep
 changes focused, deterministic, and covered at the narrowest useful level. Never invent
-citations or mark a human gate approved on another person's behalf.
+citations, and never present a claim as established without a passing evaluator.
