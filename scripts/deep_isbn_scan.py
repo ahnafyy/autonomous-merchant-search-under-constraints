@@ -1,25 +1,37 @@
 #!/usr/bin/env python3
-"""Deep ISBN-focused scan: paginate several pages per domain, not just the
-default top-10, to build a real-scale corpus of cross-merchant same-SKU
-matches instead of a handful found by luck.
+"""Deep catalog scan: paginate several pages per domain, not just the default
+top-10, to build a real-scale corpus of cross-merchant same-SKU matches instead
+of a handful found by luck.
 
-Targets: the 220 domains already confirmed to expose GTIN-shaped SKUs, plus
-any books_media-keyword-tagged domains not yet confirmed (a second chance --
-their default top-10 sample may simply not have surfaced a book).
+Targets: the domains already confirmed to expose GTIN-shaped SKUs, plus any
+books_media-keyword-tagged domains not yet confirmed (a second chance -- their
+default top-10 sample may simply not have surfaced a book), plus every endpoint
+in the declared-capability inventory.
 
-For each domain, fetches up to MAX_PAGES pages of PAGE_SIZE products via
+For each domain, fetches up to --max-pages pages of --page-size products via
 search_catalog(query="", pagination={limit, cursor}), stopping early if the
 server reports no next page. Every variant SKU is kept (not just GTIN-shaped
-ones, so we can inspect what a "no ISBN" bookstore looks like too). Matches
-are computed by exact SKU value across domains with different base
-(registrable) domains, with a specific ISBN-prefix (978/979) flag since that
-is the identifier convention that actually produced real matches so far.
+ones, so we can inspect what a "no ISBN" bookstore looks like too). Matches are
+computed by exact SKU value across domains with different base (registrable)
+domains, with a specific ISBN-prefix (978/979) flag since that is the identifier
+convention that actually produced real matches so far.
+
+Output paths are derived from --date so repeated runs produce comparable
+snapshots rather than overwriting earlier evidence. Per-domain reachability is
+recorded so a later snapshot can distinguish "merchant unreachable" from "SKU no
+longer offered".
+
+This performs real network requests against live merchant infrastructure. Only
+run this against domains explicitly approved for live calls.
 """
 from __future__ import annotations
 
+import argparse
 import json
+import re
 import sys
 import threading
+import time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -31,13 +43,11 @@ from probe_gtin_support import (  # noqa: E402
     search_catalog_page,
 )
 
-MAX_PAGES = 5
-PAGE_SIZE = 50
-GTIN_SCAN_PATH = Path("data/ucp/gtin-scan-2026-08-02.json")
-CATEGORY_PATH = Path("data/ucp/candidates-2026-04-02.by-category.json")
-OUTPUT_ROWS_PATH = Path("data/ucp/deep-scan-rows-2026-08-02.jsonl")
-OUTPUT_MATCHES_PATH = Path("data/ucp/deep-scan-matches-2026-08-02.json")
-ISBN_PATTERN = __import__("re").compile(r"^97[89]\d{10}$")
+DATA_DIR = Path("data/ucp")
+GTIN_SCAN_PATH = DATA_DIR / "gtin-scan-2026-08-02.json"
+CATEGORY_PATH = DATA_DIR / "candidates-2026-04-02.by-category.json"
+INVENTORY_PATH = DATA_DIR / "inventory-declared-capability-2026-08-02.json"
+ISBN_PATTERN = re.compile(r"^97[89]\d{10}$")
 
 
 def base_domain(domain: str) -> str:
@@ -45,31 +55,46 @@ def base_domain(domain: str) -> str:
     return ".".join(parts[-2:]) if len(parts) >= 2 else domain
 
 
-def target_domains() -> dict[str, str | None]:
+def target_domains(*, include_inventory: bool = True) -> dict[str, str | None]:
     """Return {domain: known_mcp_endpoint_or_None}."""
     gtin_scan = json.loads(GTIN_SCAN_PATH.read_text(encoding="utf-8"))
     targets: dict[str, str | None] = {
-        entry["domain"]: entry["mcp_endpoint"] for entry in gtin_scan["domains"]
+        entry["domain"]: entry.get("mcp_endpoint") for entry in gtin_scan["domains"]
     }
     categories = json.loads(CATEGORY_PATH.read_text(encoding="utf-8"))
     for domain in categories.get("books_media", []):
         targets.setdefault(domain, None)
+    if include_inventory and INVENTORY_PATH.is_file():
+        inventory = json.loads(INVENTORY_PATH.read_text(encoding="utf-8"))
+        for entry in inventory.get("endpoints", []):
+            domain = entry.get("domain")
+            if domain:
+                targets.setdefault(domain, entry.get("endpoint"))
     return targets
 
 
-def deep_scan_domain(domain: str, known_endpoint: str | None) -> list[dict[str, object]]:
+def deep_scan_domain(
+    domain: str,
+    known_endpoint: str | None,
+    *,
+    max_pages: int,
+    page_size: int,
+    delay_seconds: float,
+) -> tuple[list[dict[str, object]], str]:
+    """Return (rows, status) for one domain."""
     endpoint = known_endpoint or discover_mcp_endpoint(domain)
     if endpoint is None:
-        return []
+        return [], "no_mcp_endpoint"
     rows: list[dict[str, object]] = []
     cursor: str | None = None
-    for _page in range(MAX_PAGES):
+    for page_index in range(max_pages):
+        if page_index and delay_seconds:
+            time.sleep(delay_seconds)
         products, cursor, has_next = search_catalog_page(
-            endpoint, query="", limit=PAGE_SIZE, cursor=cursor
+            endpoint, query="", limit=page_size, cursor=cursor
         )
-        price_default = {}
         for product in products:
-            price = product.get("price_range", {}).get("min", price_default)
+            price = product.get("price_range", {}).get("min", {})
             for variant in product.get("variants", []):
                 sku = variant.get("sku")
                 if not sku:
@@ -87,77 +112,149 @@ def deep_scan_domain(domain: str, known_endpoint: str | None) -> list[dict[str, 
                     }
                 )
         if not has_next or not cursor:
-            break
-    return rows
+            return rows, "ok"
+    # Cap reached while more pages remained: a SKU missing from this snapshot may
+    # be truncated rather than delisted.
+    return rows, "truncated"
 
 
-def main() -> int:
-    targets = target_domains()
-    print(f"deep-scanning {len(targets)} domains, up to {MAX_PAGES} pages of "
-          f"{PAGE_SIZE} each")
+def _write_rows(path: Path, rows: list[dict[str, object]]) -> None:
+    temporary = path.with_suffix(path.suffix + ".partial")
+    with temporary.open("w", encoding="utf-8") as handle:
+        for row in rows:
+            handle.write(json.dumps(row) + "\n")
+    temporary.replace(path)
 
-    all_rows: list[dict[str, object]] = []
-    lock = threading.Lock()
-    completed = 0
 
-    def run_one(item: tuple[str, str | None]) -> list[dict[str, object]]:
-        domain, endpoint = item
-        try:
-            return deep_scan_domain(domain, endpoint)
-        except Exception as exc:  # noqa: BLE001 - one bad domain must not abort the batch
-            print(f"error on {domain}: {type(exc).__name__}: {exc}", file=sys.stderr)
-            return []
-
-    with ThreadPoolExecutor(max_workers=15) as executor:
-        futures = {executor.submit(run_one, item): item for item in targets.items()}
-        for future in as_completed(futures):
-            rows = future.result()
-            with lock:
-                all_rows.extend(rows)
-                completed += 1
-                if completed % 25 == 0 or completed == len(targets):
-                    print(f"progress: {completed}/{len(targets)}", file=sys.stderr)
-
-    with OUTPUT_ROWS_PATH.open("w", encoding="utf-8") as f:
-        for row in all_rows:
-            f.write(json.dumps(row) + "\n")
-
+def summarize(
+    rows: list[dict[str, object]],
+    domain_status: dict[str, str],
+    *,
+    scan_date: str,
+    max_pages: int,
+    page_size: int,
+) -> dict[str, object]:
     by_sku: dict[str, list[dict[str, object]]] = defaultdict(list)
-    for row in all_rows:
-        by_sku[row["sku"]].append(row)
+    for row in rows:
+        by_sku[str(row["sku"])].append(row)
 
-    cross_merchant_matches = {}
-    for sku, rows in by_sku.items():
-        companies = {base_domain(r["domain"]) for r in rows}
-        if len(companies) >= 2:
-            cross_merchant_matches[sku] = rows
-
-    isbn_rows = [r for r in all_rows if r["is_isbn_shaped"]]
-    isbn_matches = {
-        sku: rows for sku, rows in cross_merchant_matches.items()
-        if any(r["is_isbn_shaped"] for r in rows)
+    cross_merchant_matches = {
+        sku: sku_rows
+        for sku, sku_rows in by_sku.items()
+        if len({base_domain(str(r["domain"])) for r in sku_rows}) >= 2
     }
+    isbn_matches = {
+        sku: sku_rows
+        for sku, sku_rows in cross_merchant_matches.items()
+        if any(r["is_isbn_shaped"] for r in sku_rows)
+    }
+    isbn_rows = [r for r in rows if r["is_isbn_shaped"]]
 
-    payload = {
-        "schema_version": 1,
-        "scan_date": "2026-08-02",
-        "domains_targeted": len(targets),
-        "total_rows": len(all_rows),
+    return {
+        "schema_version": 2,
+        "scan_date": scan_date,
+        "max_pages": max_pages,
+        "page_size": page_size,
+        "domains_targeted": len(domain_status),
+        "domains_ok": sum(1 for status in domain_status.values() if status == "ok"),
+        "domains_truncated": sum(
+            1 for status in domain_status.values() if status == "truncated"
+        ),
+        "domain_status": dict(sorted(domain_status.items())),
+        "total_rows": len(rows),
         "unique_skus": len(by_sku),
         "isbn_shaped_row_count": len(isbn_rows),
         "cross_merchant_match_count": len(cross_merchant_matches),
         "isbn_cross_merchant_match_count": len(isbn_matches),
-        "isbn_cross_merchant_matches": isbn_matches,
-        "all_cross_merchant_matches": cross_merchant_matches,
+        "isbn_cross_merchant_matches": dict(sorted(isbn_matches.items())),
+        "all_cross_merchant_matches": dict(sorted(cross_merchant_matches.items())),
     }
-    OUTPUT_MATCHES_PATH.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
-    print(f"\ntotal rows collected: {len(all_rows)}")
-    print(f"unique SKUs: {len(by_sku)}")
-    print(f"ISBN-shaped rows: {len(isbn_rows)}")
-    print(f"cross-merchant matches (any SKU shape): {len(cross_merchant_matches)}")
-    print(f"cross-merchant ISBN matches: {len(isbn_matches)}")
-    print(f"wrote {OUTPUT_ROWS_PATH} and {OUTPUT_MATCHES_PATH}")
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--date", required=True, help="Snapshot date, YYYY-MM-DD")
+    parser.add_argument("--max-pages", type=int, default=5)
+    parser.add_argument("--page-size", type=int, default=50)
+    parser.add_argument("--workers", type=int, default=15)
+    parser.add_argument(
+        "--delay-seconds",
+        type=float,
+        default=0.25,
+        help="Pause between paginated calls to the same merchant",
+    )
+    parser.add_argument(
+        "--limit-domains", type=int, help="Scan only the first N targets (pilot runs)"
+    )
+    parser.add_argument(
+        "--output-prefix",
+        default="deep-scan",
+        help="Basename prefix for the generated rows and matches files",
+    )
+    args = parser.parse_args(argv)
+
+    rows_path = DATA_DIR / f"{args.output_prefix}-rows-{args.date}.jsonl"
+    matches_path = DATA_DIR / f"{args.output_prefix}-matches-{args.date}.json"
+
+    targets = target_domains()
+    if args.limit_domains is not None:
+        targets = dict(sorted(targets.items())[: args.limit_domains])
+    print(
+        f"deep-scanning {len(targets)} domains, up to {args.max_pages} pages of "
+        f"{args.page_size} each -> {rows_path}"
+    )
+
+    all_rows: list[dict[str, object]] = []
+    domain_status: dict[str, str] = {}
+    lock = threading.Lock()
+    completed = 0
+
+    def run_one(item: tuple[str, str | None]) -> tuple[str, list[dict[str, object]], str]:
+        domain, endpoint = item
+        try:
+            rows, status = deep_scan_domain(
+                domain,
+                endpoint,
+                max_pages=args.max_pages,
+                page_size=args.page_size,
+                delay_seconds=args.delay_seconds,
+            )
+        except Exception as exc:  # noqa: BLE001 - one bad domain must not abort the batch
+            print(f"error on {domain}: {type(exc).__name__}: {exc}", file=sys.stderr)
+            return domain, [], f"error:{type(exc).__name__}"
+        return domain, rows, status
+
+    with ThreadPoolExecutor(max_workers=args.workers) as executor:
+        futures = [executor.submit(run_one, item) for item in targets.items()]
+        for future in as_completed(futures):
+            domain, rows, status = future.result()
+            with lock:
+                all_rows.extend(rows)
+                domain_status[domain] = status
+                completed += 1
+                if completed % 25 == 0 or completed == len(targets):
+                    print(f"progress: {completed}/{len(targets)}", file=sys.stderr)
+
+    all_rows.sort(key=lambda row: (str(row["domain"]), str(row["sku"])))
+    _write_rows(rows_path, all_rows)
+
+    payload = summarize(
+        all_rows,
+        domain_status,
+        scan_date=args.date,
+        max_pages=args.max_pages,
+        page_size=args.page_size,
+    )
+    matches_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+    print(f"\ntotal rows collected: {payload['total_rows']}")
+    print(f"fully paginated domains: {payload['domains_ok']}/{payload['domains_targeted']}")
+    print(f"truncated at page cap: {payload['domains_truncated']}")
+    print(f"unique SKUs: {payload['unique_skus']}")
+    print(f"ISBN-shaped rows: {payload['isbn_shaped_row_count']}")
+    print(f"cross-merchant matches: {payload['cross_merchant_match_count']}")
+    print(f"cross-merchant ISBN matches: {payload['isbn_cross_merchant_match_count']}")
+    print(f"wrote {rows_path} and {matches_path}")
     return 0
 
 
