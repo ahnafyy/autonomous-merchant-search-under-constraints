@@ -98,3 +98,54 @@ python scripts/deep_isbn_scan.py --date YYYY-MM-DD --max-pages 12 --page-size 50
 This makes live requests to real merchants. Use `--limit-domains` for a pilot run
 first, and keep `--delay-seconds` non-zero so repeated pages to one merchant are
 spaced out.
+
+## Ongoing collection
+
+Three jobs, in decreasing frequency. All are scheduled with `launchd` rather than
+`cron`, because launchd runs a missed job once the machine wakes and a sleeping
+laptop would otherwise drop days from the series without saying so.
+
+| Job | Cadence | Script | What it produces |
+| --- | --- | --- | --- |
+| Panel probe | daily 03:10 | `daily_panel_probe.sh` | `panel-observations-<date>.jsonl.gz` |
+| Discovery scan | Sunday 04:30 | `weekly_discovery_scan.sh` | a new `panel-<date>.jsonl.gz` |
+| Intraday probe | manual | `intraday_probe.py` | `intraday-<label>.jsonl.gz` |
+
+The **panel probe** re-checks only merchants carrying a known multi-seller product,
+about a third of the discovery crawl, and records only tracked SKUs. It uses a deeper
+page cap than discovery because a merchant truncated at the cap cannot distinguish
+"offer gone" from "offer beyond the cap". Consecutive runs are also
+calibration/evaluation pairs, so every day adds another set of replayable episodes.
+
+The **discovery scan** finds new merchants and newly shared products; the daily probe
+cannot, since it only revisits what is already known. It deletes its own raw snapshot
+afterwards, keeping the extracted panel.
+
+The **intraday probe** samples a small high-overlap set at 0, 1, 5, 15, 30 and 60
+minutes. Published price series are daily at best, so sub-daily offer volatility is
+unmeasured; a negative result there is as informative as a positive one.
+
+Install the schedules:
+
+```bash
+cp scripts/com.ahnafyy.ucp-panel-probe.plist ~/Library/LaunchAgents/
+cp scripts/com.ahnafyy.ucp-weekly-discovery.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/com.ahnafyy.ucp-panel-probe.plist
+launchctl load ~/Library/LaunchAgents/com.ahnafyy.ucp-weekly-discovery.plist
+```
+
+## What is versioned and what is not
+
+Git holds manifests, scripts, overlap reports, the crawler denylist, and the
+compressed panels. Raw discovery snapshots are not versioned: one is roughly 770 MB
+uncompressed, and the panel extracted from it is 30 times smaller and is what the
+study actually replays. Regenerate a snapshot with the scan script, or keep it in
+object storage.
+
+## Crawler conduct
+
+`crawler-denylist.txt` records every domain that refused us, with the reason. A
+listed domain is never contacted again, by any script. The crawler identifies itself
+with a contact URL, stops immediately on 401, 403, 405 or 429, backs off
+exponentially only for server errors and timeouts, and paces calls to a single
+merchant.

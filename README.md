@@ -105,11 +105,14 @@ that must pass for the build to succeed.
 
 - An exact finite-horizon stopping solver, verified against brute-force enumeration
   of every deterministic policy on small instances.
+- A closed-form rule computable by hand, reproducing the classical Cayley-Moser
+  reservation sequence.
 - A permit ledger that reserves resources before a call and charges censored usage
   conservatively, so budget overruns are impossible rather than unlikely.
-- A replay harness that scores eight policy arms against frozen merchant panels.
-- Two dated snapshots of a live merchant ecosystem and the scripts that collected
-  them.
+- A replay harness that scores ten policy arms against frozen merchant panels.
+- A measurement pipeline over a live commerce protocol: discovery scans across every
+  reachable merchant, a daily panel probe for offer survival, and an intraday probe
+  for a timescale nobody has published.
 
 The host application remains responsible for LLM calls, merchant tools, credentials,
 timeouts, and purchase execution. The optimizer does not contact merchants or make a
@@ -271,25 +274,35 @@ open `http://127.0.0.1:4321/`.
 
 ## Research status
 
-Five claims are registered in `research/claims.yml`, each backed by an executable
+Eight claims are registered in `research/claims.yml`, each backed by an executable
 evaluator that runs during `paperkit build`:
 
 | Claim | Status | What it asserts |
 | --- | --- | --- |
 | `OFFER-EPHEMERALITY-001` | numerical | Listings are delisted and repriced between snapshots |
+| `OVERLAP-SPARSITY-001` | numerical | Few products reach three or more independent sellers |
 | `SOLVER-AGREEMENT-001` | exact-computational | The solver matches brute-force enumeration exactly |
+| `CLOSED-FORM-RULE-001` | exact-computational | The hand-computable rule tracks the solver |
 | `STOPPING-ADVANTAGE-001` | numerical | Adaptive beats the best tuned fixed rule on held-out panels |
 | `NO-ADVANTAGE-REGION-001` | computational-pattern | There is a measured region where it does not help, and one where it hurts |
+| `SECRETARY-RULE-001` | computational-pattern | The 37% rule costs about half the available saving |
 | `PERMIT-SAFETY-001` | conjecture | Permit accounting never exceeds the initial budget |
 
 Known limits, stated plainly:
 
 - The live-panel effect is statistically real but economically small.
-- Almost every episode has exactly two merchants, so the result does not separate the
-  full dynamic program from one-step lookahead, and routing is untested.
+- Almost every replayed episode has exactly two merchants, so the live result does not
+  separate the full dynamic program from one-step lookahead, and routing is untested.
+  A wider scan has since found 4,452 products with three or more sellers, but those
+  merchants have no calibration snapshot yet, so they are not episodes until the daily
+  panel probe accumulates a second date.
 - Requiring a single currency discards the majority of cross-merchant SKUs.
-- The decision table comes from simulation calibrated to the measured corpus, and is
-  labelled as such wherever it appears.
+- The decision table and the rule comparison come from simulation calibrated to the
+  measured corpus, and are labelled as such wherever they appear.
+- No-recall is justified by the protocol, which states that catalog responses are not
+  transactional commitments and that checkout quotes expire, rather than by observed
+  price movement. Prices in this corpus move slowly, consistent with the online
+  price-rigidity literature.
 - Permit safety is supported by observing zero violations across every replayed
   episode, which is evidence and not a proof.
 - The merchant panel rests on a documented declared-capability assumption rather than
