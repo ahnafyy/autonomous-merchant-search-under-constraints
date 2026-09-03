@@ -1,0 +1,53 @@
+7thavenue.co  # unavailable after 3 attempts: <urlopen error [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1010)>
+woodlandpatternbookcenter.com  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)
+alfadena.com  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)
+archicfurniture.com  # unavailable after 3 attempts: <urlopen error [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1010)>
+awe-tuning.com  # unavailable after 3 attempts: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>
+barbaraoneill.com  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)
+bgsneakers.com  # unavailable after 3 attempts: <urlopen error [SSL: TLSV1_ALERT_INTERNAL_ERROR] tlsv1 alert internal error (_ssl.c:1010)>
+blueboltchargers.com  # unavailable after 3 attempts: <urlopen error [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1010)>
+brightbasket.co  # unavailable after 3 attempts: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'brightbasket.co'. (_ssl.c:1010)>
+buckleybelts.com  # unavailable after 3 attempts: <urlopen error [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1010)>
+easyeraclock.com  # unavailable after 3 attempts: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1010)>
+fleece-company.co  # unavailable after 3 attempts: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1010)>
+garagegrowngear.com  # 403
+glowtekbeauty.com  # unavailable after 3 attempts: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1010)>
+greenleafgoods.shop  # unavailable after 3 attempts: <urlopen error [Errno 8] nodename nor servname provided, or not known>
+gritxglorysupply.com  # unavailable after 3 attempts: Expecting value: line 16 column 1 (char 15)
+hairsswig.com  # unavailable after 3 attempts: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'hairsswig.com'. (_ssl.c:1010)>
+homegymshq.com  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)
+ithinksmart.gr  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)
+justicehomesolutions.org  # unavailable after 3 attempts: <urlopen error [Errno 8] nodename nor servname provided, or not known>
+kbeautyart.com  # unavailable after 3 attempts: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1010)>
+lipssolusciouss.com  # unavailable after 3 attempts: <urlopen error [Errno 61] Connection refused>
+maeandcohome.com.au  # unavailable after 3 attempts: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'maeandcohome.com.au'. (_ssl.c:1010)>
+magento-test.kube.beecommerce.pl  # unavailable after 3 attempts: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1010)>
+mantlepartner.com  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)
+maplenest.net  # unavailable after 3 attempts: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1010)>
+meditackits.com  # unavailable after 3 attempts: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>
+motiontrendz.net  # unavailable after 3 attempts: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1010)>
+newbenytool.com  # unavailable after 3 attempts: <urlopen error [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1010)>
+nordichome.store  # unavailable after 3 attempts: <urlopen error [Errno 8] nodename nor servname provided, or not known>
+officialstatusla.com  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)
+petopets.com  # unavailable after 3 attempts: <urlopen error [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1010)>
+promiseplanner.store  # unavailable after 3 attempts: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'promiseplanner.store'. (_ssl.c:1010)>
+puertoricoboatrentals.com  # unavailable after 3 attempts: <urlopen error [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1010)>
+saltnewyork.com  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)
+sfigure.com  # unavailable after 3 attempts: <urlopen error [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1010)>
+sevefripe.com  # unavailable after 3 attempts: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>
+shadyrays.com  # unavailable after 3 attempts: HTTP Error 500: Internal Server Error
+shophouzz.com  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)
+sminvite.com  # unavailable after 3 attempts: <urlopen error [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1010)>
+sydneyluxline.com  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)
+the-powermotion.com  # unavailable after 3 attempts: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1010)>
+thebrytelabs.com  # unavailable after 3 attempts: HTTP Error 502: Bad Gateway
+thediamondstore.co.uk  # unavailable after 3 attempts: <urlopen error [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1010)>
+traveltribeus.com  # unavailable after 3 attempts: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1010)>
+trybiograde.com  # 403
+twostonesclimbing.com  # unavailable after 3 attempts: <urlopen error [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1010)>
+ucpscanner.com  # unavailable after 3 attempts: <urlopen error [Errno 8] nodename nor servname provided, or not known>
+vintage-racewear.com  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)
+virtuallee.store  # unavailable after 3 attempts: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1010)>
+vsznclothing.com  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)
+worldbridgecommerce.net  # unavailable after 3 attempts: <urlopen error [Errno 8] nodename nor servname provided, or not known>
+yoyojapanstore.com  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)

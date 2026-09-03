@@ -32,3 +32,7 @@ paper/*.fls
 paper/*.log
 paper/*.out
 paper/*.pdf
+
+# Expanded discovery snapshots are large; git keeps the derived panel instead.
+data/ucp/deep-scan-rows-*-expanded.jsonl.gz
+data/ucp/deep-scan-matches-*-expanded.json

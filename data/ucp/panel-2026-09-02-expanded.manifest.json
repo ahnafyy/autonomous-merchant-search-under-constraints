@@ -1,0 +1,23 @@
+{
+  "merchant_count_histogram": {
+    "2": 33298,
+    "3": 3302,
+    "4": 825,
+    "5": 225,
+    "6": 55,
+    "7": 21,
+    "8": 5,
+    "9": 6,
+    "10": 2,
+    "11": 1,
+    "12": 2,
+    "13": 2,
+    "14": 6
+  },
+  "merchants": 1101,
+  "min_merchants": 2,
+  "observations": 92749,
+  "products": 37750,
+  "single_currency": true,
+  "snapshot_date": "2026-09-02-expanded"
+}

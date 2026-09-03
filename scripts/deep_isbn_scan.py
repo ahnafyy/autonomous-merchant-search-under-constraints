@@ -39,6 +39,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from probe_gtin_support import (  # noqa: E402
     GTIN_PATTERN,
+    MerchantRefused,
     discover_mcp_endpoint,
     search_catalog_page,
 )
@@ -47,7 +48,25 @@ DATA_DIR = Path("data/ucp")
 GTIN_SCAN_PATH = DATA_DIR / "gtin-scan-2026-08-02.json"
 CATEGORY_PATH = DATA_DIR / "candidates-2026-04-02.by-category.json"
 INVENTORY_PATH = DATA_DIR / "inventory-declared-capability-2026-08-02.json"
+CANDIDATES_PATH = DATA_DIR / "candidates-2026-04-02.json"
+# Domains that refused us once are never contacted again.
+DENYLIST_PATH = DATA_DIR / "crawler-denylist.txt"
 ISBN_PATTERN = re.compile(r"^97[89]\d{10}$")
+
+
+def load_denylist() -> set[str]:
+    if not DENYLIST_PATH.is_file():
+        return set()
+    return {
+        line.split("#", 1)[0].strip()
+        for line in DENYLIST_PATH.read_text(encoding="utf-8").splitlines()
+        if line.split("#", 1)[0].strip()
+    }
+
+
+def record_refusal(domain: str, reason: str) -> None:
+    with DENYLIST_PATH.open("a", encoding="utf-8") as handle:
+        handle.write(f"{domain}  # {reason}\n")
 
 
 def base_domain(domain: str) -> str:
@@ -55,7 +74,9 @@ def base_domain(domain: str) -> str:
     return ".".join(parts[-2:]) if len(parts) >= 2 else domain
 
 
-def target_domains(*, include_inventory: bool = True) -> dict[str, str | None]:
+def target_domains(
+    *, include_inventory: bool = True, include_candidates: bool = False
+) -> dict[str, str | None]:
     """Return {domain: known_mcp_endpoint_or_None}."""
     gtin_scan = json.loads(GTIN_SCAN_PATH.read_text(encoding="utf-8"))
     targets: dict[str, str | None] = {
@@ -70,7 +91,22 @@ def target_domains(*, include_inventory: bool = True) -> dict[str, str | None]:
             domain = entry.get("domain")
             if domain:
                 targets.setdefault(domain, entry.get("endpoint"))
-    return targets
+    if include_candidates and CANDIDATES_PATH.is_file():
+        # Every domain whose .well-known document advertised the protocol.
+        payload = json.loads(CANDIDATES_PATH.read_text(encoding="utf-8"))
+        entries = payload["endpoints"] if isinstance(payload, dict) else payload
+        for entry in entries:
+            raw = entry.get("capability_url") or entry.get("merchant_id") or ""
+            domain = re.sub(r"^https?://", "", raw).split("/")[0]
+            if domain:
+                targets.setdefault(domain, None)
+
+    denied = load_denylist()
+    return {
+        domain: endpoint
+        for domain, endpoint in targets.items()
+        if domain not in denied
+    }
 
 
 def deep_scan_domain(
@@ -160,6 +196,9 @@ def summarize(
         "domains_truncated": sum(
             1 for status in domain_status.values() if status == "truncated"
         ),
+        "domains_refused": sum(
+            1 for status in domain_status.values() if status.startswith("refused")
+        ),
         "domain_status": dict(sorted(domain_status.items())),
         "total_rows": len(rows),
         "unique_skus": len(by_sku),
@@ -180,8 +219,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--delay-seconds",
         type=float,
-        default=0.25,
+        default=1.0,
         help="Pause between paginated calls to the same merchant",
+    )
+    parser.add_argument(
+        "--include-candidates",
+        action="store_true",
+        help="Also scan every domain whose .well-known document advertised the protocol",
     )
     parser.add_argument(
         "--limit-domains", type=int, help="Scan only the first N targets (pilot runs)"
@@ -196,7 +240,7 @@ def main(argv: list[str] | None = None) -> int:
     rows_path = DATA_DIR / f"{args.output_prefix}-rows-{args.date}.jsonl"
     matches_path = DATA_DIR / f"{args.output_prefix}-matches-{args.date}.json"
 
-    targets = target_domains()
+    targets = target_domains(include_candidates=args.include_candidates)
     if args.limit_domains is not None:
         targets = dict(sorted(targets.items())[: args.limit_domains])
     print(
@@ -219,6 +263,11 @@ def main(argv: list[str] | None = None) -> int:
                 page_size=args.page_size,
                 delay_seconds=args.delay_seconds,
             )
+        except MerchantRefused as refusal:
+            # Do not contact this merchant again, in this run or any future one.
+            with lock:
+                record_refusal(domain, str(refusal.status))
+            return domain, [], f"refused:{refusal.status}"
         except Exception as exc:  # noqa: BLE001 - one bad domain must not abort the batch
             print(f"error on {domain}: {type(exc).__name__}: {exc}", file=sys.stderr)
             return domain, [], f"error:{type(exc).__name__}"

@@ -25,6 +25,7 @@ import json
 import re
 import sys
 import threading
+import time
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -36,17 +37,52 @@ PROFILE_URL = (
     "site/public/ucp-agent-profile.json"
 )
 GTIN_PATTERN = re.compile(r"^\d{12,14}$")
-USER_AGENT = "autonomous-shopping-optimizer-research/0.1"
+CONTACT_URL = "https://github.com/ahnafyy/autonomous-merchant-search-under-constraints"
+USER_AGENT = (
+    f"autonomous-shopping-optimizer-research/0.2 (+{CONTACT_URL}; read-only research crawler)"
+)
+MAX_ATTEMPTS = 3
+BACKOFF_SECONDS = 2.0
+MAX_BACKOFF_SECONDS = 30.0
+
+
+class MerchantRefused(RuntimeError):
+    """The merchant asked us to stop: 401, 403, 429, or repeated 5xx.
+
+    Raised so the caller can abandon this domain immediately and remember it,
+    rather than retrying into a block.
+    """
+
+    def __init__(self, domain_or_url: str, status: int | str) -> None:
+        super().__init__(f"{domain_or_url} refused with {status}")
+        self.status = status
 
 
 def _fetch_json(url: str, *, method: str = "GET", body: bytes | None = None) -> dict:
-    request = urllib.request.Request(url, data=body, method=method)
-    request.add_header("User-Agent", USER_AGENT)
-    if body is not None:
-        request.add_header("Content-Type", "application/json")
-        request.add_header("Accept", "application/json, text/event-stream")
-    with urllib.request.urlopen(request, timeout=15) as response:
-        return json.loads(response.read().decode("utf-8"))
+    last_error: Exception | None = None
+    for attempt in range(MAX_ATTEMPTS):
+        request = urllib.request.Request(url, data=body, method=method)
+        request.add_header("User-Agent", USER_AGENT)
+        if body is not None:
+            request.add_header("Content-Type", "application/json")
+            request.add_header("Accept", "application/json, text/event-stream")
+        try:
+            with urllib.request.urlopen(request, timeout=15) as response:
+                return json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError as error:
+            # Treat these as a request to stop, never as something to retry harder.
+            if error.code in (401, 403, 405, 429):
+                raise MerchantRefused(url, error.code) from error
+            if error.code < 500:
+                raise
+            last_error = error
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as error:
+            last_error = error
+
+        if attempt < MAX_ATTEMPTS - 1:
+            time.sleep(min(BACKOFF_SECONDS * (2**attempt), MAX_BACKOFF_SECONDS))
+
+    raise MerchantRefused(url, f"unavailable after {MAX_ATTEMPTS} attempts: {last_error}")
 
 
 def discover_mcp_endpoint(domain: str) -> str | None:
