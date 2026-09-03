@@ -73,16 +73,16 @@ const { merchantForecasts, observedPrice, failurePenalty } = Astro.props;
   <section class="workbench__result" aria-labelledby="workbench-decision-title" aria-live="polite">
     <div class="workbench__verdict">
       <div>
-        <span class="eyebrow">Live constrained plan</span>
-        <h3 id="workbench-decision-title">Decision for this offer</h3>
+        <span class="eyebrow">Agent's recommendation</span>
+        <h3 id="workbench-decision-title">Buy now or check another store?</h3>
       </div>
       <strong class="decision-badge" data-workbench-action>Calculating</strong>
     </div>
     <dl class="workbench__metrics">
-      <div><dt>Reservation price</dt><dd data-workbench-reservation>--</dd></div>
-      <div><dt>Next merchant</dt><dd data-workbench-next>--</dd></div>
-      <div><dt>Feasible alternatives</dt><dd data-workbench-feasible>--</dd></div>
-      <div><dt>Calls affordable</dt><dd data-workbench-affordable>--</dd></div>
+      <div><dt>Buy-now price</dt><dd data-workbench-reservation>--</dd></div>
+      <div><dt>Next store</dt><dd data-workbench-next>--</dd></div>
+      <div><dt>Stores still reachable</dt><dd data-workbench-feasible>--</dd></div>
+      <div><dt>Checks still affordable</dt><dd data-workbench-affordable>--</dd></div>
     </dl>
     <p data-workbench-explanation>Computing the exact finite-horizon plan.</p>
     <p class="workbench__boundary">

@@ -74,13 +74,14 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
         </div>
         <h1 id="paper-title">{project.title}</h1>
         <p class="subtitle">
-          The right question is not whether to search more. It is whether another merchant can still change
-          the decision.
+          Is there a rule for knowing when to buy and when to keep looking? Yes: turn the remaining search
+          budget into a reservation price, then buy only when the offer clears that threshold.
         </p>
         <p class="hero-result">
           <span>Measured on live merchants</span>
           <strong>
-            Adaptive stopping beats a tuned fixed rule when price variation and remaining budget make another query useful
+            A budget-aware stopping rule beats the strongest tuned fixed alternative on held-out panels, and a
+            calibrated decision map shows when the extra search is worth taking
           </strong>
         </p>
         <div class="author-block">
@@ -101,41 +102,20 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
       <ResultStrip results={resultStrip} />
     </section>
 
-    <section class="section section--rule" id="workbench" aria-labelledby="workbench-title">
+    <section class="section section--rule" id="benchmark" aria-labelledby="benchmark-title">
       <div class="section__heading">
         <p class="section-number">1</p>
         <div>
-          <span class="eyebrow">Interactive optimizer</span>
-          <h2 id="workbench-title">Set the limits your agent actually has</h2>
-        </div>
-      </div>
-      <p class="section-intro">
-        This is the decision surface your agent actually faces: time, token budget, API calls, spend, and the purchase
-        cap. The planner below shows what changes when those constraints tighten, and where the fixed rule stops being
-        good enough.
-      </p>
-      <PlanningWorkbench
-        merchantForecasts={results.merchant_forecasts}
-        observedPrice={results.observed_price}
-        failurePenalty={results.failure_penalty}
-      />
-    </section>
-
-    <section class="section section--rule" id="benchmark" aria-labelledby="benchmark-title">
-      <div class="section__heading">
-        <p class="section-number">2</p>
-        <div>
-          <span class="eyebrow">Method · Minimal benchmark</span>
-          <h2 id="benchmark-title">Carry remaining resources into every decision</h2>
+          <span class="eyebrow">Why the rule changes</span>
+          <h2 id="benchmark-title">Every extra store has a cost</h2>
         </div>
       </div>
       <div class="prose-grid">
         <div class="prose">
           <p>
-            The core question is not whether adaptive search is always better. It is when the search problem is rich
-            enough for the extra state to matter. Each Bellman state tracks the remaining time, tokens, API calls, and
-            spend budget, and a query is only legal if every resource requirement fits. The purchase-price cap is an
-            admissibility rule checked before the optimizer can return a buy action.
+            Checking another store can save money, but it also uses time, calls, and budget. The agent tracks what is
+            left of each limit and can only keep searching when the next check still fits. It never buys above the
+            shopper's maximum price.
           </p>
           <div class="equation">
             <p aria-label="Buy at time t when price is no greater than both the price cap and continuation value under the remaining budget">
@@ -165,10 +145,10 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
 
     <section class="section section--rule" id="rule" aria-labelledby="rule-title">
       <div class="section__heading">
-        <p class="section-number">3</p>
+        <p class="section-number">2</p>
         <div>
-          <span class="eyebrow">Result · A rule you can compute by hand</span>
-          <h2 id="rule-title">Two steps, no solver</h2>
+          <span class="eyebrow">The decision rule</span>
+          <h2 id="rule-title">Calculate the price that tells the agent to stop</h2>
         </div>
       </div>
       <div class="prose-grid">
@@ -226,6 +206,25 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
       </div>
     </section>
 
+    <section class="section section--rule" id="workbench" aria-labelledby="workbench-title">
+      <div class="section__heading">
+        <p class="section-number">3</p>
+        <div>
+          <span class="eyebrow">Try the rule</span>
+          <h2 id="workbench-title">Give your agent the limits of this shopping task</h2>
+        </div>
+      </div>
+      <p class="section-intro">
+        Set the current offer, the shopper's maximum price, and what the agent can still spend on checking other stores.
+        The planner shows the buy-now price and whether searching again is worthwhile.
+      </p>
+      <PlanningWorkbench
+        merchantForecasts={results.merchant_forecasts}
+        observedPrice={results.observed_price}
+        failurePenalty={results.failure_penalty}
+      />
+    </section>
+
     <section class="section section--claims" id="claims" aria-labelledby="claims-title">
       <div class="section__heading">
         <p class="section-number">4</p>
@@ -242,21 +241,24 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
         {results.median_price_dispersion_ratio}, which is exactly why the advantage is modest in practice. The table below
         shows where the extra complexity is worth it and where a fixed threshold is the better operational choice.
       </p>
+      <p class="decision-context">
+        Calibrated from the live dataset, not a universal retail rule.
+      </p>
       <div class="decision-spotlight" aria-label="Adaptive stopping decision summary">
         <div class="spotlight-card spotlight-card--win">
-          <span class="spotlight-kicker">Adaptive wins</span>
-          <strong>Above 1.1× price spread</strong>
-          <small>Once merchants actually differ, the extra query is worth the data.</small>
+          <span class="spotlight-kicker">Compare more stores</span>
+          <strong>Prices differ by 1.1× or more</strong>
+          <small>When another store could offer a meaningfully different price, searching can pay.</small>
         </div>
         <div class="spotlight-card spotlight-card--flat">
-          <span class="spotlight-kicker">No edge</span>
-          <strong>At or below 1.01× spread</strong>
-          <small>When prices are nearly identical, a fixed threshold is usually just as good.</small>
+          <span class="spotlight-kicker">Buy sooner</span>
+          <strong>Prices differ by 1.01× or less</strong>
+          <small>When stores offer nearly the same price, a simple fixed rule is usually enough.</small>
         </div>
         <div class="spotlight-card spotlight-card--tight">
-          <span class="spotlight-kicker">Budget too tight</span>
-          <strong>Few queries left</strong>
-          <small>When the budget is too constrained, the extra state can only hurt.</small>
+          <span class="spotlight-kicker">Save the last call</span>
+          <strong>Too little budget remains</strong>
+          <small>Do not spend a final check when there is no room left to benefit from its answer.</small>
         </div>
       </div>
       <figure class="research-figure">
@@ -275,8 +277,8 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
       <div class="section__heading">
         <p class="section-number">5</p>
         <div>
-          <span class="eyebrow">Open-source implementations and evidence</span>
-          <h2 id="reproduce-title">Run the optimizer or reproduce the research</h2>
+          <span class="eyebrow">Open-source rule and evidence</span>
+          <h2 id="reproduce-title">Use the rule in your shopping agent</h2>
         </div>
       </div>
       <p class="section-intro">
