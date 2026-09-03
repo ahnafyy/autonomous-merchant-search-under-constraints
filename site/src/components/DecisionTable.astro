@@ -1,0 +1,125 @@
+---
+interface DecisionRow {
+  merchant_count: number;
+  dispersion_ratio: number;
+  budget_fraction: number;
+  relative_improvement: number;
+  verdict: "use_adaptive" | "use_fixed" | "no_difference";
+}
+
+interface Props {
+  rows: DecisionRow[];
+}
+
+const { rows } = Astro.props;
+
+const verdictLabel: Record<DecisionRow["verdict"], string> = {
+  use_adaptive: "Use adaptive",
+  use_fixed: "Use fixed",
+  no_difference: "No difference",
+};
+---
+
+<div
+  class="decision-table"
+  tabindex="0"
+  role="region"
+  aria-label="Decision table: when adaptive stopping beats a tuned fixed rule"
+>
+  <table>
+    <caption>
+      Whether adaptive stopping beats a tuned fixed rule, by merchant count, cross-merchant price
+      spread, and the fraction of merchants the budget allows querying. Values come from a
+      simulation calibrated to the measured corpus; a verdict is only reported when the paired
+      bootstrap interval excludes zero.
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col">Merchants</th>
+        <th scope="col">Price spread</th>
+        <th scope="col">Budget</th>
+        <th scope="col">Improvement</th>
+        <th scope="col">Verdict</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr data-verdict={row.verdict}>
+          <td>{row.merchant_count}</td>
+          <td>{row.dispersion_ratio.toFixed(2)}×</td>
+          <td>{Math.round(row.budget_fraction * 100)}%</td>
+          <td>{(row.relative_improvement * 100).toFixed(2)}%</td>
+          <td>
+            <span class={`verdict verdict--${row.verdict}`}>{verdictLabel[row.verdict]}</span>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .decision-table {
+    overflow-x: auto;
+  }
+
+  .decision-table:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  caption {
+    caption-side: bottom;
+    padding-top: 0.75rem;
+    text-align: left;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--ink-muted, #55606b);
+  }
+
+  th,
+  td {
+    padding: 0.5rem 0.75rem;
+    text-align: right;
+    border-bottom: 1px solid var(--rule, #d8dde2);
+  }
+
+  th:first-child,
+  td:first-child,
+  th:last-child,
+  td:last-child {
+    text-align: left;
+  }
+
+  thead th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .verdict {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    border: 1px solid currentColor;
+  }
+
+  .verdict--use_adaptive {
+    color: #1b6b4a;
+  }
+
+  .verdict--use_fixed {
+    color: #9a3412;
+  }
+
+  .verdict--no_difference {
+    color: #55606b;
+  }
+</style>

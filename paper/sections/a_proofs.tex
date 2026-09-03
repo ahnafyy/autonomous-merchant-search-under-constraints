@@ -1,12 +1,141 @@
-\section{Proofs And Derivations}
+\section{The Stopping Recurrence}
+\label{app:proofs}
 
-% MERCHANT-PERMIT-SAFETY-CONJECTURE-001
-No analytic or theorem-level claim is established in the current release.  The
-pathwise permit-safety statement is registered as a conjecture, and focused
-ledger tests are not a substitute for a proof.  A future proof must state the
-host-enforcement, atomic-reservation, one-time-reconciliation, and conservative
-censoring assumptions explicitly.
+This appendix states the dynamic program summarized in Section~\ref{sec:model}.
+Nothing in the body depends on it. No theorem is claimed here: the recurrence is
+standard backward induction, and its role in this paper is to be implemented exactly
+and checked against enumeration, not to be new.
 
-The Bellman recurrence in Section~3 is evaluated by exact rational computation;
-its finite benchmark output is implementation validation rather than a
-proof-backed research finding.
+\subsection{Setup}
+
+An episode has merchants $1, \dots, n$ in a fixed order, a hard budget vector $b$
+over time, tokens, API calls, and spend, a hard purchase-price cap $P_{\max}$, and a
+failure penalty $\Pi$ charged when the episode ends without a purchase. Querying
+merchant $t$ consumes a known resource vector $c_t$ and reveals either that the offer
+is unavailable, with weight $u_t$, or a price $p$ drawn from a finite support with
+weights $w_{t,p}$. Let $W_t = u_t + \sum_p w_{t,p}$.
+
+Offers are not recallable: an available offer is accepted when seen or lost.
+
+\subsection{Recurrence}
+
+Let $V_t(b)$ be the expected purchase loss before querying merchant $t$ with budget
+$b$ remaining. Search ends when merchants run out or the next query is unaffordable:
+
+\begin{equation}
+  V_t(b) = \Pi
+  \qquad\text{if } t > n \text{ or } c_t \not\le b .
+\end{equation}
+
+Otherwise the agent queries, observes, and either accepts or continues. Writing
+$V_{t+1}(b - c_t)$ for the continuation value:
+
+\begin{equation}
+  V_t(b) = \frac{1}{W_t}\left[
+    u_t\,V_{t+1}(b - c_t)
+    + \sum_{p} w_{t,p}\,
+      \begin{cases}
+        \min\{p,\; V_{t+1}(b - c_t)\} & p \le P_{\max} \\
+        V_{t+1}(b - c_t) & p > P_{\max}
+      \end{cases}
+  \right].
+\end{equation}
+
+The $\min$ is the decision: accept $p$ when it is no worse than continuing. An offer
+above the hard cap cannot be bought at any price, so it contributes the continuation
+value rather than $p$.
+
+\subsection{The reservation price}
+
+The optimal action is a threshold rule. Define
+
+\begin{equation}
+  R_t(b) = \min\{P_{\max},\; V_{t+1}(b - c_t)\},
+\end{equation}
+
+and accept the observed offer exactly when $p \le R_t(b)$. This is the reservation
+price of Section~\ref{sec:model}: the cap, or the value of continuing, whichever
+binds first.
+
+The three qualitative forces described in the body follow directly. When $t = n$ or
+no further query is affordable, $V_{t+1} = \Pi$ and the threshold rises to the cap,
+so the agent accepts. Raising $u_t$ mixes more of the fallback into the continuation
+value and raises the threshold. Making a future merchant cheaper lowers $V_{t+1}$ and
+lowers the threshold.
+
+\subsection{Deriving the closed form}
+
+Section~\ref{sec:rule} states the rule without derivation. Take prices i.i.d.\
+uniform on $[a, b]$, ignore stockouts, and let every query cost the same, so the
+budget fixes a horizon $k$ through \eqref{eq:horizon}. Then $R_k$ depends only on
+$k$, and the threshold identity is
+
+\begin{equation}
+  R_k = \mathbb{E}\!\left[\min(P, R_{k-1})\right],
+  \qquad R_0 = b .
+\end{equation}
+
+For $r \in [a,b]$ and $P \sim \mathrm{Unif}[a,b]$,
+
+\begin{equation}
+  \mathbb{E}[\min(P, r)]
+  = r - \frac{(r-a)^2}{2(b-a)} .
+\end{equation}
+
+Substituting $u_k = (R_k - a)/(b-a)$ and cancelling $(b-a)$ leaves the
+one-dimensional map
+
+\begin{equation}
+  u_k = u_{k-1} - \tfrac{1}{2} u_{k-1}^2, \qquad u_0 = 1,
+\end{equation}
+
+which is \eqref{eq:closedform}. The first terms are $u_1 = \tfrac12$,
+$u_2 = \tfrac38$, $u_3 = \tfrac{39}{128}$.
+
+Two remarks. First, the map is exactly the Cayley--Moser recursion: writing
+$\mu_k = 1 - u_k$ gives $\mu_k = \tfrac12(1 + \mu_{k-1}^2)$, the standard
+full-information form~\citep{gilbert1966recognizing,ferguson1989secretary}. The
+asymptotic $u_k \sim 2/k$ follows from the logistic form
+$\alpha_k = \alpha_{k-1}(1 - \alpha_{k-1})$ under $u_k = 2\alpha_k$, for which a
+full expansion is known~\citep{finch2024quadratic}. Second, no inspection cost
+appears anywhere above; cost is absent from the objective and enters only through
+the horizon.
+
+Since $u_k$ is decreasing in $k$, the threshold rises as the budget drains, and at
+$k = 0$ it reaches $b$: with nothing reachable left the agent accepts any admissible
+offer rather than incur the failure penalty.
+
+We verify the sequence numerically against the solver rather than relying on the
+algebra alone; agreement is within \ResultClosedFormMaxRelativeErrorPercent\% across
+the horizons checked, the residual being the discrete price grid the solver requires.
+
+\subsection{Adaptive routing}
+
+When the agent may also choose \emph{which} merchant to query, the state carries the
+set $S$ of remaining merchants and the recurrence minimizes over the choice:
+
+\begin{equation}
+  V(S, b) = \min_{t \in S,\; c_t \le b} \; Q_t(S, b),
+\end{equation}
+
+where $Q_t(S, b)$ is the bracketed expectation above with $V_{t+1}(b - c_t)$ replaced
+by $V(S \setminus \{t\}, b - c_t)$, and $V(S,b) = \Pi$ when no $t \in S$ is
+affordable. Ties are broken by lowest index so the policy is deterministic.
+
+\subsection{Computation}
+
+All arithmetic is exact and rational; no floating-point tolerance is involved.
+Subproblems are memoized on $(S, b)$ or $(t, b)$. The fixed-order program is linear
+in $n$ for a given budget path, while the routing version enumerates subsets and is
+exponential in $n$, which is acceptable at the horizons in this paper and is a real
+obstacle beyond them.
+
+\subsection{Verification}
+
+For instances small enough to enumerate every deterministic accept-or-continue
+policy, the minimum enumerated expected loss is compared against $V_1(b)$ in exact
+arithmetic. The registered instances cover distinct prices, stockout weight, a
+binding price cap, and a penalty large enough to dominate the price term. All
+\ResultSolverCasesVerified{} agree exactly (claim \texttt{SOLVER-AGREEMENT-001}).
+Agreement on these instances does not prove optimality in general, and the
+fixed-order instances say nothing about the routing variant.

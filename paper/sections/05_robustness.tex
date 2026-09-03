@@ -1,19 +1,62 @@
-\section{Robustness And Extensions}
+\section{Robustness and Controls}
+\label{sec:robustness}
 
-The current evidence validates the fixed-requirement recurrence, Python permit
-lifecycle, metric definitions, and existing package conformance.  It does not
-establish novelty or empirical robustness.  The first research check will replay
-frozen held-out merchant panels under constrained ARVP, the same policy with
-nonbinding budgets, equal-split, tuned fixed-split, worst-case-reserve, myopic
-feasible, fixed-depth, and routing and permit ablations.  Experiments must vary
-total budgets, perturb usage forecasts, charge planner latency, and report
-purchase loss, purchase failure, oracle regret, timeout and truncation rates,
-and hard-budget violations.
+The result in Section~\ref{sec:results} is small, so it deserves more scrutiny than a
+large one would. This section lists the checks that could have overturned it and what
+each returned.
 
-Three controls are especially important.  First, every runtime must enforce each
-permit before dispatch and conservatively reconcile censored usage.  Second, the
-same merchant outcomes and usage traces must be paired across policies.  Third,
-the constrained-versus-nonbinding gap, nonbinding-versus-oracle gap, and total
-constrained-versus-oracle gap must be reported separately.  If adaptive
-allocation cannot outperform the strongest fixed feasible baseline without an
-overrun, the contribution hypothesis is rejected.  These checks are pending.
+\paragraph{Paired comparison.}
+All policies see the same episodes, the same merchant arrival order, and the same
+failure penalty. The bootstrap resamples whole episode pairs rather than independent
+draws per policy. An apparent ranking that came from which episodes were sampled
+would not survive this, and the interval still excludes zero.
+
+\paragraph{Honestly tuned baselines.}
+Search depth and price threshold for the fixed rules are selected on calibration
+episodes and then frozen. Had we tuned them on the evaluation panels, the fixed rules
+would look better than any deployable version of themselves; had we left them
+untuned, the adaptive rule would win trivially. The reported comparison is against
+the strongest fixed rule available under the same information.
+
+\paragraph{An offline bound.}
+The exhaustive oracle inspects every merchant in the panel, including those an online
+policy never queried, and is scored offline. It is unattainable by construction and
+present to bound the achievable range. No online policy beats it in any episode; this
+is asserted as a test rather than assumed.
+
+\paragraph{A control that should fail.}
+The \texttt{never accept} policy is scored under the same rules as the others. If
+terminal failure were mishandled, declining everything would look attractive; it does
+not, by a wide margin.
+
+\paragraph{Budget enforcement.}
+Every replayed episode is checked for hard-budget violations, of which there were
+\ResultHardBudgetViolations{}. Because permits are reserved in full before dispatch
+and censored usage is charged at the permit, overrun is prevented rather than
+detected after the fact.
+
+\paragraph{Solver agreement.}
+The stopping solver is compared against exhaustive enumeration over all deterministic
+policies on \ResultSolverCasesVerified{} small instances, in exact arithmetic. A
+discrepancy would indicate that the recurrence, not the data, produced the result.
+The values agree exactly.
+
+\paragraph{Measurement reproducibility.}
+Two full scans minutes apart returned byte-identical output. Any drift attributed to
+the passage of time is therefore not scanner nondeterminism.
+
+\subsection{What we could not check}
+
+Two intended controls are not supported by the collected corpus and we record them as
+unresolved rather than passed.
+
+A \emph{nonbinding-budget twin}, which reruns the identical policy with budgets large
+enough never to bind in order to separate the cost of the constraint from routing
+error, is only meaningful when budgets actually bind. With a median of
+\ResultMedianMerchantCount{} merchants per episode, the realistic budget already
+covers the whole panel in most episodes, so the twin is nearly the same run.
+
+A \emph{routing ablation} separating gains from choosing \emph{which} merchant to
+query from gains from choosing \emph{when} to stop requires episodes with enough
+merchants for order to matter. This corpus does not provide them. The live result
+should be read as evidence about stopping alone, with routing untested.

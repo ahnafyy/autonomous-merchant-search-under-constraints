@@ -1,33 +1,58 @@
 \section{Introduction}
+\label{sec:introduction}
 
-An autonomous shopping agent that has found an acceptable offer still faces a
-sequential decision: buy now or spend additional resources searching for a
-better offer.  The decision is not governed by price alone.  A later query may
-miss a deadline, exceed a token or API allowance, consume the remaining API
-spend, or leave the agent without an admissible purchase.  A hard purchase-price
-cap creates the opposite restriction: even an available offer must be rejected
-when its price is infeasible.
+An agent that shops on someone's behalf faces the same question after every merchant
+it queries: buy this, or keep looking? Looking again might find a better price. It
+also spends wall-clock time, model tokens, API calls, and money, and the offer in
+hand may not survive the detour.
 
-This paper studies whether an autonomous shopping agent can jointly choose the
-next merchant and an enforceable resource permit so that it captures more
-exhaustive-search value than fixed feasible allocation under hard time, token,
-API, and purchase-price constraints.  The primary model is finite, sequential,
-and no-recall.  The optimizer carries the unqueried merchant set and remaining
-resources in its state and admits a query only when every reserved resource is
-available.
+In practice this question is answered by a constant. Query three merchants. Spend at
+most thirty seconds. Accept anything under a threshold. These rules are easy to ship
+and impossible to defend, because nobody has measured when they are good enough.
+Rather than argue the point from theory, we measure it.
 
-Alongside the research formulation, we release reusable open-source Python and
-npm packages for integrating the optimizer into shopping agents.  Both packages
-implement the current exact fixed-requirement planner and expose host-facing
-permit interfaces while leaving calls, credentials, and purchase execution to
-the application.  The Python package additionally implements atomic reservation
-receipts and conservative reconciliation of exact or censored usage; equivalent
-JavaScript receipt behavior remains open.  The release also includes shared
-conformance vectors, frozen-panel oracle metrics, a deterministic evidence
-pipeline, and an inspectable synthetic validation benchmark.  It does not yet
-provide the joint merchant-and-permit solver, a calibrated merchant corpus,
-adaptive policy comparison, or a novel research result.  Section~2 separates
-the current fixture from the planned empirical benchmark, Section~3 gives the
-implemented recurrence and planned extension, Section~4 states the evidence
-required for a future result, and Sections~5--8 delimit the evaluation still
-needed.
+\paragraph{What we do.}
+We collect two dated snapshots of a large set of merchants that publish
+machine-readable catalogs, turn them into replayable search episodes, and run eight
+stopping policies against the same frozen panels. The policies range from accepting
+the first available offer to an exact reservation-price rule, and include an offline
+oracle and a deliberately broken control.
+
+\paragraph{What we find.}
+Three results, in increasing order of practical usefulness.
+
+\begin{enumerate}
+  \item \textbf{Offers really are ephemeral.} Between the two snapshots,
+    \ResultDelistingRate{} of tracked listings disappeared and
+    \ResultPriceChangeRate{} of the survivors changed price. Repeating a scan minutes
+    apart reproduces it exactly, so this is drift in the world and not noise in the
+    instrument. Stopping is therefore a real decision. (Claim
+    \texttt{OFFER-EPHEMERALITY-001}.)
+  \item \textbf{Adaptive stopping wins, but barely.} On
+    \ResultHeldOutEpisodeCount{} held-out episodes the adaptive rule beats the
+    strongest tuned fixed rule, with the entire bootstrap interval below zero and
+    \ResultHardBudgetViolations{} budget violations. The effect is a fraction of a
+    percent of purchase cost. We report the small size as prominently as the
+    significance. (Claim \texttt{STOPPING-ADVANTAGE-001}.)
+  \item \textbf{The reason it is small is the useful part.} In this corpus the median
+    product is carried by \ResultMedianMerchantCount{} merchants at a price ratio of
+    \ResultMedianPriceDispersionRatio{}. When merchants charge the same price, no
+    stopping rule can help. A sweep calibrated to the measured churn and dispersion
+    shows adaptive stopping helping only once prices genuinely differ and the budget
+    allows acting on what a query reveals, and \emph{hurting} when the budget is too
+    tight to use the information. (Claim \texttt{NO-ADVANTAGE-REGION-001}.)
+\end{enumerate}
+
+\paragraph{What to take away.}
+The deliverable is not the dynamic program; that is a page of standard backward
+induction, deferred to Appendix~\ref{app:proofs}. The deliverable is
+Table~\ref{tab:decision}: given the price spread, merchant count, and budget an
+engineer can observe before writing any optimizer, it says whether adaptive stopping
+is worth the complexity. For a large part of the observed space, the honest answer is
+that it is not.
+
+\paragraph{Scope.}
+Every number in this paper is regenerated from the collected data by the build; none
+are typed by hand. Claims are registered with an executable evaluator before being
+reported, and results derived from simulation are labelled as such wherever they
+appear.

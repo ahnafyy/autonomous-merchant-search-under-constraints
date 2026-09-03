@@ -1,17 +1,30 @@
 \section{Conclusion}
+\label{sec:conclusion}
 
-We formulated autonomous merchant search as exact finite-horizon stopping with
-hard time, token, API-call, API-spend, and purchase-price constraints.  Remaining
-resources are part of the Bellman state, and the purchase cap restricts the
-admissible action set.  On the registered synthetic benchmark, binding resource
-regimes change the action for the same offer.
+We set out to answer a question engineers building shopping agents actually face:
+when is an adaptive stopping rule worth more than a fixed budget?
 
-The accompanying open-source Python and npm packages provide reusable
-implementations of the current exact fixed-requirement planner and host-facing
-permit contract.  The Python implementation also atomically reserves
-enforceable per-call permits, conservatively reconciles censored usage, and
-provides frozen-panel oracle metrics and endpoint-inventory screening.  These
-are implementation contributions, not evidence for the open empirical claim.
-The joint merchant-and-permit solver, calibrated merchant panels, paired policy
-comparison, JavaScript receipt parity, and safety proof remain open before that
-claim can be evaluated.
+The answer has three parts. Offers in the live corpus are genuinely ephemeral, so
+stopping is a real decision rather than a formality. An adaptive reservation-price
+rule does beat the strongest tuned fixed rule on held-out live panels, with the whole
+paired interval below zero and no budget violations. And the margin is small, for a
+reason that turns out to be the most useful output of the work: when merchants charge
+nearly the same price, or when the budget is too tight to act on what a query
+reveals, there is nothing for an optimizer to win, and in the tight-budget case it
+can lose.
+
+That last part is why we report a decision table rather than a headline improvement.
+A method that always helps is usually a method whose baselines were not tried
+seriously. Mapping where a technique stops paying for itself is more useful to
+someone shipping an agent than another point estimate, and it is the part of this
+work most likely to survive contact with a different corpus.
+
+The narrowness of the benchmark is itself a finding. Cross-merchant product overlap
+in this ecosystem is thin, and half of the episodes we could build have no price
+spread to exploit. Any claim that adaptive search yields large savings for autonomous
+shoppers should be checked against how often the same product is actually purchasable
+in more than one place at meaningfully different prices.
+
+We release the optimizer, the permit ledger, the replay harness, the collection
+scripts, and the dated snapshots, so the measurement can be repeated on a wider corpus
+or at a longer horizon than we could reach.

@@ -31,8 +31,13 @@ npm run test:e2e --prefix site
 
 The Python distribution in `packages/python/` is the canonical scientific
 implementation. The npm package in `packages/javascript/` implements the shared
-operations covered by `artifacts/conformance/`. Python-only operations are not
+operations covered by `artifacts/conformance/`, currently the planner, the middleware,
+the closed-form stopping rule, and the permit ledger. Python-only operations are not
 cross-language contracts until generated vectors and matching npm behavior are added.
+
+Python computes reservation prices in exact rational arithmetic while JavaScript uses
+doubles. Numeric vectors therefore carry an explicit tolerance, and integer results such
+as the affordable-query horizon are compared exactly.
 
 ```bash
 python -m build packages/python
@@ -47,16 +52,16 @@ environments named `pypi` and `npm`, then register
 `.github/workflows/publish-packages.yml` as a trusted publisher with each registry.
 The workflow uses OIDC and stores no registry token in the repository.
 
-## Release gate
+## Release checks
 
 `paperkit release --dry-run` always rebuilds evidence before validation. A real release
 also compiles the paper and site, builds both registry packages, then atomically
 replaces `dist/` with deterministic archives, citation metadata, and SHA-256
-checksums. It never approves a gate.
+checksums.
 
 Before release, verify that:
 
-- all five gate records contain a human approver and ISO date;
+- every executable claim evaluator passes in the regenerated manifest;
 - all manuscript and research placeholders are removed;
 - every claim has accurate scope, status, limitations, and evidence;
 - literature records and bibliography entries are verifiable;

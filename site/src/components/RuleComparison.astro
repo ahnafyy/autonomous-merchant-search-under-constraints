@@ -1,0 +1,143 @@
+---
+interface Arm {
+  arm: string;
+  mean_purchase_loss_minor: number;
+  mean_query_count: number;
+}
+
+interface Props {
+  arms: Arm[];
+  savingsCaptured: Record<string, number>;
+  merchantCount: number;
+}
+
+const { arms, savingsCaptured, merchantCount } = Astro.props;
+
+const shown: { key: string; label: string; emphasis?: boolean }[] = [
+  { key: "accept_first", label: "Accept first offer" },
+  { key: "secretary_37", label: "Secretary rule (37%)" },
+  { key: "fixed_threshold", label: "Tuned fixed threshold" },
+  { key: "closed_form", label: "Closed form", emphasis: true },
+  { key: "adaptive_stopping", label: "Exact solver" },
+  { key: "exhaustive_oracle", label: "Offline oracle" },
+];
+
+const byArm = new Map(arms.map((arm) => [arm.arm, arm]));
+const rows = shown
+  .filter((entry) => byArm.has(entry.key))
+  .map((entry) => ({
+    ...entry,
+    arm: byArm.get(entry.key)!,
+    captured: savingsCaptured[entry.key] ?? 0,
+  }));
+---
+
+<div
+  class="rule-comparison"
+  tabindex="0"
+  role="region"
+  aria-label="Stopping rules compared by share of achievable saving"
+>
+  <table>
+    <caption>
+      Share of the achievable saving each rule captures, where accepting the first offer is 0%
+      and an offline oracle that inspects every merchant is 100%. Measured at {merchantCount}
+      merchants on a simulation calibrated to the observed corpus, because live episodes have
+      too few merchants to tell these rules apart.
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col">Rule</th>
+        <th scope="col">Savings captured</th>
+        <th scope="col">Queries used</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr class={row.emphasis ? "is-emphasis" : undefined}>
+          <th scope="row">{row.label}</th>
+          <td>
+            <span class="bar" aria-hidden="true" style={`--share:${Math.max(0, row.captured)}`}></span>
+            <span class="value">{(row.captured * 100).toFixed(1)}%</span>
+          </td>
+          <td>{row.arm.mean_query_count.toFixed(2)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .rule-comparison {
+    overflow-x: auto;
+  }
+
+  .rule-comparison:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  caption {
+    caption-side: bottom;
+    padding-top: 0.75rem;
+    text-align: left;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--ink-muted, #55606b);
+  }
+
+  th,
+  td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--rule, #d8dde2);
+    text-align: right;
+  }
+
+  th[scope="row"],
+  thead th:first-child {
+    text-align: left;
+    font-weight: 500;
+  }
+
+  thead th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .is-emphasis th[scope="row"] {
+    font-weight: 700;
+  }
+
+  td .value {
+    display: inline-block;
+    min-width: 3.5rem;
+  }
+
+  .bar {
+    display: inline-block;
+    width: calc(var(--share) * 6rem);
+    height: 0.55rem;
+    margin-right: 0.5rem;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0.35;
+    vertical-align: middle;
+  }
+
+  .is-emphasis .bar {
+    opacity: 0.8;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar {
+      transition: none;
+    }
+  }
+</style>

@@ -1,14 +1,58 @@
-\section{Implications}
+\section{What To Do In Your Agent}
+\label{sec:implications}
 
-The immediate design implication is that an agent should expose remaining
-resources to its stopping policy rather than hide them behind a single generic
-``search cost.''  A hard limit can remove future actions entirely, while a
-price cap can remove the current buy action.  These are feasibility changes,
-not merely changes in utility.
+This section is the practical summary. It assumes nothing from
+Section~\ref{sec:model} beyond the phrase ``reservation price''.
 
-For deployed systems, the recurrence suggests a separation between forecasting
-and control.  A forecast layer supplies merchant-specific price and availability
-distributions and query requirements; the controller applies the current hard
-budgets and admissibility rules.  The present benchmark verifies the controller
-only.  Whether forecast error, merchant reordering, or parallel queries dominate
-the stopping effect is an empirical question left open.
+\subsection{A checklist}
+
+Before adding a stopping optimizer, answer three questions about the situation your
+agent is actually in.
+
+\begin{enumerate}
+  \item \textbf{Do merchants charge different prices for this product?} Measure the
+    ratio of the dearest to the cheapest offer on a sample of real products. Below
+    roughly \ResultNoAdvantageDispersionAtOrBelow{}$\times$, stop here and use a
+    constant rule; there is nothing to optimize and the machinery will not pay for
+    itself.
+  \item \textbf{Can you afford to query most of the alternatives?} If your budget
+    covers only a small fraction of the reachable merchants, an adaptive rule can
+    make things worse by declining acceptable offers it cannot follow up. Either
+    raise the budget or accept early deliberately.
+  \item \textbf{Is more than one alternative genuinely reachable?} With a single
+    fallback, an optimal rule and a one-step lookahead coincide. Implement the simple
+    one.
+\end{enumerate}
+
+If all three point the same way, the rule is worth implementing, and
+Table~\ref{tab:decision} gives the improvement to expect.
+
+\subsection{Design guidance}
+
+\paragraph{Show the stopping rule the budget.}
+The most common failure we see is a stopping policy that knows the prices but not the
+remaining resources. Remaining budget belongs in the state that decides whether to
+continue. A merchant that cannot be afforded should disappear from the decision, not
+be scored and then rejected.
+
+\paragraph{Reserve before you dispatch, and charge pessimistically.}
+Deduct the full permit before the call, reclaim what is provably unused afterwards,
+and charge the full permit whenever the call is cancelled or truncated and the true
+usage is unknown. This makes overruns impossible rather than rare, which matters more
+than the small efficiency it costs.
+
+\paragraph{Keep forecasting separate from control.}
+The reservation price is a function of the forecast; it is not itself a forecast.
+Keeping them apart means an improved price or availability model can be swapped in
+without touching the stopping logic, and lets you attribute a regression to one or
+the other.
+
+\paragraph{Price failure explicitly.}
+An episode ending without a purchase is not a zero-cost outcome, and a policy scored
+as though it were will learn to stall. Give failure a number and use the same number
+everywhere.
+
+\paragraph{Measure your own dispersion before trusting ours.}
+The decision table is indexed by quantities you can measure in a day. Our corpus is
+one protocol at two dates and its dispersion is unusually low; yours may differ, and
+if it does, the table and not our headline number is the thing to apply.

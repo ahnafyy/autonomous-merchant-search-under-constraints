@@ -1,29 +1,54 @@
-\section{Limitations And Open Questions}
+\section{Limitations}
+\label{sec:limitations}
 
-The benchmark is synthetic and its forecast weights are not calibrated to a
-merchant market.  Forecasts are known, discrete, and independent across the
-merchant set.  Query requirements are deterministic, offers cannot be
-recalled, and the objective uses a declared terminal failure penalty.  The
-current exact model omits adaptive permit sizing, parallel calls, belief updating,
-substitutions, shipping quality, trust, returns, strategic pricing, and execution
-failures.  A held-offer variant is planned as robustness but is not implemented.
+\paragraph{One protocol, two dates.}
+The corpus covers merchants implementing a single commerce protocol, sampled on two
+days a month apart. Nothing here establishes that these merchants represent retail
+commerce, and two snapshots cannot resolve intra-month dynamics. A price that fell
+and recovered between our dates is recorded as unchanged.
 
-The repository does not yet contain a permission-checked merchant inventory,
-exact-SKU cohort, calibrated usage corpus, or frozen test panels.  A
-declared-capability candidate panel (Appendix~B) has been produced from live
-UCP protocol probing, but that status is a documented assumption rather than
-case-by-case verified permission, and no calibration/held-out split or policy
-replay has been run against it.  The planned inventory collection uses UCP
-endpoints, but the benchmark is not intended to depend on that specification.
-API spend is a live hard dimension only when an upstream protocol exposes a
-genuine enforceable cap; it must otherwise remain a labeled synthetic or
-sandbox dimension.  JavaScript conformance currently excludes reservation
-receipts and censored reconciliation.
+\paragraph{The effect is small enough to be fragile.}
+The live-panel improvement is a fraction of a percent of purchase cost. The interval
+excludes zero, but an effect of this size is more sensitive to episode selection than
+a large one would be. We would not be surprised if a differently filtered corpus
+moved it materially, and we would be surprised if it reversed.
 
-The registered scenarios also align several resource caps with a shortened
-reachable horizon.  A policy that uses only the number of reachable merchants
-may therefore explain the current action differences.  Establishing that
-resource identity matters requires crossed budgets with equal reachable depth,
-paired policy comparisons, and forecast perturbations.  Real trace calibration
-is required before interpreting any action frequency or savings estimate as an
-empirical statement about autonomous shopping.
+\paragraph{Thin merchant overlap.}
+Almost every shared SKU is carried by exactly two merchants. This bounds what any
+stopping rule can demonstrate, prevents the routing and nonbinding-budget controls
+described in Section~\ref{sec:robustness}, and means the live result does not
+distinguish the full dynamic program from one-step lookahead.
+
+\paragraph{The currency filter discards most candidates.}
+Requiring a single currency removes the majority of cross-merchant SKUs. Admitting
+them would need an exchange-rate assumption at a fixed date, which we judged worse
+than a smaller corpus. The surviving episodes span only two currencies and may not be
+representative of the ones we dropped.
+
+\paragraph{Availability is inferred, not tested.}
+We treat presence in a merchant's catalog as availability and absence as a delisting,
+and only for merchants whose catalogs were paginated in full. No checkout was
+attempted, so a listed item may not have been purchasable. Rate limits are assumed
+rather than published.
+
+\paragraph{The declared-capability assumption.}
+Merchants are included because they advertise the read operation we exercised. This
+is a documented modelling assumption, not case-by-case permission review or explicit
+consent, and it is the weakest link in the collection methodology.
+
+\paragraph{The sweep is simulation.}
+The decision table comes from a generator calibrated to measured churn and dispersion
+but is not a measurement. It draws merchant prices independently, whereas real
+merchants may move together in response to shared costs, which would compress the
+dispersion that drives the entire advantage. Its thresholds are grid boundaries, so
+the true boundary lies somewhere between adjacent levels.
+
+\paragraph{Permit safety is a conjecture.}
+We observe no budget violations across every replayed episode, which is evidence and
+not proof. The property is registered as a conjecture, and it does not hold when an
+upstream service can spend beyond an issued permit.
+
+\paragraph{No cross-episode learning.}
+Forecasts are frozen from the calibration snapshot. An agent that learned across
+episodes might do better, or might overfit to merchants that disappear; we did not
+test it.

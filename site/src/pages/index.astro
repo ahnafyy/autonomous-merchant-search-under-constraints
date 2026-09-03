@@ -1,8 +1,10 @@
 ---
 import ClaimLedger from "../components/ClaimLedger.astro";
+import DecisionTable from "../components/DecisionTable.astro";
 import HardConstraintDemo from "../components/HardConstraintDemo.astro";
 import PlanningWorkbench from "../components/PlanningWorkbench.astro";
 import ResultStrip from "../components/ResultStrip.astro";
+import RuleComparison from "../components/RuleComparison.astro";
 import ResearchLayout from "../layouts/ResearchLayout.astro";
 import data from "../generated/site-data.json";
 
@@ -14,26 +16,38 @@ const constraintSurface = results.hard_constraint_surface.map((row) => ({
   action: row.action as "buy" | "continue" | "reject_without_feasible_query",
 }));
 const displayedClaims = claims.filter((claim) => claim.site_visible);
+const percent = (value: number) => `${(value * 100).toFixed(1)}%`;
 const resultStrip = [
   {
-    label: "Hard resources",
-    value: "4",
-    note: "time, tokens, API calls, and API spend",
+    label: "Merchants measured",
+    value: results.merchants_targeted.toLocaleString(),
+    note: `${results.catalog_rows.toLocaleString()} live catalog listings`,
     tone: "gold" as const,
   },
   {
-    label: "Open-source packages",
-    value: "2",
-    note: "Python and npm implementations",
+    label: "Listings that moved",
+    value: percent(results.delisting_rate + results.price_change_rate),
+    note: `${percent(results.delisting_rate)} delisted, ${percent(results.price_change_rate)} repriced in one month`,
     tone: "teal" as const,
   },
   {
-    label: "Research status",
-    value: "Open",
-    note: "no novelty claim yet",
+    label: "Adaptive stopping wins",
+    value: `${results.sweep_cells_favoring_adaptive}/${results.sweep_cells}`,
+    note: `only above ${results.advantage_min_dispersion_ratio}× price spread`,
     tone: "coral" as const,
   },
 ];
+const decisionTable = results.criteria.decision_table.map((row) => ({
+  ...row,
+  verdict: row.verdict as "use_adaptive" | "use_fixed" | "no_difference",
+}));
+const ruleComparison = results.rule_comparison;
+const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
+  let u = 1;
+  for (let step = 0; step < k; step += 1) u -= (u * u) / 2;
+  return { k, u };
+});
+
 ---
 
 <ResearchLayout title={project.title} description={project.abstract}>
@@ -44,6 +58,7 @@ const resultStrip = [
     </div>
     <nav aria-label="Primary navigation">
       <a href="#benchmark">Method</a>
+      <a href="#rule">Rule</a>
       <a href="#claims">Evidence</a>
       <a href="#reproduce">Materials</a>
     </nav>
@@ -60,8 +75,10 @@ const resultStrip = [
         <h1 id="paper-title">{project.title}</h1>
         <p class="subtitle">{project.subtitle}</p>
         <p class="hero-result">
-          <span>Algorithm + implementation</span>
-          <strong>Choose the next merchant and when to buy under hard budgets</strong>
+          <span>Measured on live merchants</span>
+          <strong>
+            Adaptive stopping beats a tuned fixed rule, but only once merchants actually differ in price
+          </strong>
         </p>
         <div class="author-block">
           <p class="byline">{authorNames}</p>
@@ -141,25 +158,100 @@ const resultStrip = [
       </div>
     </section>
 
-    <section class="section section--claims" id="claims" aria-labelledby="claims-title">
+    <section class="section section--rule" id="rule" aria-labelledby="rule-title">
       <div class="section__heading">
         <p class="section-number">3</p>
         <div>
-          <span class="eyebrow">Research status · Evidence boundary</span>
-          <h2 id="claims-title">The interesting question is still open</h2>
+          <span class="eyebrow">Result · A rule you can compute by hand</span>
+          <h2 id="rule-title">Two steps, no solver</h2>
+        </div>
+      </div>
+      <div class="prose-grid">
+        <div class="prose">
+          <p>
+            <strong>Step one.</strong> Your budget is one number, not four. Resources are spent in
+            fixed amounts per query, so the horizon is how many further queries you can afford. It
+            is a minimum, not a sum — whichever resource runs out first is the one that binds.
+          </p>
+          <div class="equation">
+            <p aria-label="k equals the minimum over resources of the floor of remaining divided by cost per query">
+              k = min<sub>r</sub> ⌊ B<sub>r</sub> / c<sub>r</sub> ⌋
+            </p>
+            <span aria-hidden="true">(2)</span>
+          </div>
+          <p>
+            <strong>Step two.</strong> Accept when the offer in hand falls within a
+            horizon-dependent fraction of the price range you expect.
+          </p>
+          <div class="equation">
+            <p aria-label="Buy when the price is at most the price floor plus u sub k times the price range">
+              buy ⇔ p ≤ p<sub>min</sub> + u<sub>k</sub>(p<sub>max</sub> − p<sub>min</sub>)
+            </p>
+            <span aria-hidden="true">(3)</span>
+          </div>
+          <p>
+            The fractions come from u<sub>0</sub> = 1 and u<sub>k+1</sub> = u<sub>k</sub> −
+            u<sub>k</sub><sup>2</sup>/2:
+            {acceptanceFractions.map(({ k, u }, index) => (
+              <span>{index > 0 ? ", " : ""}u<sub>{k}</sub> = {u.toFixed(3)}</span>
+            ))}. With one fallback left you accept the midpoint of the range; with six, only the
+            cheapest fifth. The threshold <em>rises</em> as the budget drains, because failing to
+            buy costs more than overpaying.
+          </p>
+          <p class="note">
+            This recursion is not new. It is the Cayley–Moser problem, posed in 1875 and solved in
+            1956; we reproduce it in a price-minimisation form and measure what it is worth here.
+          </p>
+        </div>
+        <figure class="research-figure">
+          <RuleComparison
+            arms={ruleComparison.arms}
+            savingsCaptured={ruleComparison.savings_captured}
+            merchantCount={ruleComparison.merchant_count}
+          />
+          <figcaption>
+            <strong>Figure 2.</strong> The closed form captures
+            {(results.closed_form_savings_captured * 100).toFixed(1)}% of the achievable saving
+            against the exact solver&rsquo;s {(results.solver_savings_captured * 100).toFixed(1)}%.
+            The famous 37% rule captures {(results.secretary_savings_captured * 100).toFixed(1)}%
+            while spending more queries than any other online rule: it hunts for the single
+            cheapest merchant, when the objective only rewarded the expected price paid.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section section--claims" id="claims" aria-labelledby="claims-title">
+      <div class="section__heading">
+        <p class="section-number">4</p>
+        <div>
+          <span class="eyebrow">Result · When it is worth it</span>
+          <h2 id="claims-title">Where adaptive stopping pays for itself</h2>
         </div>
       </div>
       <p class="section-intro">
-        Constraint sensitivity is implementation validation, not novelty. The open question is whether jointly
-        adapting merchant selection and enforceable per-call permits improves purchase quality or success over fixed
-        feasible allocation without ever exceeding the episode's hard budgets.
+        On {results.held_out_episode_count} held-out episodes built from live merchants, the adaptive rule
+        lowered failure-penalized purchase loss against the strongest tuned fixed rule, with the whole
+        bootstrap interval below zero and {results.hard_budget_violations} budget violations. The margin is
+        small because the median episode has only {results.median_merchant_count} merchants at a price ratio
+        of {results.median_price_dispersion_ratio}. The table below maps where the rule earns its complexity
+        and where a constant is the better engineering choice.
       </p>
+      <figure class="research-figure">
+        <DecisionTable rows={decisionTable} />
+        <figcaption>
+          <strong>Table 1.</strong> Decision table over {results.sweep_cells} calibrated cells. Adaptive
+          stopping never wins at or below a {results.no_advantage_dispersion_at_or_below}× price spread, and
+          loses outright in {results.sweep_cells_favoring_fixed} cells where the budget is too tight to act
+          on what a query reveals.
+        </figcaption>
+      </figure>
       <ClaimLedger claims={displayedClaims} />
     </section>
 
     <section class="section section--materials" id="reproduce" aria-labelledby="reproduce-title">
       <div class="section__heading">
-        <p class="section-number">4</p>
+        <p class="section-number">5</p>
         <div>
           <span class="eyebrow">Open-source implementations and evidence</span>
           <h2 id="reproduce-title">Run the optimizer or reproduce the research</h2>

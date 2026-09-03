@@ -1,38 +1,71 @@
-\section{Minimal Benchmark}
+\section{The Benchmark: Measuring a Live Merchant Ecosystem}
+\label{sec:benchmark}
 
-An episode contains a known set of \ResultMerchantCount{} unqueried merchants.
-The planner chooses among feasible merchants adaptively; a fixed external order
-is retained as a control.
-Querying merchant $t$ consumes an integer resource vector
-$c_t=(c_t^{\mathrm{time}},c_t^{\mathrm{token}},c_t^{\mathrm{call}},
-c_t^{\mathrm{spend}})$ and reveals either unavailability or one landed price.
-Available offers are ephemeral: an offer that is not accepted immediately
-cannot be recalled.  Exhausting the merchant sequence or losing query
-feasibility without purchasing incurs the registered failure penalty.
-The current validation fixture records discrete merchant-specific price distributions,
-stockout mass, and query requirements.  It evaluates
-\ResultHardConstraintScenarioCount{} declared operating regimes on the same
-forecasts and the same observed offer of \$\ResultObservedPrice{}.  The regimes
-include relaxed resources, individually binding time, token, API-call, and
-API-spend limits, a combined limit, and a purchase-price cap of
-\$\ResultPriceCappedLimit{}.  The complete inputs are generated in
-\texttt{artifacts/results.json}; they are synthetic benchmark values rather
-than market estimates.
+Most work on stopping problems assumes a price distribution. We would rather measure
+one. This section describes the corpus, what it does and does not represent, and the
+two properties that make it usable as a benchmark.
 
-The planned empirical benchmark instead groups exact SKUs across eligible,
-permission-checked merchants exposed through Universal Commerce Protocol (UCP)
-endpoints.  UCP is the proposed data-access specification, not part of the
-optimization problem.  Early randomized rounds calibrate forecasts;
-chronologically later rounds are frozen as held-out panels before policy
-comparison.  Each policy receives the same latent panel while outcomes from
-unqueried merchants remain hidden until its episode ends.  A declared-capability
-candidate corpus derived from live UCP protocol probing is available
-(Appendix~B), but a permission-verified, calibrated panel with a registered
-primary outcome is not yet included.
+\subsection{Collection}
 
-The validation outcome is the exact action---buy, continue, or reject without a
-feasible next query---together with the reservation price and remaining budget.
-The future primary empirical outcome and tolerance are not yet registered.
-Planned reports include purchase success, oracle hit, item-price regret,
-failure-penalized loss, savings captured, and resource-efficiency curves.  Landed
-price will be used only when shipping and tax are observed consistently.
+Merchants implementing the Universal Commerce Protocol publish a discovery document
+and expose a read-only catalog search operation. We probed \ResultMerchantsTargeted{}
+such merchants and paginated each catalog, collecting \ResultCatalogRows{} listings
+covering \ResultUniqueSkus{} distinct SKUs. Of these, \ResultCrossMerchantSkus{} SKUs
+appear at more than one independent merchant, which is what makes comparison possible
+at all.
+
+Only read operations were used; nothing was added to a cart and no purchase was
+attempted. Merchant eligibility follows a documented permission ladder, and the
+inventory used here is labelled \emph{declared capability}: the merchant advertises
+the operation we exercised. That is a recorded modelling assumption, not a
+case-by-case terms-of-service review, and it is a limitation rather than a warrant.
+
+\subsection{The instrument does not add noise}
+
+Before trusting any difference between two dates, we checked the scanner against
+itself. Two full scans of the same merchants minutes apart returned byte-identical
+listings and prices. Pagination is deterministic and result ordering is stable, so
+any difference observed between snapshots is drift in the world.
+
+This check matters more than it might appear. An early comparison suggested roughly
+half of all listings vanished within a month; it was an artifact of comparing a
+shallow scan against a deep one. Restricting the comparison to merchants whose
+catalogs were paginated \emph{in full} on both dates removes the artifact, and we
+report only that restricted figure.
+
+\subsection{Offers move}
+
+Across \ResultTrackedListings{} listings tracked on fully paginated merchants,
+\ResultDelistingRate{} were delisted between the two dates and
+\ResultPriceChangeRate{} of the survivors changed price, with a median relative move
+of \ResultMedianRelativePriceChange{} among those that moved. Prices are sticky but
+not static, and disappearance is the more common event. An agent that defers a
+purchase is therefore taking a real risk, which is the premise the rest of the paper
+depends on.
+
+\subsection{Episodes}
+
+An episode is one exact SKU offered by at least two independent merchants in a single
+currency. The earlier snapshot supplies merchant price and availability forecasts;
+the later snapshot is frozen as the held-out panel that every policy is replayed
+against. Because the split is chronological, no policy can see its own evaluation
+data.
+
+Two filters do most of the work and both cost us episodes. Cross-currency listings
+are dropped, since comparing a euro price to a dollar price requires an exchange-rate
+assumption we prefer not to make; this removes the majority of candidate SKUs. A SKU
+missing from the later snapshot counts as delisted only when that merchant was
+paginated in full, and otherwise the merchant is dropped from the episode rather than
+recorded as a stockout. What survives is \ResultEpisodeCount{} episodes, of which
+\ResultHeldOutEpisodeCount{} are held out for evaluation.
+
+\subsection{What this corpus is not}
+
+The resulting benchmark is narrow in a way worth stating plainly. The median episode
+has \ResultMedianMerchantCount{} merchants and a price ratio of
+\ResultMedianPriceDispersionRatio{}, meaning that in half of all episodes the
+merchants charge nearly the same price and no policy can distinguish itself. Thin
+cross-merchant overlap appears to be a property of this ecosystem rather than of our
+pipeline: even in the deeper snapshot, almost every shared SKU is carried by exactly
+two merchants. This is a finding about the ecosystem, and it directly bounds how much
+any stopping rule can achieve here.

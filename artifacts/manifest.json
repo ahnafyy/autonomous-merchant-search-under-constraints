@@ -1,19 +1,28 @@
 {
   "all_executable_claims_passed": true,
   "claims": [
-    "MERCHANT-PERMIT-SAFETY-CONJECTURE-001",
-    "MERCHANT-PERMIT-SOLVER-OPEN-001",
-    "MERCHANT-PERMIT-OPEN-001"
+    "OFFER-EPHEMERALITY-001",
+    "SOLVER-AGREEMENT-001",
+    "STOPPING-ADVANTAGE-001",
+    "NO-ADVANTAGE-REGION-001",
+    "CLOSED-FORM-RULE-001",
+    "SECRETARY-RULE-001",
+    "PERMIT-SAFETY-001"
   ],
   "files": {
-    "claim-results.json": "bc03da8ae4c0d1226676a21d4a1e3c00de5ac25f4eeab55f529190ca4b0f5652",
-    "conformance/merchant-search.json": "c060ee519cfd320b22679b9e3cf821b4477f42a4869eb58505ab6416d223108f",
-    "data/summary.csv": "88d048b0f0695202ba91f62d20f24c96fff6983aad17e65c9ec0498d6217591d",
-    "results.json": "e81cb9d2e84c456f094a03bfe16e88b56b1bdcc53862f39a0158fe9f5b7bc99a",
-    "site-data.json": "aaf75c3a08e8f032587d9ab8fdb5cf42f4e3738f3ffd8804165180374684513c",
-    "tables/claim_status.tex": "f20678ff42370cc93280f6bbda14865ad89b954f960951349550c30ce24c9c4f",
-    "tables/project_metadata.tex": "5cebfaf4a1a1e364a277f8405f3e8bbba5fd7c5394f343bea217ad579a2da568",
-    "tables/result_macros.tex": "2be57f4d0d2635512a4862280733c046b2b751890cfd6d449b1ff86204ad28d2"
+    "claim-results.json": "ee9bc59683c510cc771c63d87e82cc46c219191ae9e90d032118659baa8a2163",
+    "conformance/closed-form.json": "e74707bef1d61443e8f023eecccb5429f2c87f5054a9f9d5cf8876560db8d670",
+    "conformance/merchant-search.json": "8d42ae2a7c254fd1a64d1757ba30a67f93a065a79c307081586ae44170375a1e",
+    "data/summary.csv": "0f2acb11174bce3fb336f4ea17b017162d92c723c8ae089480171b75c45a6e6c",
+    "results.json": "a1913d209503f80eb6be877d63fe453d3940ecc65b5cc7f5eedca52bfa47ae05",
+    "site-data.json": "e77b27481863f3c04e1553090049e2ddc0c4cc59a09a66bd3e030db6fb9522f9",
+    "tables/arm_comparison.tex": "5e45eb5760332e18788a8b7ca023fc75fc5db88e3f07bd48ead42ffb896a8976",
+    "tables/claim_status.tex": "c9329aef7bb19a1c005147971c03c115966981a5c63d7c498258054fb199f904",
+    "tables/decision_table.tex": "86e9aaaec016d4012126665c10e9e9887bc98869be19835217bb187aaea5b347",
+    "tables/project_metadata.tex": "84e198ebdb745ef3b10fb1fca0638908d32a1f6e9b7a27ca1baf6dd691587be9",
+    "tables/references.bib": "794d0e78614ce5304cb2375827dfd55cf03655c1a77c59d661a4778084d6e0a0",
+    "tables/result_macros.tex": "7917fdc12b242ecefd473fe94a7719fefc4ddedfe567ddc4d5069e96278eff0a",
+    "tables/rule_comparison.tex": "7d623f87fce282feb5b5fb8a697acc28ee297c051ed8c85211932d2de1b60ee2"
   },
   "generator": {
     "name": "paperkit",
@@ -25,7 +34,7 @@
       "python": "autonomous-shopping-optimizer"
     },
     "slug": "autonomous-merchant-search-under-constraints",
-    "title": "Autonomous Shopping Optimizer",
+    "title": "When Should a Shopping Agent Stop Searching?",
     "version": "0.1.0"
   },
   "random_seed": 20260723,

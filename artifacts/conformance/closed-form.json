@@ -1,0 +1,375 @@
+{
+  "acceptance_fraction_cases": [
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 1,
+        "value": 1.0
+      },
+      "input": {
+        "affordable_queries": 0
+      }
+    },
+    {
+      "expected": {
+        "denominator": 2,
+        "numerator": 1,
+        "value": 0.5
+      },
+      "input": {
+        "affordable_queries": 1
+      }
+    },
+    {
+      "expected": {
+        "denominator": 8,
+        "numerator": 3,
+        "value": 0.375
+      },
+      "input": {
+        "affordable_queries": 2
+      }
+    },
+    {
+      "expected": {
+        "denominator": 128,
+        "numerator": 39,
+        "value": 0.3046875
+      },
+      "input": {
+        "affordable_queries": 3
+      }
+    },
+    {
+      "expected": {
+        "denominator": 32768,
+        "numerator": 8463,
+        "value": 0.258270263671875
+      },
+      "input": {
+        "affordable_queries": 4
+      }
+    },
+    {
+      "expected": {
+        "denominator": 2147483648,
+        "numerator": 483008799,
+        "value": 0.22491849912330508
+      },
+      "input": {
+        "affordable_queries": 5
+      }
+    },
+    {
+      "expected": {
+        "denominator": 9223372036854775808,
+        "numerator": 1841209495473815103,
+        "value": 0.19962433349936498
+      },
+      "input": {
+        "affordable_queries": 6
+      }
+    },
+    {
+      "expected": {
+        "denominator": 170141183460469231731687303715884105728,
+        "numerator": 30574267942866411492610617989187955839,
+        "value": 0.17969939623683215
+      },
+      "input": {
+        "affordable_queries": 7
+      }
+    },
+    {
+      "expected": {
+        "denominator": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+        "numerator": 9469098402231365955845075782127013884605836706970528486326625808482327697663,
+        "value": 0.16355345973289115
+      },
+      "input": {
+        "affordable_queries": 8
+      }
+    }
+  ],
+  "affordable_queries_cases": [
+    {
+      "expected": 6,
+      "input": {
+        "per_query": {
+          "api_calls": 1,
+          "api_cost": 2,
+          "time": 4,
+          "tokens": 900
+        },
+        "remaining": {
+          "api_calls": 6,
+          "api_cost": 12,
+          "time": 30,
+          "tokens": 8000
+        }
+      }
+    },
+    {
+      "expected": 3,
+      "input": {
+        "per_query": {
+          "api_calls": 1,
+          "api_cost": 0,
+          "time": 2,
+          "tokens": 0
+        },
+        "remaining": {
+          "api_calls": 3,
+          "api_cost": 0,
+          "time": 10,
+          "tokens": 0
+        }
+      }
+    },
+    {
+      "expected": 0,
+      "input": {
+        "per_query": {
+          "api_calls": 1,
+          "api_cost": 1,
+          "time": 1,
+          "tokens": 1
+        },
+        "remaining": {
+          "api_calls": 0,
+          "api_cost": 0,
+          "time": 0,
+          "tokens": 0
+        }
+      }
+    }
+  ],
+  "reservation_threshold_cases": [
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 12000,
+        "value": 12000.0
+      },
+      "input": {
+        "affordable_queries": 0,
+        "price_ceiling": 12000,
+        "price_floor": 8000
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 10000,
+        "value": 10000.0
+      },
+      "input": {
+        "affordable_queries": 1,
+        "price_ceiling": 12000,
+        "price_floor": 8000
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 9500,
+        "value": 9500.0
+      },
+      "input": {
+        "affordable_queries": 2,
+        "price_ceiling": 12000,
+        "price_floor": 8000
+      }
+    },
+    {
+      "expected": {
+        "denominator": 4,
+        "numerator": 36875,
+        "value": 9218.75
+      },
+      "input": {
+        "affordable_queries": 3,
+        "price_ceiling": 12000,
+        "price_floor": 8000
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1024,
+        "numerator": 9249875,
+        "value": 9033.0810546875
+      },
+      "input": {
+        "affordable_queries": 4,
+        "price_ceiling": 12000,
+        "price_floor": 8000
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 9900,
+        "value": 9900.0
+      },
+      "input": {
+        "affordable_queries": 0,
+        "price_ceiling": 9900,
+        "price_floor": 9900
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 9900,
+        "value": 9900.0
+      },
+      "input": {
+        "affordable_queries": 1,
+        "price_ceiling": 9900,
+        "price_floor": 9900
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 9900,
+        "value": 9900.0
+      },
+      "input": {
+        "affordable_queries": 2,
+        "price_ceiling": 9900,
+        "price_floor": 9900
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 9900,
+        "value": 9900.0
+      },
+      "input": {
+        "affordable_queries": 3,
+        "price_ceiling": 9900,
+        "price_floor": 9900
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 9900,
+        "value": 9900.0
+      },
+      "input": {
+        "affordable_queries": 4,
+        "price_ceiling": 9900,
+        "price_floor": 9900
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 25000,
+        "value": 25000.0
+      },
+      "input": {
+        "affordable_queries": 0,
+        "price_ceiling": 25000,
+        "price_floor": 1000
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 13000,
+        "value": 13000.0
+      },
+      "input": {
+        "affordable_queries": 1,
+        "price_ceiling": 25000,
+        "price_floor": 1000
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 10000,
+        "value": 10000.0
+      },
+      "input": {
+        "affordable_queries": 2,
+        "price_ceiling": 25000,
+        "price_floor": 1000
+      }
+    },
+    {
+      "expected": {
+        "denominator": 2,
+        "numerator": 16625,
+        "value": 8312.5
+      },
+      "input": {
+        "affordable_queries": 3,
+        "price_ceiling": 25000,
+        "price_floor": 1000
+      }
+    },
+    {
+      "expected": {
+        "denominator": 512,
+        "numerator": 3685625,
+        "value": 7198.486328125
+      },
+      "input": {
+        "affordable_queries": 4,
+        "price_ceiling": 25000,
+        "price_floor": 1000
+      }
+    }
+  ],
+  "schema_version": 1,
+  "secretary_sample_size_cases": [
+    {
+      "expected": 1,
+      "input": {
+        "candidate_count": 1
+      }
+    },
+    {
+      "expected": 1,
+      "input": {
+        "candidate_count": 2
+      }
+    },
+    {
+      "expected": 1,
+      "input": {
+        "candidate_count": 3
+      }
+    },
+    {
+      "expected": 2,
+      "input": {
+        "candidate_count": 5
+      }
+    },
+    {
+      "expected": 4,
+      "input": {
+        "candidate_count": 10
+      }
+    },
+    {
+      "expected": 7,
+      "input": {
+        "candidate_count": 20
+      }
+    },
+    {
+      "expected": 37,
+      "input": {
+        "candidate_count": 100
+      }
+    }
+  ],
+  "tolerance": 1e-09
+}

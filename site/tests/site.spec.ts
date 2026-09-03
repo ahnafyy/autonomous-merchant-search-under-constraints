@@ -10,17 +10,26 @@ test("renders verified research content without overflow", async ({ page }, test
   await page.goto("/");
 
   await expect(page.locator("#paper-title")).toHaveText(
-    "Autonomous Shopping Optimizer",
+    "When Should a Shopping Agent Stop Searching?",
   );
   const primaryResult = page.locator(".hero-result strong");
-  await expect(primaryResult).toContainText("Choose the next merchant and when to buy");
+  await expect(primaryResult).toContainText("Adaptive stopping beats a tuned fixed rule");
   await expect(primaryResult).toBeInViewport();
   await expect(page.getByText("Ahnaf Prio", { exact: true }).first()).toBeVisible();
   await expect(page.getByRole("link", { name: "Generated artifacts" })).toBeVisible();
   await expect(page.getByRole("link", { name: "autonomous-shopping-optimizer" })).toHaveCount(2);
   await expect(page.locator('pre[aria-label="Reproduction commands"]')).toHaveCount(0);
-  await expect(page.getByText("MERCHANT-PERMIT-OPEN-001", { exact: true })).toBeVisible();
-  await expect(page.getByText("no novelty claim yet", { exact: true })).toBeVisible();
+  await expect(page.getByText("STOPPING-ADVANTAGE-001", { exact: true })).toBeVisible();
+  await expect(page.getByText("NO-ADVANTAGE-REGION-001", { exact: true })).toBeVisible();
+
+  const decisionRows = page.locator(".decision-table tbody tr");
+  expect(await decisionRows.count()).toBeGreaterThan(0);
+  await expect(page.locator('.decision-table [data-verdict="use_adaptive"]').first()).toBeVisible();
+
+  const ruleRows = page.locator(".rule-comparison tbody tr");
+  expect(await ruleRows.count()).toBeGreaterThan(0);
+  await expect(page.getByRole("rowheader", { name: "Closed form" })).toBeVisible();
+  await expect(page.getByRole("rowheader", { name: "Secretary rule (37%)" })).toBeVisible();
 
   const currentOffer = page.getByRole("spinbutton", { name: "Current offer" });
   const priceCap = page.getByRole("spinbutton", { name: "Maximum purchase price" });

@@ -18,15 +18,18 @@ and record the configured seed
 The current unit checks cover offer expiry, resource exhaustion, hard-cap
 admissibility, budget-dependent Bellman actions, atomic reservation, exact
 reclamation, conservative censored charging, one-time reconciliation,
-commerce-domain validation, frozen-panel oracle metrics, endpoint-inventory screening,
-deterministic artifact generation, and claim evaluation.  JavaScript receipt
-parity and exhaustive independent policy enumeration on reduced joint-action
-horizons remain required checks rather than completed verification results.
+commerce-domain validation, frozen-panel oracle metrics, endpoint-inventory
+screening, panel construction from dated snapshots, reservation-price monotonicity
+in stockout risk, the paired bootstrap, exhaustive policy enumeration against the
+solver, deterministic artifact generation, and claim evaluation.  JavaScript receipt
+parity remains a required check rather than a completed verification result.
 
-Live UCP protocol probing (endpoint discovery and read-only catalog search) has
-been run against real merchant endpoints, producing a declared-capability
-candidate inventory of 240 domains and 68 confirmed cross-merchant same-ISBN
-episodes with nonzero price spread.  This exercises the data-collection
-pipeline end to end; it is an existence proof for the collection mechanism, not
-a policy-comparison result, and every included merchant carries a documented
-declared-capability rather than case-by-case verified permission status.
+Live UCP protocol probing (endpoint discovery and read-only catalog search) was run
+against real merchant endpoints on two dates, producing the snapshots described in
+Section~\ref{sec:benchmark}: \ResultMerchantsTargeted{} merchants targeted,
+\ResultCatalogRows{} catalog listings, and \ResultCrossMerchantSkus{} SKUs offered by
+more than one merchant.  Every included merchant carries a documented
+declared-capability rather than case-by-case verified permission status, and only
+read operations were used.  Two scans taken minutes apart returned byte-identical
+output, so the snapshot comparison in Section~\ref{sec:benchmark} measures merchant
+behaviour rather than scanner nondeterminism.

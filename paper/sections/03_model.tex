@@ -1,45 +1,135 @@
-\section{Model And Methods}
+\section{The Stopping Rule in Plain Terms}
+\label{sec:model}
 
-Let $S$ be the set of unqueried merchants, let
-$b\in\mathbb{Z}_{\geq 0}^{4}$ denote the resources remaining before a query,
-and let $F$ be the terminal purchase-failure penalty.  Merchant $t\in S$ is
-queryable only if $c_t\leq b$ componentwise.  Its forecast assigns probability
-$q_{t,\bot}$ to unavailability and probability $q_{t,p}$ to each price $p$.
-The hard purchase-price cap is $P_{\max}$.
+The rule we test has one moving part: a \emph{reservation price}. At every step the
+agent computes the price it would expect to end up paying if it kept searching, and
+buys whatever is in front of it if that offer is at least as good.
 
-Write $W(S,b)$ for minimum expected purchase loss before choosing the next
-merchant.  If no merchant in $S$ is feasible, $W(S,b)=F$.  For a feasible
-choice $t$, let $b'=b-c_t$ and
-$C_t(S,b)=W(S\setminus\{t\},b')$.  The expected loss from querying $t$ is
+\begin{quote}
+\textbf{Buy if the offer in hand is no worse than what continuing is worth.}
+\end{quote}
+
+Everything else is bookkeeping about what "continuing is worth" means when search can
+fail.
+
+\subsection{What makes continuing worth less than it looks}
+
+Three forces push the reservation price up, making the agent more willing to accept:
+
+\begin{description}
+  \item[Fewer merchants left.] With nobody else to ask, the reservation price is just
+    the offer in hand, and the agent accepts. This is why the last reachable query
+    always ends in a purchase if a purchase is possible.
+  \item[Risk that the next offer is unavailable.] A merchant that may be out of stock
+    contributes its price only part of the time and the fallback value the rest. In
+    our corpus this risk is calibrated from the measured delisting rate.
+  \item[A budget that will run out.] Resources are part of the state, not a penalty
+    term. A merchant that cannot be afforded is not a worse option; it is not an
+    option, and it drops out of the calculation entirely.
+\end{description}
+
+The one force pushing the reservation price down is genuine price dispersion. If
+another merchant is likely to be meaningfully cheaper, continuing is worth more than
+the offer in hand and the agent keeps looking. This is the entire mechanism, and it
+explains the central empirical finding in advance: when merchants charge the same
+price, there is nothing for the rule to exploit.
+
+\subsection{Why the budget cannot be traded away}
+
+Time, tokens, API calls, and spend are hard limits, not costs to be balanced against
+price. The agent reserves the full permit for a query \emph{before} dispatching it,
+so a call can never begin unless it is affordable in the worst case. When a call is
+cancelled or truncated and its true usage is unknown, it is charged at the full
+permit rather than at an optimistic estimate.
+
+The consequence is that budget overruns are impossible by construction rather than
+unlikely in practice, and we treat any overrun as a correctness bug. Across every
+episode and every policy replayed in this paper, there were
+\ResultHardBudgetViolations{} violations.
+
+\subsection{A rule you can compute by hand}
+\label{sec:rule}
+
+The dynamic program needs a forecast for every merchant. In practice an engineer
+knows three cruder things, and those are enough.
+
+\paragraph{Step one: the budget is one number, not four.}
+Resources are consumed in fixed amounts per query, so a budget over time, tokens,
+calls, and spend collapses to a single integer: how many further queries are
+affordable. It is a minimum, not a sum, because whichever resource runs out first
+is the one that binds.
+
 \begin{equation}
-Q_t(S,b)=q_{t,\bot}C_t(S,b)
- + \sum_p q_{t,p}
- \begin{cases}
-	 \min\{p,C_t(S,b)\}, & p\leq P_{\max},\\
-	 C_t(S,b), & p>P_{\max}.
- \end{cases}
+  k = \min_{r} \left\lfloor \frac{B_r}{c_r} \right\rfloor
+  \label{eq:horizon}
 \end{equation}
-The adaptive controller sets
-$W(S,b)=\min_{t\in S:c_t\leq b}Q_t(S,b)$ and queries the minimizing merchant.
-Thus the reservation price after observing merchant $t$ is
+
+This is a modelling convention rather than a result. It assumes deterministic
+per-query costs, no partial queries, no substitution between resources, and a
+budget that is never replenished.
+
+\paragraph{Step two: accept below a fraction of the price range.}
+With $k$ further queries affordable and prices expected to fall in
+$[p_{\min}, p_{\max}]$, accept the offer in hand when
+
 \begin{equation}
-R_t(S,b)=\min\{P_{\max},W(S\setminus\{t\},b-c_t)\}.
+  p \;\le\; p_{\min} + u_k\,(p_{\max} - p_{\min}),
+  \qquad u_0 = 1, \quad u_{k+1} = u_k - \tfrac{1}{2}u_k^2 .
+  \label{eq:closedform}
 \end{equation}
-The agent buys an available offer exactly when $p_t\leq R_t(b)$.  If this
-condition fails, it continues when another query is feasible and otherwise
-rejects into terminal failure.  Query resources are feasibility constraints;
-the Python controller atomically reserves them before dispatch and reconciles
-realized usage once after the query completes.  Known unused capacity is
-reclaimed.  A component left unknown by cancellation is conservatively charged
-at its reserved amount.
 
-All probabilities and values are represented as rational numbers.  Dynamic
-program states are memoized by the unqueried merchant set and the
-four-dimensional remaining-budget vector.  This state determines which merchant
-queries remain admissible and the continuation loss after each possible result.
+The sequence falls quickly at first and then flattens: $u_1 = \tfrac12$,
+$u_2 = \tfrac38$, $u_3 = \tfrac{39}{128}$, and $u_k \sim 2/k$ thereafter. So with
+one fallback left you accept the midpoint of the range; with six, only the cheapest
+fifth of it.
 
-The implemented recurrence treats $c_t$ as a fixed merchant requirement.  The
-registered joint-action extension instead chooses $(t,p)$, where $p\leq b$ is a
-permit on a finite grid and may change completion, truncation, and observation
-probabilities.  That transition model and exact solver are not implemented in
-the current release; agreement with exhaustive policy enumeration remains open.
+Note that \eqref{eq:closedform} contains no per-query cost term. Cost does not enter
+the objective; it enters only through \eqref{eq:horizon}, which converts the budget
+into a horizon. A model charging inspection cost in the objective would instead give
+$R_k = \mathbb{E}[\min(P, R_{k-1})] + c$.
+
+\paragraph{This is a known result.}
+Equation~\eqref{eq:closedform} is not new. Substituting $\mu_k = 1 - u_k$ turns it
+into the classical Cayley--Moser recursion
+$\mu_n = \mathbb{E}[\max(X, \mu_{n-1})] = \tfrac12(1 + \mu_{n-1}^2)$ for uniform
+offers, a problem posed by Cayley in 1875 and solved by Moser in 1956, treated at
+length by \citet{gilbert1966recognizing} and surveyed
+by~\citet{ferguson1989secretary}. The asymptotic $u_k \sim 2/k$ is the leading term
+of a published expansion~\citep{finch2024quadratic,entwistle2022asymptotics}, and the
+recursion remains under active study~\citep{katriel2025cayley}. The declining
+finite-horizon reservation value is standard in search
+theory~\citep{kohn1974theory,lippman1976job}.
+
+We claim only the instantiation: mapping a multi-resource query budget onto the
+Cayley--Moser horizon, checking the sequence against our solver, and measuring what
+it is worth on merchant data. Appendix~\ref{app:proofs} gives the derivation.
+
+\subsection{Why the classical secretary rule is the wrong tool here}
+
+The most widely known stopping result says to inspect about $37\%$ of the candidates
+and then take the next record. It is tempting to reach for it, and it answers a
+different question: it maximizes the \emph{probability of selecting the single best}
+candidate using only ordinal comparisons, with no knowledge of price levels.
+
+Our objective is the expected price paid, and our agent observes actual prices. Under
+a cardinal objective the optimal cutoff is not $n/e$~\citep{bearden2006secretary}, and
+the gap between rank-only and full-information sequential search is
+established~\citep{palley2014sequential}. Applying the $37\%$ rule here is therefore a
+category error rather than a fair contest. Section~\ref{sec:results} reports what that
+error costs, because the rule is popular enough that the size of the penalty is worth
+knowing.
+
+\subsection{Is the rule actually optimal?}
+
+For instances small enough to check exhaustively, yes. We enumerate every
+deterministic accept-or-continue policy and compare the best achievable expected loss
+against what the solver returns, in exact rational arithmetic with no floating-point
+tolerance. Across \ResultSolverCasesVerified{} registered instances, spanning ties,
+stockouts, a binding price cap, and a failure penalty large enough to dominate, the
+two agree exactly (claim \texttt{SOLVER-AGREEMENT-001}).
+
+This is a check on the implementation, not a proof of general optimality, and
+agreement on small fixed-order instances says nothing about adaptive merchant
+routing. The recurrence itself is stated in Appendix~\ref{app:proofs}, where readers
+who want the backward induction can find it. Nothing in
+Sections~\ref{sec:results}--\ref{sec:implications} depends on having read it.

@@ -254,5 +254,128 @@
       }
     }
   ],
-  "schema_version": 1
+  "reservation_cases": [
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 100,
+        "value": 100.0
+      },
+      "input": {
+        "future_calibration": [],
+        "observed_price": 100,
+        "stockout": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 80,
+        "value": 80.0
+      },
+      "input": {
+        "future_calibration": [
+          80
+        ],
+        "observed_price": 100,
+        "stockout": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 120,
+        "value": 120.0
+      },
+      "input": {
+        "future_calibration": [
+          120
+        ],
+        "observed_price": 100,
+        "stockout": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1,
+        "numerator": 80,
+        "value": 80.0
+      },
+      "input": {
+        "future_calibration": [
+          80,
+          90
+        ],
+        "observed_price": 100,
+        "stockout": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "expected": {
+        "denominator": 2,
+        "numerator": 181,
+        "value": 90.5
+      },
+      "input": {
+        "future_calibration": [
+          80
+        ],
+        "observed_price": 100,
+        "stockout": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "expected": {
+        "denominator": 10,
+        "numerator": 989,
+        "value": 98.9
+      },
+      "input": {
+        "future_calibration": [
+          80
+        ],
+        "observed_price": 100,
+        "stockout": [
+          9,
+          10
+        ]
+      }
+    },
+    {
+      "expected": {
+        "denominator": 1000,
+        "numerator": 9678551,
+        "value": 9678.551
+      },
+      "input": {
+        "future_calibration": [
+          11000,
+          13000,
+          9500
+        ],
+        "observed_price": 12345,
+        "stockout": [
+          51,
+          1000
+        ]
+      }
+    }
+  ],
+  "reservation_tolerance": 1e-09,
+  "schema_version": 2
 }

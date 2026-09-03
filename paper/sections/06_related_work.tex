@@ -1,16 +1,67 @@
 \section{Related Work}
+\label{sec:related}
 
-The closest mechanisms are optimal stopping with sampling costs, consumer price
-search, Pandora-style costly inspection, secretary and prophet models with
-irrevocable selection, and online allocation under resource capacities.  The
-present model combines adaptively selected ephemeral offers with a terminal
-no-purchase penalty and a vector of hard query resources.  Unlike classical
-reservation-price search with recall, a rejected offer cannot be selected
-later.  The closest operational comparison is online allocation with multiple
-resource capacities and irreversible actions.
+The stopping rule used here is not new, and this section places it rather than
+defends it. Records for every work cited below, including the date each DOI was
+checked, are kept in \texttt{research/literature.yml}.
 
-This section records mechanism overlap rather than a novelty claim.  Candidate
-works and verified metadata are maintained in
-\texttt{research/literature.yml}; full-text comparison and the human novelty
-gate remain pending.  No theorem or unique model combination is claimed on the
-basis of the current review.
+\paragraph{Search with a reservation price.}
+The idea that a searcher should accept any offer below a threshold determined by the
+value of continuing goes back to consumer search theory, including the case where the
+price distribution itself is unknown~\citep{rothschild1974searching}, and to
+Weitzman's analysis of which alternative to inspect next~\citep{weitzman1979optimal}.
+Our recurrence is of this family. The differences are operational rather than
+conceptual: the searcher faces a vector of hard consumable resources, an offer may be
+unavailable rather than merely expensive, and ending without a purchase carries an
+explicit penalty.
+
+\paragraph{Costly inspection.}
+The Pandora's box literature studies paying to reveal a value before deciding whether
+to take it. Recent variants add order constraints on which box may be opened
+next~\citep{boodaghians2020pandora}, deadlines~\citep{berger2024pandora}, values that
+change over time~\citep{amanatidis2026pandora}, and online arrival of the boxes
+themselves~\citep{esfandiari2019online}. Our setting shares the costly-inspection
+structure and the commitment requirement. It differs in that the inspection cost is a
+vector of enforceable limits reserved before the call rather than a scalar price, and
+in that inspection can fail to return a purchasable offer at all.
+
+\paragraph{The recursion we use.}
+The finite-horizon threshold sequence in Section~\ref{sec:rule} is the Cayley--Moser
+problem: full-information sequential selection from i.i.d. offers without recall,
+posed by Cayley in 1875, solved by Moser in 1956, and analysed at length
+by~\citet{gilbert1966recognizing}. \citet{ferguson1989secretary} gives the attribution
+history and separates it from the rank-only secretary problem it is often confused
+with. Its asymptotics are known to high order~\citep{finch2024quadratic,
+entwistle2022asymptotics}, and it remains under study in continuous
+time~\citep{katriel2025cayley}. We reproduce it in a price-minimization
+parameterization and claim nothing for the recursion itself.
+
+\paragraph{Irrevocable selection.}
+Secretary and prophet models study accepting or rejecting irrevocably under
+uncertainty, including sampling costs~\citep{lorenzen1981optimal} and random arrival
+order~\citep{esfandiari2017prophet}. Our no-recall assumption matches theirs, and the
+explore-then-accept baseline we compare against is the classic secretary rule. That
+rank-based rules are suboptimal under a cardinal objective is
+established: \citet{bearden2006secretary} shows the optimal cutoff is not $n/e$ once
+payoffs are cardinal, and \citet{palley2014sequential} separates full-information from
+rank-only sequential search theoretically and experimentally. Our contribution there
+is to measure the size of the penalty in this setting, not to demonstrate the
+mismatch.
+
+\paragraph{Online decisions under resource limits.}
+Online packing and allocation with capacity constraints in the random-order
+model~\citep{kesselheim2014primal}, and online search with known price
+bounds~\citep{elyaniv2001optimal}, are the closest operational analogues:
+irreversible actions taken against limited resources. Their guarantees rest on
+assumptions our data does not satisfy, but the framing of resources as state rather
+than as a cost term is the one we adopt.
+
+\paragraph{What is different here.}
+The contribution is not the algorithm. It is a measurement on a live merchant
+ecosystem, and a mapping of the conditions under which this well-known rule is and is
+not worth deploying. We are not aware of comparable published measurements of
+cross-merchant price dispersion and listing churn for protocol-enabled autonomous
+shopping, which is exactly the input any of the models above would need before being
+applied. Because the priority full texts have not been read line by line, we make no
+priority or novelty claim over the works cited, and the literature records remain
+marked as candidates.
