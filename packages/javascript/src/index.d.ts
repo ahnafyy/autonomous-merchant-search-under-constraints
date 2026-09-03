@@ -69,6 +69,83 @@ export function simulatePolicy(
 
 export function planShoppingDecision(input: ShoppingDecisionInput): ShoppingDecision;
 
+/** Accept the offer in hand when its price is at most this threshold. */
+export function reservationPrice(
+  observedPrice: number,
+  futureCalibration?: number[],
+  stockoutRate?: number,
+): number;
+
+/** How far above the cheapest expected price to still accept, with k queries left. */
+export function acceptanceFraction(affordableQueriesRemaining: number): number;
+
+/** How many further queries the remaining budget allows; a minimum, not a sum. */
+export function affordableQueries(
+  remaining: Partial<ResourceBudget>,
+  perQuery: Partial<ResourceBudget>,
+): number;
+
+/** Closed-form acceptance threshold from an expected price range and a horizon. */
+export function closedFormReservationPrice(
+  priceFloor: number,
+  priceCeiling: number,
+  affordableQueriesRemaining: number,
+): number;
+
+/** The classical n/e sample size, for comparison against the threshold rule. */
+export function secretarySampleSize(candidateCount: number): number;
+
+export type ExecutionStatus =
+  | "completed"
+  | "timeout"
+  | "truncated"
+  | "cancelled"
+  | "failed";
+
+export interface ResourceVectorValues {
+  time: number;
+  tokens: number;
+  api_calls: number;
+  api_cost: number;
+}
+
+export interface PermitReservation {
+  reservationId: number;
+  merchantId: string;
+  permit: ResourceVectorValues;
+  ledgerToken: symbol;
+}
+
+export interface ReconciliationInput {
+  usage: Partial<ResourceVectorValues>;
+  exactResources?: readonly (keyof ResourceVectorValues)[];
+  status?: ExecutionStatus;
+}
+
+export interface ReconciliationResult {
+  reservationId: number;
+  merchantId: string;
+  status: ExecutionStatus;
+  observedUsage: ResourceVectorValues;
+  chargedUsage: ResourceVectorValues;
+  reclaimed: ResourceVectorValues;
+  remainingBudget: ResourceVectorValues;
+}
+
+export function resourceVector(values?: Partial<ResourceVectorValues>): ResourceVectorValues;
+
+export class PermitLedger {
+  constructor(budget: Partial<ResourceVectorValues>);
+  readonly initialBudget: ResourceVectorValues;
+  readonly remainingBudget: ResourceVectorValues;
+  readonly chargedUsage: ResourceVectorValues;
+  reserve(merchantId: string, permit: Partial<ResourceVectorValues>): PermitReservation;
+  reconcile(
+    reservation: PermitReservation,
+    input: ReconciliationInput,
+  ): ReconciliationResult;
+}
+
 export interface ShoppingOptimizerOptions {
   merchants: MerchantForecast[];
   budget: ResourceBudget;

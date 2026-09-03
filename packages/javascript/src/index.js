@@ -1,6 +1,8 @@
 const RESOURCE_FIELDS = ["time", "tokens", "api_calls", "api_cost"];
 const POLICIES = new Set(["accept_first", "fixed_threshold", "resource_aware_threshold"]);
 
+export { PermitLedger, resourceVector } from "./permits.js";
+
 function nonNegativeInteger(value, name) {
   if (!Number.isInteger(value) || value < 0) {
     throw new RangeError(`${name} must be a non-negative integer`);
@@ -280,6 +282,91 @@ export class AutonomousShoppingOptimizer {
 }
 
 export const ShoppingAgentMiddleware = AutonomousShoppingOptimizer;
+
+/**
+ * How far above the cheapest expected price to still accept, with `k` further
+ * queries affordable.
+ *
+ * `u(0) = 1`, `u(k+1) = u(k) - u(k)^2 / 2`. Under `mu = 1 - u` this is the
+ * classical Cayley-Moser recursion; it is a known result, reproduced here.
+ */
+export function acceptanceFraction(affordableQueriesRemaining) {
+  const k = nonNegativeInteger(affordableQueriesRemaining, "affordableQueriesRemaining");
+  let value = 1;
+  for (let step = 0; step < k; step += 1) {
+    value -= (value * value) / 2;
+  }
+  return value;
+}
+
+/**
+ * How many further queries the remaining budget allows.
+ *
+ * A minimum, not a sum: whichever resource runs out first binds. Resources the
+ * query does not consume place no limit.
+ */
+export function affordableQueries(remaining, perQuery) {
+  const limits = [];
+  for (const field of RESOURCE_FIELDS) {
+    const cost = nonNegativeInteger(perQuery?.[field] ?? 0, `${field} per query`);
+    const left = nonNegativeInteger(remaining?.[field] ?? 0, `${field} remaining`);
+    if (cost > 0) limits.push(Math.floor(left / cost));
+  }
+  if (limits.length === 0) {
+    throw new RangeError("a query must consume at least one resource");
+  }
+  return Math.max(0, Math.min(...limits));
+}
+
+/** Accept the offer in hand when its price is at or below this threshold. */
+export function closedFormReservationPrice(priceFloor, priceCeiling, affordableQueriesRemaining) {
+  const floor = positiveInteger(priceFloor, "priceFloor");
+  const ceiling = positiveInteger(priceCeiling, "priceCeiling");
+  if (ceiling < floor) {
+    throw new RangeError("priceCeiling must be at least priceFloor");
+  }
+  return floor + acceptanceFraction(affordableQueriesRemaining) * (ceiling - floor);
+}
+
+/** The classical n/e sample size, for comparison against the threshold rule. */
+export function secretarySampleSize(candidateCount) {
+  const n = positiveInteger(candidateCount, "candidateCount");
+  // Round half away from zero, matching Python's behaviour on these inputs.
+  return Math.max(1, Math.floor(n / Math.E + 0.5));
+}
+
+/**
+ * Threshold for accepting the offer in hand.
+ *
+ * Buy when the observed price is no worse than what continuing is worth. Each
+ * reachable merchant is forecast as a point mass at its last observed price,
+ * available with probability `1 - stockoutRate`. Mirrors the canonical Python
+ * implementation; results are checked against Python-generated vectors.
+ */
+export function reservationPrice(observedPrice, futureCalibration = [], stockoutRate = 0) {
+  const observed = positiveInteger(observedPrice, "observedPrice");
+  if (!Array.isArray(futureCalibration)) {
+    throw new TypeError("futureCalibration must be an array");
+  }
+  if (typeof stockoutRate !== "number" || !(stockoutRate >= 0) || stockoutRate >= 1) {
+    throw new RangeError("stockoutRate must be in [0, 1)");
+  }
+  const future = futureCalibration.map((price) => positiveInteger(price, "futureCalibration entry"));
+  if (future.length === 0) return observed;
+
+  const priceCap = Math.max(observed, ...future) + 1;
+  const penalty = priceCap;
+  const available = 1 - stockoutRate;
+
+  // Backward induction over the remaining merchants, in the given order.
+  let continuation = penalty;
+  for (let index = future.length - 1; index >= 0; index -= 1) {
+    const price = future[index];
+    const takeable = price <= priceCap ? Math.min(price, continuation) : continuation;
+    continuation = stockoutRate * continuation + available * takeable;
+  }
+  return Math.min(priceCap, continuation);
+}
 
 export function simulatePolicy(offers, policy, threshold = null, budget = null) {
   if (!Array.isArray(offers)) {

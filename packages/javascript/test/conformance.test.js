@@ -5,6 +5,7 @@ import test from "node:test";
 import {
   AutonomousShoppingOptimizer,
   planShoppingDecision,
+  reservationPrice,
   ShoppingAgentMiddleware,
   simulatePolicy,
 } from "../src/index.js";
@@ -81,4 +82,23 @@ test("middleware routes, accounts, and stops across a host tool loop", () => {
 
 test("legacy middleware name aliases the optimizer", () => {
   assert.equal(ShoppingAgentMiddleware, AutonomousShoppingOptimizer);
+});
+
+for (const [index, vector] of vectors.reservation_cases.entries()) {
+  test(`conforms for reservation price case ${index + 1}`, () => {
+    const observed = reservationPrice(
+      vector.input.observed_price,
+      vector.input.future_calibration,
+      vector.input.stockout[0] / vector.input.stockout[1],
+    );
+    // Python computes this exactly in rationals; JavaScript uses doubles.
+    assert.ok(
+      Math.abs(observed - vector.expected.value) <= vectors.reservation_tolerance,
+      `expected ${vector.expected.value}, received ${observed}`,
+    );
+  });
+}
+
+test("reservation price rejects an impossible stockout rate", () => {
+  assert.throws(() => reservationPrice(100, [80], 1), RangeError);
 });
