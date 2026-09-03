@@ -352,7 +352,41 @@ def simulate_policy(
 
 
 def run_analysis(seed: int) -> dict[str, Any]:
-    """Generate exact hard-constraint planning evidence."""
+    """Generate the empirical stopping study plus the exact mechanism demonstration."""
+    # Imported here because `experiment` depends on this module.
+    from autonomous_shopping_optimizer.experiment import run_study
+    from autonomous_shopping_optimizer.verification import (
+        verify_solver_against_enumeration,
+    )
+
+    results = run_study(seed)
+    verification = verify_solver_against_enumeration()
+    results["solver_verification"] = verification
+    results["solver_cases_verified"] = verification["case_count"]
+    results["solver_agrees_with_enumeration"] = verification["all_agree"]
+    results.update(mechanism_demonstration(seed))
+    return results
+
+
+def reservation_price_for_conformance(
+    observed_price: int,
+    future_calibration: list[int],
+    stockout_numerator: int,
+    stockout_denominator: int,
+) -> dict[str, Any]:
+    """Exact reservation price as a rational, for cross-language conformance vectors."""
+    from autonomous_shopping_optimizer.baselines import reservation_price
+
+    value = reservation_price(
+        observed_price,
+        future_calibration,
+        Fraction(stockout_numerator, stockout_denominator),
+    )
+    return _fraction_dict(value)
+
+
+def mechanism_demonstration(seed: int) -> dict[str, Any]:
+    """Exact hard-constraint planning evidence on a small declared instance."""
     merchants = _benchmark_forecasts()
     observed_price = 110
     failure_penalty = 220

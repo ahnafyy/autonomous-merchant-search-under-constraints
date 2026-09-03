@@ -29,7 +29,7 @@ avenues:
     rejection_reason: null
   - id: "AVENUE-002"
     title: "Distribution-free stopping guarantees for ephemeral offers"
-    status: candidate
+    status: deferred
     mechanism: >-
       Random merchant order or policy randomization may permit nontrivial guarantees
       without assuming reusable price or availability distributions.
@@ -47,10 +47,14 @@ avenues:
     expected_value: >-
       The result would state when distribution-free optimization is possible and when
       stronger assumptions are unavoidable.
-    rejection_reason: null
+    rejection_reason: >-
+      Deferred, not rejected. The collected corpus has a median of two merchants per
+      episode, which is too short a horizon for adversarial-order results to be
+      distinguishable from the trivial rule. Revisit if a corpus with longer
+      cross-merchant overlap becomes available.
   - id: "AVENUE-003"
     title: "From landed price to multi-attribute merchant utility"
-    status: candidate
+    status: deferred
     mechanism: >-
       Shipping, delivery, trust, returns, and condition can reverse merchant rankings
       that appear optimal under item price alone.
@@ -66,4 +70,7 @@ avenues:
     expected_value: >-
       A calibrated negative result would justify keeping the first paper focused on
       exact-SKU landed price rather than an unnecessarily broad utility model.
-    rejection_reason: null
+    rejection_reason: >-
+      Deferred, not rejected. Shipping and tax are not consistently observable in the
+      collected snapshots, so landed price cannot be computed for most episodes and a
+      multi-attribute extension would rest on imputed components.
