@@ -57,3 +57,44 @@ for the live-collection methodology.
 3. Set `permission_status` to `"verified"` and flip the two capability booleans only
    for that confirmed subset, then move those entries into a curated inventory file
    scoped to the registered benchmark panel.
+
+## Snapshots used by the study
+
+Two dated catalog snapshots produced by `scripts/deep_isbn_scan.py`. Output paths are
+derived from `--date`, so a run never overwrites an earlier snapshot.
+
+| File | Date | Pages/merchant | Rows | Role |
+| --- | --- | --- | --- | --- |
+| `deep-scan-rows-2026-08-02.jsonl.gz` | 2026-08-02 | 5 | 134,764 | Calibration |
+| `deep-scan-rows-2026-09-02.jsonl.gz` | 2026-09-02 | 12 | 290,273 | Held-out evaluation |
+
+Row files are stored gzipped because they compress roughly seventeenfold, and the
+uncompressed `.jsonl` form is gitignored. `load_snapshot` accepts either: given a
+`.jsonl` path it prefers a `.gz` sibling when one exists, so a freshly written scan
+works without any extra step. To read one by hand, `gunzip -k` it first.
+
+The matching `deep-scan-matches-<date>.json` files carry per-merchant scan status and
+cross-merchant SKU groupings. Snapshot schema version 2 adds `domain_status`, which
+records whether each merchant's catalog was paginated in full (`ok`) or cut off at the
+page cap (`truncated`).
+
+That distinction matters for interpretation. A SKU missing from a later snapshot only
+counts as a delisting when the merchant was paginated in full; on a truncated merchant
+the absence is uninformative and the merchant is dropped from the episode instead. An
+early comparison that ignored this reported roughly 50% churn, which was an artifact
+of comparing a 5-page scan against a 12-page one. The figures reported by the build
+use the restricted comparison only.
+
+Two full scans taken minutes apart returned byte-identical rows and prices, so
+differences between the two dates reflect merchant behaviour rather than scanner
+nondeterminism.
+
+Reproducing a snapshot:
+
+```bash
+python scripts/deep_isbn_scan.py --date YYYY-MM-DD --max-pages 12 --page-size 50
+```
+
+This makes live requests to real merchants. Use `--limit-domains` for a pilot run
+first, and keep `--delay-seconds` non-zero so repeated pages to one merchant are
+spaced out.

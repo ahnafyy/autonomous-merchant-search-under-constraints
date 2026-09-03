@@ -22,6 +22,8 @@ packages/python/dist/
 data/ucp/inventory.json
 data/ucp/private/
 data/ucp/raw/
+# Snapshot rows are tracked gzipped; the raw form is regenerated or decompressed.
+data/ucp/*.jsonl
 paper/*.aux
 paper/*.bbl
 paper/*.blg
