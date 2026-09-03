@@ -666,7 +666,11 @@ def _as_float(value: Fraction) -> float:
 
 
 def resolve_data_dir(explicit: Path | None = None) -> Path:
-    """Find `data/ucp` whether the build runs from the repo root or elsewhere."""
+    """Find `data/ucp` whether the build runs from the repo root or elsewhere.
+
+    Snapshots are research inputs and are deliberately not shipped in the wheel, so
+    an installed copy has to be pointed at them.
+    """
     if explicit is not None:
         return explicit
     candidates = (
@@ -676,7 +680,14 @@ def resolve_data_dir(explicit: Path | None = None) -> Path:
     for candidate in candidates:
         if candidate.is_dir():
             return candidate
-    raise FileNotFoundError(f"could not locate {DATA_DIR}")
+    raise FileNotFoundError(
+        f"Could not locate {DATA_DIR}. The merchant snapshots are research inputs "
+        "and are not distributed with the package. Either run from a clone of the "
+        "repository, or pass an explicit directory, for example "
+        "run_study(seed, data_dir=Path('/path/to/data/ucp')). The stopping rule "
+        "itself needs no data: see closed_form_reservation_price and "
+        "reservation_price."
+    )
 
 
 def _snapshot_paths(data_dir: Path, date: str) -> tuple[Path, Path]:

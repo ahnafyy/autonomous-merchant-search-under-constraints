@@ -85,8 +85,17 @@ remain convenience methods for completed calls with exact usage.
 
 ## Status
 
+Everything above works from a plain `pip install`. The study functions
+(`run_study`, `run_real_study`, `measure_ephemerality`, `build_episodes`) are the
+exception: they read dated merchant snapshots that are research inputs, not shipped
+in the wheel. Run them from a clone of the repository, or pass
+`data_dir=Path(...)` explicitly. The stopping rule itself needs no data.
+
 The stopping solver is verified against exhaustive enumeration on small fixed-order
 instances only; that is not a general optimality proof, and it does not cover adaptive
 merchant routing. The closed-form recursion is a known result reproduced here, not a
 new one. Permit safety is supported by observing zero violations across every replayed
 episode, which is evidence rather than a proof.
+
+Neither this package nor the npm package is published to a registry yet. Install from
+source, or from a built wheel.
