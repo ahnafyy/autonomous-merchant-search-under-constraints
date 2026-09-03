@@ -36,3 +36,6 @@ paper/*.pdf
 # Expanded discovery snapshots are large; git keeps the derived panel instead.
 data/ucp/deep-scan-rows-*-expanded.jsonl.gz
 data/ucp/deep-scan-matches-*-expanded.json
+
+# Daily panel observations accumulate; keep the compressed series, ignore scratch.
+data/ucp/panel-observations-*.manifest.json

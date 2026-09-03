@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Daily UCP panel probe.
+
+  launchd rather than cron: launchd runs a missed job once the machine wakes,
+  which cron does not, and a laptop that sleeps through the scheduled time would
+  otherwise silently drop days from the survival curve.
+
+  Install:
+    cp scripts/com.ahnafyy.ucp-panel-probe.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.ahnafyy.ucp-panel-probe.plist
+
+  Run once immediately:
+    launchctl start com.ahnafyy.ucp-panel-probe
+
+  Check / remove:
+    launchctl list | grep ucp-panel-probe
+    launchctl unload ~/Library/LaunchAgents/com.ahnafyy.ucp-panel-probe.plist
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.ahnafyy.ucp-panel-probe</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/ahnafy/appdev/repos/autonomous-merchant-search-under-constraints/scripts/daily_panel_probe.sh</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/ahnafy/appdev/repos/autonomous-merchant-search-under-constraints</string>
+
+    <!-- 03:10 local. Off-peak for merchants, and late enough that a laptop
+         closed for the night gets the run on wake instead of losing the day. -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>3</integer>
+        <key>Minute</key>
+        <integer>10</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/ucp-panel-probe.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/ucp-panel-probe.err</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+    <key>LowPriorityIO</key>
+    <true/>
+    <key>Nice</key>
+    <integer>5</integer>
+</dict>
+</plist>
