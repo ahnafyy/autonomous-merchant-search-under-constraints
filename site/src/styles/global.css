@@ -422,6 +422,56 @@ h3 {
   margin: 0;
 }
 
+.decision-spotlight {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0 0 2rem;
+}
+
+.spotlight-card {
+  display: grid;
+  gap: 0.55rem;
+  min-height: 170px;
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--card-accent, var(--navy));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 247, 244, 0.96));
+  padding: 1.1rem 1rem 1rem;
+}
+
+.spotlight-card--win {
+  --card-accent: var(--moss);
+}
+
+.spotlight-card--flat {
+  --card-accent: var(--ochre);
+}
+
+.spotlight-card--tight {
+  --card-accent: var(--burgundy);
+}
+
+.spotlight-kicker {
+  color: var(--ink-soft);
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.spotlight-card strong {
+  color: var(--navy);
+  font-family: var(--display);
+  font-size: 1.55rem;
+  line-height: 1.1;
+}
+
+.spotlight-card small {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
 .workbench {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);

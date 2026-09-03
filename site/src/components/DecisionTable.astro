@@ -61,6 +61,8 @@ const verdictLabel: Record<DecisionRow["verdict"], string> = {
 <style>
   .decision-table {
     overflow-x: auto;
+    border: 1px solid var(--line, #d8dde2);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 247, 244, 0.96));
   }
 
   .decision-table:focus-visible {
@@ -76,16 +78,16 @@ const verdictLabel: Record<DecisionRow["verdict"], string> = {
 
   caption {
     caption-side: bottom;
-    padding-top: 0.75rem;
+    padding: 0.8rem 0.9rem 0;
     text-align: left;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     line-height: 1.5;
     color: var(--ink-muted, #55606b);
   }
 
   th,
   td {
-    padding: 0.5rem 0.75rem;
+    padding: 0.7rem 0.9rem;
     text-align: right;
     border-bottom: 1px solid var(--rule, #d8dde2);
   }
@@ -98,17 +100,32 @@ const verdictLabel: Record<DecisionRow["verdict"], string> = {
   }
 
   thead th {
-    font-size: 0.8rem;
+    background: rgba(25, 55, 83, 0.04);
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
 
+  tbody tr:nth-child(odd) {
+    background: rgba(25, 55, 83, 0.015);
+  }
+
+  tbody tr[data-verdict="use_adaptive"] {
+    background: rgba(82, 108, 89, 0.06);
+  }
+
+  tbody tr[data-verdict="use_fixed"] {
+    background: rgba(134, 64, 74, 0.05);
+  }
+
   .verdict {
     display: inline-block;
-    padding: 0.15rem 0.5rem;
+    padding: 0.2rem 0.6rem;
     border-radius: 999px;
-    font-size: 0.8rem;
+    font-size: 0.76rem;
+    font-weight: 700;
     border: 1px solid currentColor;
+    background: rgba(255, 255, 255, 0.7);
   }
 
   .verdict--use_adaptive {

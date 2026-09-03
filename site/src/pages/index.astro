@@ -73,11 +73,14 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
           <span>Open-source Python + npm</span>
         </div>
         <h1 id="paper-title">{project.title}</h1>
-        <p class="subtitle">{project.subtitle}</p>
+        <p class="subtitle">
+          Adaptive stopping is not a universal rule. It pays off only when the market actually gives you
+          something to learn from.
+        </p>
         <p class="hero-result">
           <span>Measured on live merchants</span>
           <strong>
-            Adaptive stopping beats a tuned fixed rule, but only once merchants actually differ in price
+            The win is real, but conditional: a smarter stop rule helps only once prices differ enough to justify one more query
           </strong>
         </p>
         <div class="author-block">
@@ -107,8 +110,9 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
         </div>
       </div>
       <p class="section-intro">
-        Change remaining time, average call latency, token use, API allowance, API charge, and the hard purchase cap.
-        Planning runs entirely in your browser against the declared synthetic merchant forecasts.
+        This is the decision surface your agent actually faces: time, token budget, API calls, spend, and the purchase
+        cap. The planner below shows what changes when those constraints tighten, and where the fixed rule stops being
+        good enough.
       </p>
       <PlanningWorkbench
         merchantForecasts={results.merchant_forecasts}
@@ -128,9 +132,10 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
       <div class="prose-grid">
         <div class="prose">
           <p>
-            Each Bellman state records the merchant index and the remaining time, tokens, API calls, and API-spend
-            capacity. A query is available only when every resource requirement fits. The purchase-price cap is an
-            admissibility rule applied before the optimizer can return a buy action.
+            The core question is not whether adaptive search is always better. It is when the search problem is rich
+            enough for the extra state to matter. Each Bellman state tracks the remaining time, tokens, API calls, and
+            spend budget, and a query is only legal if every resource requirement fits. The purchase-price cap is an
+            admissibility rule checked before the optimizer can return a buy action.
           </p>
           <div class="equation">
             <p aria-label="Buy at time t when price is no greater than both the price cap and continuation value under the remaining budget">
@@ -139,10 +144,10 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
             <span aria-hidden="true">(1)</span>
           </div>
           <p>
-            With all budgets relaxed, the registered agent rejects the <strong>${results.observed_price}</strong> offer
-            and searches again. It buys the same offer when the deadline, token budget, call count, API-spend limit,
-            or combined capacity blocks enough future search. Under a <strong>$100 hard purchase cap</strong>, the
-            offer is inadmissible and the agent continues despite its availability.
+            With all budgets relaxed, the planner keeps looking rather than buying the observed
+            <strong>${results.observed_price}</strong> offer. It buys the same offer only when the deadline, token budget,
+            call count, API-spend limit, or combined capacity blocks enough future search. Under a
+            <strong>$100 hard purchase cap</strong>, the price is inadmissible even when the merchant is available.
           </p>
         </div>
         <figure class="research-figure">
@@ -169,9 +174,9 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
       <div class="prose-grid">
         <div class="prose">
           <p>
-            <strong>Step one.</strong> Your budget is one number, not four. Resources are spent in
-            fixed amounts per query, so the horizon is how many further queries you can afford. It
-            is a minimum, not a sum — whichever resource runs out first is the one that binds.
+            <strong>Step one.</strong> Collapse your budget into a single remaining horizon. Every query burns a fixed
+            amount of time, tokens, calls, and spend, so the relevant quantity is the minimum remaining number of
+            affordable queries. The binding resource is the one that runs out first.
           </p>
           <div class="equation">
             <p aria-label="k equals the minimum over resources of the floor of remaining divided by cost per query">
@@ -180,8 +185,8 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
             <span aria-hidden="true">(2)</span>
           </div>
           <p>
-            <strong>Step two.</strong> Accept when the offer in hand falls within a
-            horizon-dependent fraction of the price range you expect.
+            <strong>Step two.</strong> Accept when the current offer is cheap enough relative to the remaining price range.
+            This is the adaptive reservation-price rule: a threshold that moves as the search horizon shrinks.
           </p>
           <div class="equation">
             <p aria-label="Buy when the price is at most the price floor plus u sub k times the price range">
@@ -190,17 +195,17 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
             <span aria-hidden="true">(3)</span>
           </div>
           <p>
-            The fractions come from u<sub>0</sub> = 1 and u<sub>k+1</sub> = u<sub>k</sub> −
+            The fractions follow u<sub>0</sub> = 1 and u<sub>k+1</sub> = u<sub>k</sub> −
             u<sub>k</sub><sup>2</sup>/2:
             {acceptanceFractions.map(({ k, u }, index) => (
               <span>{index > 0 ? ", " : ""}u<sub>{k}</sub> = {u.toFixed(3)}</span>
-            ))}. With one fallback left you accept the midpoint of the range; with six, only the
-            cheapest fifth. The threshold <em>rises</em> as the budget drains, because failing to
-            buy costs more than overpaying.
+            ))}. With one query left, you buy near the midpoint of the price range; with six left, only the cheapest
+            fifth is acceptable. The threshold rises as the budget drains because a costly miss is more expensive than a
+            mild overpay.
           </p>
           <p class="note">
-            This recursion is not new. It is the Cayley–Moser problem, posed in 1875 and solved in
-            1956; we reproduce it in a price-minimisation form and measure what it is worth here.
+            This recursion is the Cayley–Moser rule, not a new invention. We reproduce it in a price-minimisation form
+            and then measure how valuable it is under the real merchant data in this study.
           </p>
         </div>
         <figure class="research-figure">
@@ -230,13 +235,30 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
         </div>
       </div>
       <p class="section-intro">
-        On {results.held_out_episode_count} held-out episodes built from live merchants, the adaptive rule
-        lowered failure-penalized purchase loss against the strongest tuned fixed rule, with the whole
-        bootstrap interval below zero and {results.hard_budget_violations} budget violations. The margin is
-        small because the median episode has only {results.median_merchant_count} merchants at a price ratio
-        of {results.median_price_dispersion_ratio}. The table below maps where the rule earns its complexity
-        and where a constant is the better engineering choice.
+        On {results.held_out_episode_count} held-out episodes built from live merchants, the adaptive rule lowered
+        failure-penalized purchase loss against the strongest tuned fixed rule, with the entire bootstrap interval
+        below zero and {results.hard_budget_violations} budget violations. The gain is real, but not universal: the median
+        episode has only {results.median_merchant_count} merchants and a price ratio of
+        {results.median_price_dispersion_ratio}, which is exactly why the advantage is modest in practice. The table below
+        shows where the extra complexity is worth it and where a fixed threshold is the better operational choice.
       </p>
+      <div class="decision-spotlight" aria-label="Adaptive stopping decision summary">
+        <div class="spotlight-card spotlight-card--win">
+          <span class="spotlight-kicker">Adaptive wins</span>
+          <strong>Above 1.1× price spread</strong>
+          <small>Once merchants actually differ, the extra query is worth the data.</small>
+        </div>
+        <div class="spotlight-card spotlight-card--flat">
+          <span class="spotlight-kicker">No edge</span>
+          <strong>At or below 1.01× spread</strong>
+          <small>When prices are nearly identical, a fixed threshold is usually just as good.</small>
+        </div>
+        <div class="spotlight-card spotlight-card--tight">
+          <span class="spotlight-kicker">Budget too tight</span>
+          <strong>Few queries left</strong>
+          <small>When the budget is too constrained, the extra state can only hurt.</small>
+        </div>
+      </div>
       <figure class="research-figure">
         <DecisionTable rows={decisionTable} />
         <figcaption>
