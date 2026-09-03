@@ -51,3 +51,5 @@ virtuallee.store  # unavailable after 3 attempts: <urlopen error [SSL: CERTIFICA
 vsznclothing.com  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)
 worldbridgecommerce.net  # unavailable after 3 attempts: <urlopen error [Errno 8] nodename nor servname provided, or not known>
 yoyojapanstore.com  # unavailable after 3 attempts: Expecting value: line 1 column 1 (char 0)
+frostnyc.com  # 429
+gb-frostnyc.glopalstore.com  # 429

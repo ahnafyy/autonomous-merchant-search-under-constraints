@@ -10,6 +10,7 @@ STOPPING-ADVANTAGE-001 & numerical & Single-currency episodes in which one exact
 NO-ADVANTAGE-REGION-001 & computational-pattern & A simulation sweep over merchant count, price dispersion, and budget fraction, with stockout and drift rates calibrated to the measured UCP corpus. Simulation evidence, not a live-panel measurement. \\
 CLOSED-FORM-RULE-001 & exact-computational & Prices uniform on a known range, a fixed per-query resource cost so the budget reduces to a count of affordable queries, and horizons up to eight further queries. The acceptance fraction follows u(0) = 1, u(k+1) = u(k) - u(k)\textasciicircum{}2 / 2, which under u = 1 - mu is the Cayley-Moser recursion mu(n) = (1 + mu(n-1)\textasciicircum{}2) / 2. This claim asserts correct reproduction of a known result, not a new one. \\
 SECRETARY-RULE-001 & computational-pattern & A calibrated simulation at a horizon long enough for exploration rules to differ, with stockout and drift rates taken from the measured corpus. The live corpus has too few merchants per episode to separate these rules. \\
+OVERLAP-SPARSITY-001 & numerical & Products offered by two or more independent registrable domains in a single currency, measured on the widest available discovery snapshot. Independence is by registrable domain, so multiple storefronts of one company count once. \\
 PERMIT-SAFETY-001 & conjecture & Sequential merchant calls whose host runtime enforces each issued permit and whose reconciliation records cannot be forged, reused, or omitted. \\
 \bottomrule
 \end{longtable}

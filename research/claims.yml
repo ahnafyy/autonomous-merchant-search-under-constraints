@@ -183,6 +183,37 @@ claims:
         knowledge at all, an ordinal rule is the appropriate tool.
       - "Simulation evidence, not a live-panel measurement."
 
+  - id: "OVERLAP-SPARSITY-001"
+    statement: >-
+      Cross-merchant product overlap in the live UCP ecosystem is thin: after scanning
+      every discoverable merchant, most products offered by more than one independent
+      seller are offered by exactly two, and only a minority reach three or more. Since
+      an optimal stopping rule and a one-step lookahead coincide when only one
+      alternative remains, this bounds what any stopping policy can achieve here.
+    status: "numerical"
+    scope: >-
+      Products offered by two or more independent registrable domains in a single
+      currency, measured on the widest available discovery snapshot. Independence is by
+      registrable domain, so multiple storefronts of one company count once.
+    evaluator: "paperkit.evaluators:evaluate_overlap_sparsity"
+    result_key: "overlap_products_three_or_more"
+    evidence:
+      - "scripts/overlap_report.py"
+      - "data/ucp/overlap-report-2026-09-02-expanded.json"
+      - "packages/python/src/autonomous_shopping_optimizer/experiment.py"
+    manuscript_labels:
+      - "sec:benchmark"
+    site_visible: true
+    limitations:
+      - >-
+        Overlap is detected by exact SKU equality, so the same product listed under
+        different identifiers at two merchants is counted as two products. The measured
+        overlap is therefore a lower bound.
+      - >-
+        Merchants truncated at the pagination cap may carry additional shared products
+        that were never observed.
+      - "One protocol on one date; not a claim about retail commerce generally."
+
   - id: "PERMIT-SAFETY-001"
     statement: >-
       Atomic reservation of every enforceable resource permit, followed by exact

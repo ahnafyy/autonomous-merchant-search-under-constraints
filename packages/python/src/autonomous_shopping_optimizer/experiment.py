@@ -781,6 +781,38 @@ def rule_comparison(
     }
 
 
+def _overlap_stats(data_dir: Path) -> dict[str, Any]:
+    """Cross-merchant overlap from the widest discovery scan available.
+
+    How many sellers carry the same product bounds what any stopping rule can do:
+    with two sellers an optimal rule and one-step lookahead coincide.
+    """
+    reports = sorted(data_dir.glob("overlap-report-*.json"))
+    if not reports:
+        return {}
+    widest = max(
+        (json.loads(path.read_text(encoding="utf-8")) for path in reports),
+        key=lambda payload: payload.get("merchants_with_rows", 0),
+    )
+    histogram = {
+        int(size): count
+        for size, count in widest["histogram_single_currency"].items()
+    }
+    return {
+        "overlap_snapshot": widest["snapshot_date"],
+        "overlap_merchants_scanned": widest["merchants_with_rows"],
+        "overlap_cross_merchant_products": widest["cross_merchant_products"],
+        "overlap_episode_eligible_products": widest["episode_eligible_products"],
+        "overlap_products_three_or_more": sum(
+            count for size, count in histogram.items() if size >= 3
+        ),
+        "overlap_products_five_or_more": sum(
+            count for size, count in histogram.items() if size >= 5
+        ),
+        "overlap_widest_merchant_count": max(histogram) if histogram else 0,
+    }
+
+
 def run_study(seed: int, data_dir: Path | None = None) -> dict[str, Any]:
     """Full study: ephemerality, live-panel replay, and the calibrated sweep."""
     directory = resolve_data_dir(data_dir)
@@ -802,6 +834,7 @@ def run_study(seed: int, data_dir: Path | None = None) -> dict[str, Any]:
     comparison = real["adaptive_vs_best_fixed"]
     rules = rule_comparison(seed=seed, stockout_rate=stockout, drift_rate=drift)
     closed_form = verify_closed_form_against_solver()
+    overlap = _overlap_stats(directory)
 
     return {
         "study_seed": seed,
@@ -874,6 +907,7 @@ def run_study(seed: int, data_dir: Path | None = None) -> dict[str, Any]:
         "criteria": criteria,
         "rule_comparison": rules,
         "closed_form_verification": closed_form,
+        **overlap,
     }
 
 

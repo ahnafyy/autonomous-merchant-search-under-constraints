@@ -252,3 +252,152 @@ works:
       Infinite-horizon and stationary; our horizon is finite and set by the budget.
     confidence: high
     status: candidate
+  - citation_key: "cavallo2018scraped"
+    title: "Scraped Data and Sticky Prices"
+    url: "https://doi.org/10.1162/rest_a_00652"
+    verified_on: "2026-09-03"
+    overlap: >-
+      Canonical measurement of online price-change durations, using daily scraped data
+      from 181 retailers in 31 countries. Directly bears on whether offers are
+      ephemeral at short horizons.
+    distinction: >-
+      Measures how often prices CHANGE and finds them sticky. It does not measure how
+      often an offer DISAPPEARS, which is the hazard our benchmark depends on. This is
+      the most likely citation a referee would raise against short-horizon ephemerality,
+      so we cite it ourselves.
+    confidence: high
+    status: established
+  - citation_key: "gorodnichenko2018jeea"
+    title: "Price Setting in Online Markets: Does IT Click?"
+    url: "https://doi.org/10.1093/jeea/jvx050"
+    verified_on: "2026-09-03"
+    overlap: >-
+      Finds online prices change more often than offline yet still show relatively long
+      spells of fixed prices.
+    distinction: "Price rigidity only; silent on availability or delisting."
+    confidence: high
+    status: established
+  - citation_key: "cavallo2017online"
+    title: "Are Online and Offline Prices Similar? Evidence from Large Multi-channel Retailers"
+    url: "https://doi.org/10.1257/aer.20160542"
+    verified_on: "2026-09-03"
+    overlap: >-
+      Price levels are identical about 72 percent of the time across channels, with
+      similar change frequencies and sizes.
+    distinction: >-
+      Cross-channel comparison rather than a within-seller availability hazard.
+    confidence: high
+    status: established
+  - citation_key: "gorodnichenko2017basic"
+    title: >-
+      Price Setting in Online Markets: Basic Facts, International Comparisons, and
+      Cross-Border Integration
+    url: "https://doi.org/10.1257/aer.20141127"
+    verified_on: "2026-09-03"
+    overlap: >-
+      Online prices are more flexible than offline, with pass-through of 60 to 75
+      percent and half-life under two months.
+    distinction: >-
+      Establishes that the relevant timescale for price movement is months, not the
+      minutes an agent search occupies.
+    confidence: high
+    status: established
+  - citation_key: "cavallo2016billion"
+    title: "The Billion Prices Project: Using Online Prices for Measurement and Research"
+    url: "https://doi.org/10.1257/jep.30.2.151"
+    verified_on: "2026-09-03"
+    overlap: >-
+      Describes the standard methodology for scraped online price panels, collecting
+      about five million prices daily.
+    distinction: >-
+      Confirms that the field's finest sampling resolution is daily, so sub-daily offer
+      dynamics are unmeasured rather than measured and absent.
+    confidence: high
+    status: established
+  - citation_key: "delossantos2012testing"
+    title: >-
+      Testing Models of Consumer Search Using Data on Web Browsing and Purchasing
+      Behavior
+    url: "https://doi.org/10.1257/aer.102.6.2955"
+    verified_on: "2026-09-03"
+    overlap: >-
+      Tests sequential search against fixed sample size using observed browsing, and
+      argues explicitly from recall patterns.
+    distinction: >-
+      Rejects sequential search with recall in favour of fixed sample size, not in
+      favour of no-recall sequential search. Our fixed-depth arm is the fixed-sample-size
+      analogue, and this work is why that arm must be reported rather than omitted.
+    confidence: high
+    status: established
+  - citation_key: "bronnenberg2016zooming"
+    title: "Zooming In on Choice: How Do Consumers Search for Cameras Online?"
+    url: "https://econpapers.repec.org/RePEc:inm:ormksc:v:35:y:2016:i:5:p:693-712"
+    verified_on: "2026-09-03"
+    overlap: >-
+      Measures actual search breadth: consumers make about fourteen searches before
+      purchase, with the chosen alternative usually discovered late in the sequence.
+    distinction: >-
+      Reports a count of searches rather than elapsed time, so it cannot be used to
+      claim a median time to purchase. Human rather than agent search.
+    confidence: medium
+    status: candidate
+  - citation_key: "chen2016algorithmic"
+    title: "An Empirical Analysis of Algorithmic Pricing on Amazon Marketplace"
+    url: "https://doi.org/10.1145/2872427.2883089"
+    verified_on: "2026-09-03"
+    overlap: >-
+      Establishes that third-party algorithmic repricers are widely deployed, which is
+      a mechanism by which offers could move faster than survey data suggests.
+    distinction: >-
+      Demonstrates the mechanism, not a measured sub-daily churn rate. We did not obtain
+      its crawl cadence, so no figure from it is quoted.
+    confidence: medium
+    status: candidate
+  - citation_key: "jing2011stockouts"
+    title: "Stockouts in Online Retailing"
+    url: "https://doi.org/10.1509/jmkr.48.2.342"
+    verified_on: "2026-09-03"
+    overlap: >-
+      Studies how stockouts and fulfilment rates affect online purchase behaviour.
+    distinction: >-
+      Measures the consequences of stockouts for demand, not the hazard rate at which
+      listings become unavailable. No published rate exists below month scale, which is
+      the gap our daily panel probe addresses.
+    confidence: high
+    status: established
+  - citation_key: "ucp2026catalog"
+    title: "Universal Commerce Protocol: Shopping Catalog Capability"
+    url: "https://ucp.dev/latest/specification/shopping/catalog/"
+    verified_on: "2026-09-03"
+    overlap: >-
+      Normative statement that catalog responses are not transactional commitments and
+      should not be reused across sessions without re-validation.
+    distinction: >-
+      This is the specification our benchmark queries, so it grounds the no-recall
+      assumption by construction rather than by observed churn.
+    confidence: high
+    status: established
+  - citation_key: "ucp2026checkout"
+    title: "Universal Commerce Protocol: Shopping Checkout Capability"
+    url: "https://ucp.dev/latest/specification/shopping/checkout/"
+    verified_on: "2026-09-03"
+    overlap: >-
+      Defines an expires_at field on a checkout session with a default time to live of
+      six hours, and error codes for out_of_stock and item_unavailable.
+    distinction: >-
+      Bounds how long a quoted price may be relied upon, which sets the natural episode
+      horizon independently of any drift measurement.
+    confidence: high
+    status: established
+  - citation_key: "ap22026checkout"
+    title: "Agent Payments Protocol: Checkout Mandate"
+    url: "https://ap2-protocol.org/ap2/checkout_mandate/"
+    verified_on: "2026-09-03"
+    overlap: >-
+      Signed checkout mandates carry issued-at and expiry timestamps; the normative
+      example uses a one hour validity window.
+    distinction: >-
+      A payment-authorisation protocol rather than a search model, but it independently
+      confirms that quoted commerce terms are treated as expiring.
+    confidence: high
+    status: established

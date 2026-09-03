@@ -37,6 +37,7 @@ def test_build_is_deterministic_and_claims_pass(tmp_path: Path) -> None:
         "CLOSED-FORM-RULE-001": "exact-computational",
         "NO-ADVANTAGE-REGION-001": "computational-pattern",
         "OFFER-EPHEMERALITY-001": "numerical",
+        "OVERLAP-SPARSITY-001": "numerical",
         "PERMIT-SAFETY-001": "conjecture",
         "SECRETARY-RULE-001": "computational-pattern",
         "SOLVER-AGREEMENT-001": "exact-computational",

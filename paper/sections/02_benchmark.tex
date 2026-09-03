@@ -8,17 +8,24 @@ two properties that make it usable as a benchmark.
 \subsection{Collection}
 
 Merchants implementing the Universal Commerce Protocol publish a discovery document
-and expose a read-only catalog search operation. We probed \ResultMerchantsTargeted{}
-such merchants and paginated each catalog, collecting \ResultCatalogRows{} listings
-covering \ResultUniqueSkus{} distinct SKUs. Of these, \ResultCrossMerchantSkus{} SKUs
-appear at more than one independent merchant, which is what makes comparison possible
-at all.
+and expose a read-only catalog search operation. We probed every discoverable such
+merchant and paginated each catalog, reaching
+\ResultOverlapMerchantsScanned{} merchants. Of the products offered by more than
+one independent seller in a single currency,
+\ResultOverlapEpisodeEligibleProducts{} qualify as potential episodes.
+
+The earlier of our two dated snapshots, used for calibration, covers a narrower set
+of \ResultMerchantsTargeted{} merchants and \ResultCatalogRows{} listings; the
+replayed episodes are drawn from that intersection. Section~\ref{sec:limitations}
+records what that costs.
 
 Only read operations were used; nothing was added to a cart and no purchase was
 attempted. Merchant eligibility follows a documented permission ladder, and the
 inventory used here is labelled \emph{declared capability}: the merchant advertises
 the operation we exercised. That is a recorded modelling assumption, not a
 case-by-case terms-of-service review, and it is a limitation rather than a warrant.
+The crawler identifies itself with a contact address, stops immediately on any
+refusal status, and never contacts a refusing merchant again.
 
 \subsection{The instrument does not add noise}
 
@@ -32,6 +39,35 @@ half of all listings vanished within a month; it was an artifact of comparing a
 shallow scan against a deep one. Restricting the comparison to merchants whose
 catalogs were paginated \emph{in full} on both dates removes the artifact, and we
 report only that restricted figure.
+
+\subsection{Why offers are not recallable}
+
+The benchmark treats an offer as accept-now-or-lose-it. That assumption is often
+defended by arguing that prices move, which invites the objection that they move
+slowly: the online price-rigidity literature consistently finds long spells of fixed
+prices, and finds online prices \emph{stickier} than earlier estimates
+suggested~\citep{cavallo2018scraped,gorodnichenko2018jeea,gorodnichenko2017basic}.
+Our own instrument agrees at short horizons, since two scans minutes apart are
+byte-identical.
+
+We therefore do not rest the assumption on price movement. We rest it on the
+protocol. The UCP catalog specification states that catalog responses ``are not
+transactional commitments'' and ``SHOULD NOT be reused across sessions without
+re-validation''~\citep{ucp2026catalog}. A checkout session carries an explicit
+expiry, defaulting to six hours~\citep{ucp2026checkout}, and the corresponding
+payment-authorisation protocol issues mandates with a one-hour validity window in its
+normative example~\citep{ap22026checkout}.
+
+An agent that observes a catalog price and does not convert it within the session
+thus has no protocol-guaranteed claim on that price, whether or not the number
+changed. No-recall holds by construction, and the episode horizon is bounded by the
+quote lifetime rather than by any drift rate we measure.
+
+Two caveats. The protocols differ: the checkout specification we cite defines an
+expiry field, while at least one competing agentic-commerce specification does not,
+so this argument is not uniform across the ecosystem. And a specification bounds what
+an agent may \emph{rely} on, not what merchants do in practice; a merchant may well
+honour a stale price. The assumption is therefore conservative rather than exact.
 
 \subsection{Offers move}
 
@@ -61,11 +97,22 @@ recorded as a stockout. What survives is \ResultEpisodeCount{} episodes, of whic
 
 \subsection{What this corpus is not}
 
-The resulting benchmark is narrow in a way worth stating plainly. The median episode
-has \ResultMedianMerchantCount{} merchants and a price ratio of
+The resulting benchmark is narrow in a way worth stating plainly. The median replayed
+episode has \ResultMedianMerchantCount{} merchants and a price ratio of
 \ResultMedianPriceDispersionRatio{}, meaning that in half of all episodes the
-merchants charge nearly the same price and no policy can distinguish itself. Thin
-cross-merchant overlap appears to be a property of this ecosystem rather than of our
-pipeline: even in the deeper snapshot, almost every shared SKU is carried by exactly
-two merchants. This is a finding about the ecosystem, and it directly bounds how much
-any stopping rule can achieve here.
+merchants charge nearly the same price and no policy can distinguish itself.
+
+That thinness is a property of the ecosystem, not of our pipeline, and we can now
+quantify it. Across \ResultOverlapMerchantsScanned{} merchants,
+\ResultOverlapEpisodeEligibleProducts{} products are sold by two or more independent
+sellers, but only \ResultOverlapProductsThreeOrMore{} reach three or more and
+\ResultOverlapProductsFiveOrMore{} reach five, with the widest observed overlap being
+\ResultOverlapWidestMerchantCount{} merchants (claim
+\texttt{OVERLAP-SPARSITY-001}). Since an optimal rule and a one-step lookahead
+coincide when a single alternative remains, this bounds what any stopping policy can
+demonstrate on live data, and it is the reason
+Section~\ref{sec:results} reports the two as indistinguishable.
+
+Overlap is detected by exact SKU equality, so the same product listed under different
+identifiers at two merchants counts as two products. The measured overlap is a lower
+bound.

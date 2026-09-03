@@ -153,6 +153,36 @@ def evaluate_secretary_rule_mismatch(
     )
 
 
+def evaluate_overlap_sparsity(results: dict[str, Any], claim: Claim) -> ClaimEvaluation:
+    """Cross-merchant overlap must be measured, and must be thin relative to catalogue size.
+
+    The interesting stopping behaviour only exists where a product has three or more
+    sellers, so this records how rare that is even after a full-ecosystem scan.
+    """
+    eligible = results.get("overlap_episode_eligible_products")
+    if not eligible:
+        return ClaimEvaluation(
+            passed=False,
+            observed=None,
+            expected=claim.expected,
+            detail="No overlap report found; run scripts/overlap_report.py.",
+        )
+    three_plus = results["overlap_products_three_or_more"]
+    share = three_plus / eligible
+    return ClaimEvaluation(
+        passed=0 < share < 0.5,
+        observed=round(share, 6),
+        expected=claim.expected,
+        detail=(
+            f"Across {results['overlap_merchants_scanned']} scanned merchants, "
+            f"{eligible} products are offered by two or more independent sellers in a "
+            f"single currency, but only {three_plus} ({share:.1%}) reach three or more. "
+            f"The widest observed overlap is "
+            f"{results['overlap_widest_merchant_count']} merchants."
+        ),
+    )
+
+
 def evaluate_offer_ephemerality(results: dict[str, Any], claim: Claim) -> ClaimEvaluation:
     """Offers must actually move between snapshots, or stopping is not a real decision."""
     delisting = results["delisting_rate"]

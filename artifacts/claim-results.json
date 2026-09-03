@@ -103,6 +103,22 @@
       "status": "computational-pattern"
     },
     {
+      "detail": "Across 2785 scanned merchants, 37750 products are offered by two or more independent sellers in a single currency, but only 4452 (11.8%) reach three or more. The widest observed overlap is 14 merchants.",
+      "expected": null,
+      "id": "OVERLAP-SPARSITY-001",
+      "limitations": [
+        "Overlap is detected by exact SKU equality, so the same product listed under different identifiers at two merchants is counted as two products. The measured overlap is therefore a lower bound.",
+        "Merchants truncated at the pagination cap may carry additional shared products that were never observed.",
+        "One protocol on one date; not a claim about retail commerce generally."
+      ],
+      "observed": 0.117934,
+      "passed": true,
+      "scope": "Products offered by two or more independent registrable domains in a single currency, measured on the widest available discovery snapshot. Independence is by registrable domain, so multiple storefronts of one company count once.",
+      "site_visible": true,
+      "statement": "Cross-merchant product overlap in the live UCP ecosystem is thin: after scanning every discoverable merchant, most products offered by more than one independent seller are offered by exactly two, and only a minority reach three or more. Since an optimal stopping rule and a one-step lookahead coincide when only one alternative remains, this bounds what any stopping policy can achieve here.",
+      "status": "numerical"
+    },
+    {
       "detail": "0 hard-budget violations across every replayed episode and arm.",
       "expected": 0,
       "id": "PERMIT-SAFETY-001",
