@@ -17,6 +17,10 @@ def stage_generated_files(root: Path) -> Path:
         artifacts / "tables" / "project_metadata.tex": generated / "project_metadata.tex",
         artifacts / "tables" / "result_macros.tex": generated / "result_macros.tex",
         artifacts / "tables" / "claim_status.tex": generated / "claim_status.tex",
+        artifacts / "tables" / "decision_table.tex": generated / "decision_table.tex",
+        artifacts / "tables" / "arm_comparison.tex": generated / "arm_comparison.tex",
+        artifacts / "tables" / "rule_comparison.tex": generated / "rule_comparison.tex",
+        artifacts / "tables" / "references.bib": generated / "references.bib",
     }
     missing = [str(source) for source in required if not source.is_file()]
     if missing:
@@ -39,27 +43,36 @@ def stage_generated_files(root: Path) -> Path:
 def build_paper(root: Path) -> Path:
     root = root.resolve()
     stage_generated_files(root)
-    latexmk = shutil.which("latexmk")
-    if latexmk is None:
-        raise PaperBuildError(
-            "latexmk is not installed. Install a TeX distribution with latexmk "
-            "to compile the paper."
-        )
     paper_dir = root / "paper"
-    command = [
-        latexmk,
-        "-pdf",
-        "-halt-on-error",
-        "-file-line-error",
-        "-interaction=nonstopmode",
-        "main.tex",
-    ]
+
+    latexmk = shutil.which("latexmk")
+    tectonic = shutil.which("tectonic")
+    if latexmk is not None:
+        command = [
+            latexmk,
+            "-pdf",
+            "-halt-on-error",
+            "-file-line-error",
+            "-interaction=nonstopmode",
+            "main.tex",
+        ]
+        engine = "latexmk"
+    elif tectonic is not None:
+        # Tectonic resolves its own packages, so it needs no TeX distribution.
+        command = [tectonic, "-X", "compile", "main.tex", "--outdir", str(paper_dir)]
+        engine = "tectonic"
+    else:
+        raise PaperBuildError(
+            "No LaTeX engine found. Install latexmk with a TeX distribution, or "
+            "install tectonic (brew install tectonic)."
+        )
+
     completed = subprocess.run(command, cwd=paper_dir, check=False)
     if completed.returncode != 0:
-        raise PaperBuildError(f"latexmk failed with exit code {completed.returncode}")
+        raise PaperBuildError(f"{engine} failed with exit code {completed.returncode}")
     pdf = paper_dir / "main.pdf"
     if not pdf.is_file():
-        raise PaperBuildError("latexmk completed without producing paper/main.pdf")
+        raise PaperBuildError(f"{engine} completed without producing paper/main.pdf")
     dist = root / "dist"
     dist.mkdir(exist_ok=True)
     destination = dist / "paper.pdf"

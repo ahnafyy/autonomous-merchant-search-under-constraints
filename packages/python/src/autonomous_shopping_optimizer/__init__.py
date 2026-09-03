@@ -9,6 +9,20 @@ from autonomous_shopping_optimizer.analysis import (
     hard_constraint_surface,
     simulate_policy,
 )
+from autonomous_shopping_optimizer.baselines import (
+    ARMS,
+    ArmResult,
+    query_cost_vector,
+    reservation_price,
+    run_arm,
+)
+from autonomous_shopping_optimizer.closed_form import (
+    acceptance_fraction,
+    affordable_queries,
+    closed_form_reservation_price,
+    secretary_sample_size,
+    verify_closed_form_against_solver,
+)
 from autonomous_shopping_optimizer.domain import (
     Buy,
     Merchant,
@@ -20,12 +34,27 @@ from autonomous_shopping_optimizer.domain import (
     ShoppingAction,
     Stop,
 )
+from autonomous_shopping_optimizer.experiment import (
+    derive_criteria,
+    measure_ephemerality,
+    paired_bootstrap,
+    run_real_study,
+    run_simulation_sweep,
+    run_study,
+)
 from autonomous_shopping_optimizer.middleware import (
     AgentDecision,
     AutonomousShoppingOptimizer,
     QueryPermit,
     ReservedQuery,
     ShoppingAgentMiddleware,
+)
+from autonomous_shopping_optimizer.panels import (
+    Episode,
+    EpisodeFeatures,
+    Snapshot,
+    build_episodes,
+    load_snapshot,
 )
 from autonomous_shopping_optimizer.permits import (
     PermitLedger,
@@ -50,13 +79,21 @@ from autonomous_shopping_optimizer.ucp import (
     load_endpoint_inventory,
     screen_endpoint_inventory,
 )
+from autonomous_shopping_optimizer.verification import (
+    enumerate_optimal_loss,
+    verify_solver_against_enumeration,
+)
 
 __all__ = [
+    "ARMS",
     "AgentDecision",
+    "ArmResult",
     "AutonomousShoppingOptimizer",
     "Buy",
     "EndpointCapability",
     "EndpointExclusion",
+    "Episode",
+    "EpisodeFeatures",
     "FrozenMerchantObservation",
     "FrozenPanel",
     "InventoryReport",
@@ -79,17 +116,36 @@ __all__ = [
     "SearchOutcome",
     "ShoppingAgentMiddleware",
     "ShoppingAction",
+    "Snapshot",
     "Stop",
     "UsageObservation",
+    "acceptance_fraction",
     "adaptive_hard_budget_plan",
+    "affordable_queries",
+    "build_episodes",
+    "closed_form_reservation_price",
     "decompose_purchase_loss",
+    "derive_criteria",
+    "enumerate_optimal_loss",
     "exhaustive_oracle",
     "hard_budget_stopping_plan",
     "hard_constraint_surface",
     "load_endpoint_inventory",
+    "load_snapshot",
+    "measure_ephemerality",
+    "paired_bootstrap",
+    "query_cost_vector",
+    "reservation_price",
+    "run_arm",
+    "run_real_study",
+    "run_simulation_sweep",
+    "run_study",
     "screen_endpoint_inventory",
+    "secretary_sample_size",
     "simulate_policy",
     "score_selection",
+    "verify_closed_form_against_solver",
+    "verify_solver_against_enumeration",
 ]
 
 __version__ = "0.1.0"

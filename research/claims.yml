@@ -1,59 +1,206 @@
 schema_version: 1
 claims:
-  - id: "MERCHANT-PERMIT-SAFETY-CONJECTURE-001"
+  - id: "OFFER-EPHEMERALITY-001"
     statement: >-
-      Conjecture: atomic reservation of every enforceable resource permit, followed by
-      exact reclamation for known usage and permit-level charging for censored usage,
-      keeps cumulative conservative resource charges within every initial episode
-      budget on every execution path.
+      Offers in the live UCP merchant corpus are ephemeral: between the two dated
+      snapshots a measurable share of tracked listings is delisted and a measurable
+      share of surviving listings changes price, so deciding when to stop searching
+      is a real decision rather than a formality.
+    status: "numerical"
+    scope: >-
+      Merchants that the later snapshot paginated in full, so that an absent SKU means
+      a delisting rather than a page-cap truncation. One calibration and one evaluation
+      date, one protocol, and no claim about retail commerce beyond this corpus.
+    evaluator: "paperkit.evaluators:evaluate_offer_ephemerality"
+    result_key: "delisting_rate"
+    evidence:
+      - "data/ucp/deep-scan-matches-2026-08-02.json"
+      - "data/ucp/deep-scan-matches-2026-09-02.json"
+      - "packages/python/src/autonomous_shopping_optimizer/experiment.py"
+    manuscript_labels:
+      - "sec:benchmark"
+    site_visible: true
+    limitations:
+      - "Two snapshots one month apart cannot resolve intra-month price dynamics."
+      - "Delisting is measured only on fully paginated merchants, a minority of the corpus."
+      - "Catalog membership is a proxy for purchasable availability, not a checkout test."
+
+  - id: "SOLVER-AGREEMENT-001"
+    statement: >-
+      The finite-horizon stopping solver returns exactly the minimum expected purchase
+      loss achievable by any deterministic accept-or-continue policy on every
+      registered small instance, in exact rational arithmetic.
+    status: "exact-computational"
+    scope: >-
+      Registered instances with a fixed merchant order, discrete price supports,
+      optional stockout weight, a hard purchase-price cap, and a terminal failure
+      penalty, small enough for complete policy enumeration.
+    evaluator: "paperkit.evaluators:evaluate_solver_agreement"
+    evidence:
+      - "packages/python/src/autonomous_shopping_optimizer/verification.py"
+      - "packages/python/src/autonomous_shopping_optimizer/analysis.py"
+      - "tests/test_verification.py"
+    manuscript_labels:
+      - "app:proofs"
+    site_visible: true
+    limitations:
+      - "Enumeration is only feasible for small horizons and small price supports."
+      - "Agreement on these instances does not by itself prove optimality in general."
+      - "Adaptive merchant routing is not covered by these fixed-order instances."
+
+  - id: "STOPPING-ADVANTAGE-001"
+    statement: >-
+      On frozen held-out panels built from live UCP merchants, adaptive stopping
+      attains lower failure-penalized purchase loss than the strongest fixed rule
+      tuned on calibration data, with the whole paired bootstrap confidence interval
+      below zero.
+    status: "numerical"
+    scope: >-
+      Single-currency episodes in which one exact SKU is offered by at least two
+      independent merchants, replayed under no-recall semantics with a per-episode
+      failure penalty and a shared merchant arrival order.
+    evaluator: "paperkit.evaluators:evaluate_live_panel_advantage"
+    result_key: "adaptive_vs_fixed_ci_upper_minor"
+    evidence:
+      - "packages/python/src/autonomous_shopping_optimizer/experiment.py"
+      - "packages/python/src/autonomous_shopping_optimizer/baselines.py"
+      - "tests/test_experiment.py"
+    manuscript_labels:
+      - "sec:results"
+    site_visible: true
+    limitations:
+      - >-
+        The measured effect is statistically detectable but economically small,
+        because most episodes in this corpus have near-identical prices across merchants.
+      - >-
+        Nearly every episode has exactly two merchants, so the result does not
+        establish behaviour at longer search horizons.
+      - "Only two currencies survive the single-currency filter."
+      - >-
+        With two merchants the adaptive rule coincides with one-step lookahead, so
+        this result does not separate the two policies.
+
+  - id: "NO-ADVANTAGE-REGION-001"
+    statement: >-
+      Adaptive stopping provides no measurable advantage over a tuned fixed rule when
+      cross-merchant price dispersion is negligible, and can be significantly worse
+      when the query budget is too tight to act on what a query reveals.
+    status: "computational-pattern"
+    scope: >-
+      A simulation sweep over merchant count, price dispersion, and budget fraction,
+      with stockout and drift rates calibrated to the measured UCP corpus. Simulation
+      evidence, not a live-panel measurement.
+    evaluator: "paperkit.evaluators:evaluate_no_advantage_region"
+    evidence:
+      - "packages/python/src/autonomous_shopping_optimizer/experiment.py"
+      - "tests/test_experiment.py"
+    manuscript_labels:
+      - "sec:results"
+      - "sec:robustness"
+    site_visible: true
+    limitations:
+      - "The generator is calibrated to the measured corpus but is still synthetic."
+      - "Prices are drawn independently across merchants; real merchants may co-move."
+      - >-
+        The reported thresholds are grid boundaries, not fitted decision surfaces,
+        so the true boundary lies somewhere between adjacent grid levels.
+
+  - id: "CLOSED-FORM-RULE-001"
+    statement: >-
+      Our implementation reproduces the classical Cayley-Moser reservation sequence in a
+      price-minimization parameterization: accepting when the observed price falls
+      within a horizon-dependent fraction of the expected price range matches the exact
+      solver to within grid-discretization error, and captures most of the savings the
+      solver captures without running the dynamic program.
+    status: "exact-computational"
+    scope: >-
+      Prices uniform on a known range, a fixed per-query resource cost so the budget
+      reduces to a count of affordable queries, and horizons up to eight further
+      queries. The acceptance fraction follows u(0) = 1, u(k+1) = u(k) - u(k)^2 / 2,
+      which under u = 1 - mu is the Cayley-Moser recursion mu(n) = (1 + mu(n-1)^2) / 2.
+      This claim asserts correct reproduction of a known result, not a new one.
+    evaluator: "paperkit.evaluators:evaluate_closed_form_rule"
+    tolerance: 0.001
+    evidence:
+      - "packages/python/src/autonomous_shopping_optimizer/closed_form.py"
+      - "tests/test_closed_form.py"
+    manuscript_labels:
+      - "sec:rule"
+      - "app:proofs"
+    site_visible: true
+    limitations:
+      - >-
+        The recursion and its asymptotic are established prior results (Cayley 1875;
+        Moser 1956; Gilbert and Mosteller 1966; Finch 2024). No novelty is claimed for
+        the formula itself.
+      - >-
+        The recursion carries no per-query cost term; cost enters only through the map
+        from budget to remaining horizon.
+      - >-
+        Derived for a uniform price law; other shapes give a different acceptance
+        fraction, though the two-step structure is unchanged.
+      - >-
+        Agreement is checked to a relative tolerance because the solver takes a
+        discrete price support while the closed form is continuous.
+      - >-
+        Requires an estimate of the cheapest and dearest reachable price; a bad range
+        estimate degrades the rule.
+      - "Savings capture is measured on the calibrated generator, not on live panels."
+      - >-
+        Reducing a multi-resource budget to a single query count is a modelling
+        convention, not a result, and assumes deterministic per-query costs.
+
+  - id: "SECRETARY-RULE-001"
+    statement: >-
+      We quantify a known information mismatch: the classical secretary rule, sampling
+      n/e candidates before accepting the next record, captures substantially less of
+      the achievable saving than a price threshold and spends more queries doing so,
+      because it maximizes the chance of finding the single cheapest merchant rather
+      than the expected price paid.
+    status: "computational-pattern"
+    scope: >-
+      A calibrated simulation at a horizon long enough for exploration rules to
+      differ, with stockout and drift rates taken from the measured corpus. The live
+      corpus has too few merchants per episode to separate these rules.
+    evaluator: "paperkit.evaluators:evaluate_secretary_rule_mismatch"
+    evidence:
+      - "packages/python/src/autonomous_shopping_optimizer/closed_form.py"
+      - "packages/python/src/autonomous_shopping_optimizer/baselines.py"
+      - "tests/test_closed_form.py"
+    manuscript_labels:
+      - "sec:rule"
+    site_visible: true
+    limitations:
+      - >-
+        That rank-based rules are suboptimal under a cardinal objective is established
+        prior work (Bearden 2006; Palley and Kremer 2014). We measure the size of the
+        penalty; we do not show the mismatch for the first time.
+      - >-
+        This compares the rules under an objective the secretary rule was never
+        designed for; it is not a counterexample to the secretary result.
+      - >-
+        The comparison assumes a usable estimate of price levels. With no price
+        knowledge at all, an ordinal rule is the appropriate tool.
+      - "Simulation evidence, not a live-panel measurement."
+
+  - id: "PERMIT-SAFETY-001"
+    statement: >-
+      Atomic reservation of every enforceable resource permit, followed by exact
+      reclamation for known usage and permit-level charging for censored usage, keeps
+      cumulative conservative charges within every initial episode budget on every
+      execution path.
     status: "conjecture"
     scope: >-
       Sequential merchant calls whose host runtime enforces each issued permit and
       whose reconciliation records cannot be forged, reused, or omitted.
+    evaluator: "paperkit.evaluators:evaluate_zero_budget_violations"
     evidence:
       - "packages/python/src/autonomous_shopping_optimizer/permits.py"
       - "tests/test_permits.py"
     manuscript_labels: []
     site_visible: false
     limitations:
-      - "The current evidence is implementation testing, not yet a manuscript proof."
+      - >-
+        The evaluator confirms zero violations across the replayed episodes; it is
+        evidence for the conjecture, not a proof of it.
       - "The claim does not apply when an upstream service can spend beyond an issued permit."
-  - id: "MERCHANT-PERMIT-SOLVER-OPEN-001"
-    statement: >-
-      It remains open whether an exact finite-horizon solver over joint merchant and
-      discrete vector-permit actions agrees with exhaustive policy enumeration for the
-      registered reduced domain, including censored usage and terminal purchase failure.
-    status: "open"
-    scope: >-
-      Finite exact-SKU merchant panels, integer resource budgets, a finite permit grid, and
-      separately evaluated no-recall and held-offer modes.
-    evidence:
-      - "research/question.md"
-    manuscript_labels: []
-    site_visible: false
-    limitations:
-      - "The joint-action reference solver and exhaustive enumerator are not implemented yet."
-  - id: "MERCHANT-PERMIT-OPEN-001"
-    statement: >-
-      It remains open whether joint adaptive merchant selection and enforceable
-      time, token, API-call, and genuine API-spend permit allocation improves the
-      preregistered purchase outcome over the strongest fixed feasible baseline while
-      maintaining zero hard-budget violations on frozen held-out merchant panels.
-    status: "open"
-    scope: >-
-      Sequential exact-SKU merchant search with enforceable per-call limits,
-      uncertain resource usage, a hard purchase-price cap, and paired held-out replay;
-      no-recall is primary and held-offer behavior is a separate robustness mode.
-    evidence:
-      - "research/literature.yml"
-    manuscript_labels: []
-    site_visible: true
-    limitations:
-      - "A declared-capability merchant panel candidate now exists
-        (data/ucp/inventory-declared-capability-2026-08-02.json, 240 domains,
-        68 confirmed cross-merchant same-ISBN episodes with real price spread
-        as of 2026-08-02), but it relies on a documented declared-capability
-        assumption rather than case-by-case verified permission, and no
-        calibration/held-out split or policy replay has been run against it."
-      - "Zero violations require the host runtime to enforce every permit before invoking a model or merchant tool."
-      - "Live exhaustive-oracle scoring is conditional on endpoint permissions and rate limits."

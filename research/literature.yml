@@ -152,4 +152,103 @@ works:
       inspection cost or terminal purchase-failure event.
     confidence: high
     status: candidate
+  - citation_key: "gilbert1966recognizing"
+    title: "Recognizing the Maximum of a Sequence"
+    url: "https://doi.org/10.1080/01621459.1966.10502008"
+    verified_on: "2026-09-02"
+    overlap: >-
+      Extended treatment of the Cayley-Moser problem, the full-information sequential
+      selection recursion that our reservation-price sequence reproduces.
+    distinction: >-
+      Maximizes expected value of a single selection without resource budgets; our use
+      is the price-minimization relabeling with a budget-derived horizon.
+    confidence: high
+    status: established
+  - citation_key: "ferguson1989secretary"
+    title: "Who Solved the Secretary Problem?"
+    url: "https://doi.org/10.1214/ss/1177012493"
+    verified_on: "2026-09-02"
+    overlap: >-
+      Historical account attributing the full-information problem to Cayley (1875) and
+      distinguishing it from the rank-only secretary problem.
+    distinction: >-
+      A survey rather than a model; establishes attribution for the recursion we use.
+    confidence: high
+    status: established
+  - citation_key: "finch2024quadratic"
+    title: "A Deceptively Simple Quadratic Recurrence"
+    url: "https://doi.org/10.48550/arXiv.2409.03510"
+    verified_on: "2026-09-02"
+    overlap: >-
+      Asymptotic analysis of the same quadratic recurrence, giving the leading term
+      that matches our observed decay of the acceptance fraction.
+    distinction: >-
+      Pure asymptotics with no decision or resource model attached.
+    confidence: high
+    status: established
+  - citation_key: "entwistle2022asymptotics"
+    title: "On Asymptotics of Optimal Stopping Times"
+    url: "https://doi.org/10.3390/math10020194"
+    verified_on: "2026-09-02"
+    overlap: >-
+      Records the same asymptotic rate for the uniform full-information stopping
+      sequence.
+    distinction: "Asymptotic regime only; our horizons are short and finite."
+    confidence: medium
+    status: candidate
+  - citation_key: "katriel2025cayley"
+    title: "The Cayley-Moser Problem with Poissonian Arrival of Offers"
+    url: "https://doi.org/10.48550/arXiv.2511.02763"
+    verified_on: "2026-09-02"
+    overlap: >-
+      States the standard discrete Cayley-Moser recursion that our sequence reproduces,
+      and derives a continuous-time analogue of the same decay rate.
+    distinction: >-
+      Replaces the finite horizon with Poissonian arrivals; no resource budget or
+      purchase-failure penalty.
+    confidence: high
+    status: established
+  - citation_key: "bearden2006secretary"
+    title: "A New Secretary Problem with Rank-Based Selection and Cardinal Payoffs"
+    url: "https://doi.org/10.1016/j.jmp.2005.11.003"
+    verified_on: "2026-09-02"
+    overlap: >-
+      Establishes that under a cardinal payoff objective the optimal cutoff is not the
+      classical n/e, which is the mismatch our secretary comparison quantifies.
+    distinction: >-
+      Retains rank-only information, whereas our agent observes prices directly; it
+      states the mismatch qualitatively rather than measuring a price penalty.
+    confidence: high
+    status: established
+  - citation_key: "palley2014sequential"
+    title: "Sequential Search and Learning from Rank Feedback: Theory and Experimental Evidence"
+    url: "https://doi.org/10.1287/mnsc.2014.1902"
+    verified_on: "2026-09-02"
+    overlap: >-
+      Contrasts full-information sequential search with rank-only search, the same
+      information distinction that separates our threshold rule from the secretary rule.
+    distinction: >-
+      Studies human search behaviour experimentally, without resource budgets or an
+      autonomous agent setting.
+    confidence: high
+    status: established
+  - citation_key: "lippman1976job"
+    title: "The Economics of Job Search: A Survey"
+    url: "https://doi.org/10.1111/j.1465-7295.1976.tb00386.x"
+    verified_on: "2026-09-02"
+    overlap: >-
+      Standard reference for reservation values that decline as a finite horizon is
+      consumed, the qualitative behaviour our threshold shows.
+    distinction: >-
+      Job-search framing without multi-resource budgets or enforceable per-call limits.
+    confidence: high
+    status: candidate
+  - citation_key: "kohn1974theory"
+    title: "The Theory of Search"
+    url: "https://doi.org/10.1016/0022-0531(74)90061-1"
+    verified_on: "2026-09-02"
+    overlap: "Reservation-price characterisation of optimal sequential search."
+    distinction: >-
+      Infinite-horizon and stationary; our horizon is finite and set by the budget.
+    confidence: high
     status: candidate

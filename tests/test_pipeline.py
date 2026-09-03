@@ -34,9 +34,13 @@ def test_build_is_deterministic_and_claims_pass(tmp_path: Path) -> None:
     )
     claim_statuses = {claim["id"]: claim["status"] for claim in site_data["claims"]}
     assert claim_statuses == {
-        "MERCHANT-PERMIT-OPEN-001": "open",
-        "MERCHANT-PERMIT-SAFETY-CONJECTURE-001": "conjecture",
-        "MERCHANT-PERMIT-SOLVER-OPEN-001": "open",
+        "CLOSED-FORM-RULE-001": "exact-computational",
+        "NO-ADVANTAGE-REGION-001": "computational-pattern",
+        "OFFER-EPHEMERALITY-001": "numerical",
+        "PERMIT-SAFETY-001": "conjecture",
+        "SECRETARY-RULE-001": "computational-pattern",
+        "SOLVER-AGREEMENT-001": "exact-computational",
+        "STOPPING-ADVANTAGE-001": "numerical",
     }
     assert site_data["packages"]["python"]["distribution"] == (
         "autonomous-shopping-optimizer"
@@ -50,7 +54,7 @@ def test_build_is_deterministic_and_claims_pass(tmp_path: Path) -> None:
     metadata = (first / "tables" / "project_metadata.tex").read_text(encoding="utf-8")
     assert "\\newcommand{\\PaperTitle}" in metadata
     claim_table = (first / "tables" / "claim_status.tex").read_text(encoding="utf-8")
-    assert "MERCHANT-PERMIT-OPEN-001" in claim_table
+    assert "STOPPING-ADVANTAGE-001" in claim_table
     assert "MERCHANT-BELLMAN-002" not in claim_table
 
 

@@ -13,7 +13,14 @@ from typing import Any
 from paperkit import __version__
 from paperkit.claims import evaluate_claims, load_claims
 from paperkit.config import ProjectConfig, load_yaml
-from paperkit.publication import render_claim_table, render_project_metadata
+from paperkit.publication import (
+    render_arm_table,
+    render_bibliography,
+    render_claim_table,
+    render_decision_table,
+    render_project_metadata,
+    render_rule_table,
+)
 
 
 def _json_bytes(value: Any) -> bytes:
@@ -58,6 +65,13 @@ def _load_analysis(root: Path, import_name: str) -> Any:
     if package_source not in sys.path:
         sys.path.insert(0, package_source)
     return import_module(f"{import_name}.analysis")
+
+
+def _load_module(root: Path, import_name: str, module: str) -> Any:
+    package_source = str(root / "packages" / "python" / "src")
+    if package_source not in sys.path:
+        sys.path.insert(0, package_source)
+    return import_module(f"{import_name}.{module}")
 
 
 def _conformance_vectors(analysis: Any) -> dict[str, Any]:
@@ -167,11 +181,37 @@ def _conformance_vectors(analysis: Any) -> dict[str, Any]:
                 },
             }
         )
+    reservation_inputs = [
+        {"observed_price": 100, "future_calibration": [], "stockout": [0, 1]},
+        {"observed_price": 100, "future_calibration": [80], "stockout": [0, 1]},
+        {"observed_price": 100, "future_calibration": [120], "stockout": [0, 1]},
+        {"observed_price": 100, "future_calibration": [80, 90], "stockout": [0, 1]},
+        {"observed_price": 100, "future_calibration": [80], "stockout": [1, 2]},
+        {"observed_price": 100, "future_calibration": [80], "stockout": [9, 10]},
+        {
+            "observed_price": 12_345,
+            "future_calibration": [11_000, 13_000, 9_500],
+            "stockout": [51, 1000],
+        },
+    ]
+    reservation_cases = []
+    for value in reservation_inputs:
+        numerator, denominator = value["stockout"]
+        exact = analysis.reservation_price_for_conformance(
+            value["observed_price"],
+            list(value["future_calibration"]),
+            numerator,
+            denominator,
+        )
+        reservation_cases.append({"input": value, "expected": exact})
+
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "operation": "simulate_policy",
         "cases": cases,
         "planner_cases": planner_cases,
+        "reservation_cases": reservation_cases,
+        "reservation_tolerance": 1e-9,
         "errors": [
             {
                 "input": {
@@ -194,6 +234,7 @@ def build(root: Path, output_dir: Path | None = None) -> Path:
     config = ProjectConfig.from_file(root / "project.yml")
     claims = load_claims(root / "research" / "claims.yml")
     analysis = _load_analysis(root, config.python_import_name)
+    closed_form = _load_module(root, config.python_import_name, "closed_form")
     results = analysis.run_analysis(seed=config.random_seed)
     evaluations = evaluate_claims(results, claims)
 
@@ -205,6 +246,10 @@ def build(root: Path, output_dir: Path | None = None) -> Path:
         _write_json(
             staging / "conformance" / "merchant-search.json",
             _conformance_vectors(analysis),
+        )
+        _write_json(
+            staging / "conformance" / "closed-form.json",
+            {"schema_version": 1, **closed_form.conformance_vectors()},
         )
         raw_project = load_yaml(root / "project.yml")
         public_packages = {
@@ -238,6 +283,18 @@ def build(root: Path, output_dir: Path | None = None) -> Path:
         )
         (staging / "tables" / "claim_status.tex").write_text(
             render_claim_table(claims), encoding="utf-8"
+        )
+        (staging / "tables" / "decision_table.tex").write_text(
+            render_decision_table(results), encoding="utf-8"
+        )
+        (staging / "tables" / "arm_comparison.tex").write_text(
+            render_arm_table(results), encoding="utf-8"
+        )
+        (staging / "tables" / "rule_comparison.tex").write_text(
+            render_rule_table(results), encoding="utf-8"
+        )
+        (staging / "tables" / "references.bib").write_text(
+            render_bibliography(root / "research" / "literature.yml"), encoding="utf-8"
         )
 
         files = sorted(path for path in staging.rglob("*") if path.is_file())
