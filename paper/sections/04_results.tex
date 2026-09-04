@@ -16,8 +16,10 @@ strawmen.
   \input{generated/arm_comparison}
   \caption{Policy comparison on held-out live panels
     (\ResultHeldOutEpisodeCount{} episodes). Purchase loss is in minor currency
-    units and includes the failure penalty for episodes ending without a purchase.
-    Lower is better.}
+    units: the selected catalog price, or a fixed penalty of twice the cheapest
+    calibration price when no purchase is selected. Query time, tokens, calls, and
+    API spend are hard feasibility constraints rather than terms in this loss.
+    Lower is better; success and failure rates are reported separately.}
   \label{tab:arms}
 \end{table}
 
@@ -31,6 +33,14 @@ reflects which episodes happened to be drawn. There were
 \ResultHardBudgetViolations{} budget violations (claim
 \texttt{STOPPING-ADVANTAGE-001}).
 
+\begin{table}[htbp]
+  \centering
+  \input{generated/episode_features}
+  \caption{Distribution of characteristics in the held-out live-panel sample. These
+    are descriptive counts of the evaluated episodes, not population estimates.}
+  \label{tab:episode-features}
+\end{table}
+
 The \texttt{never accept} row is a control. It is scored under the same failure
 penalty as every other policy, and its very large loss confirms that terminal failure
 is not being treated as a free outcome that a lazy policy could exploit.
@@ -42,9 +52,9 @@ fraction of one percent of purchase cost. We consider the size to be as much a r
 as the sign, and two features of the corpus explain it.
 
 First, dispersion. The median episode has a cross-merchant price ratio of
-\ResultMedianPriceDispersionRatio{}, so in half of all episodes the merchants charge
-essentially the same price and every policy makes the same purchase. Those episodes
-contribute no difference in either direction.
+\ResultMedianPriceDispersionRatio{}. Table~\ref{tab:episode-features} shows the
+full distribution rather than treating that median as a population estimate. Near
+flat prices leave little scope for any price-based stopping policy to differ.
 
 Second, horizon. The median episode has \ResultMedianMerchantCount{} merchants. With
 two merchants, an optimal rule and a one-step lookahead are the same rule, which is
@@ -80,7 +90,7 @@ solver's \ResultSolverSavingsCapturedPercent\%, using nothing but the expected p
 range and a query count. It also matches the solver's reservation price to within
 \ResultClosedFormMaxRelativeErrorPercent\% across the horizons we checked, the
 residual being price-grid discretization (claim \texttt{CLOSED-FORM-RULE-001}). For an
-engineer, the dynamic program is not the deliverable; this is.
+agent acting for a shopper, the dynamic program is not the deliverable; this is.
 
 We checked the obvious objection, that the acceptance fractions assume uniform
 prices. Substituting lognormal, bimodal, and one-cheap-merchant price laws leaves the
@@ -115,32 +125,34 @@ which real merchants may not be.
   \input{generated/decision_table}
   \caption{Decision table over \ResultSweepCells{} calibrated simulation cells.
     ``Price spread'' is the ratio of dearest to cheapest merchant; ``Budget'' is the
-    fraction of merchants the agent can afford to query. ``Use'' is the verdict when
-    the paired bootstrap interval excludes zero, and ``Either'' when the two are
-    statistically indistinguishable. Simulation, not live data.}
+    fraction of merchants the agent can afford to query. ``Effect'' is the relative
+    reduction in failure-penalized purchase loss for adaptive stopping; the interval
+    is the paired 95\% bootstrap interval in minor currency units, with $N$ held-out
+    simulations and the stated number of replicates. ``Evidence'' records interval
+    direction, not a deployment recommendation. Simulation, not live data.}
   \label{tab:decision}
 \end{table}
 
 Three regions appear, and \ResultSweepCellsFavoringAdaptive{} of
 \ResultSweepCells{} cells favour the adaptive rule.
 
-\paragraph{Use adaptive stopping when all three hold.}
+\paragraph{Cells favoring adaptive stopping.}
 Prices genuinely differ across merchants, at a spread of at least
 \ResultAdvantageMinDispersionRatio{}$\times$; the budget allows querying most of the
 merchants, so the agent can act on what it learns; and more than one alternative
 remains reachable. In the best cell the improvement reaches
 \ResultAdvantageMaxRelativeImprovement{} of purchase cost.
 
-\paragraph{Do not bother when prices are flat.}
+\paragraph{Cells with no adaptive advantage.}
 At a spread of \ResultNoAdvantageDispersionAtOrBelow{}$\times$ or below, no cell
-favours adaptive stopping at any merchant count or budget. This is not a weak effect
-that more data would resolve; when every merchant charges the same price, there is
-nothing to optimize, and a constant rule is the correct engineering choice.
+favours adaptive stopping at any merchant count or budget in this grid. The grid
+observation is consistent with the model: when merchants charge the same price,
+there is no price difference for a stopping policy to exploit.
 
-\paragraph{Do not use it when the budget is tight.}
+\paragraph{Cells favoring a fixed rule.}
 In \ResultSweepCellsFavoringFixed{} cells the fixed rule wins outright, with the
-adaptive rule significantly worse. These are cells with a low budget fraction and
-modest dispersion: the rule declines an acceptable offer in the hope of something
-better, then runs out of queries before it can act. Information the agent cannot
-afford to use is worse than no information, because it still changes the decision
-(claim \texttt{NO-ADVANTAGE-REGION-001}).
+adaptive rule significantly worse. They include both a constrained five-merchant,
+$1.10\times$ cell and a full-budget eight-merchant, $1.10\times$ cell; they do not
+support a blanket tight-budget mechanism. They are a counterexample to universal
+advantage and a reason to inspect the reported effects and intervals before using
+the calibrated map (claim \texttt{NO-ADVANTAGE-REGION-001}).

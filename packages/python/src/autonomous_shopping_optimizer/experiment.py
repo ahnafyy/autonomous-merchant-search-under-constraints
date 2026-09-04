@@ -4,8 +4,8 @@ Three parts, in the order the manuscript reports them:
 
 1. `measure_ephemerality` compares two dated snapshots of the same merchants to
    establish that offers actually move. Without churn there is nothing to stop for.
-2. `run_real_study` replays every policy arm against frozen held-out panels built
-   from live UCP data. This is the primary result.
+2. `run_real_study` replays every policy arm against frozen held-out merchant
+    catalog-search panels. This is the primary result.
 3. `run_simulation_sweep` extends coverage beyond what the live corpus spans, using
    a generator calibrated to the measured dispersion, churn, and stockout rates. It
    answers "when is adaptive stopping worth it" across merchant counts and budgets
@@ -228,6 +228,7 @@ def _arm_summary(arm: str, results: list[ArmResult]) -> dict[str, Any]:
         "episodes": len(results),
         "mean_purchase_loss_minor": _as_float(Fraction(sum(losses), len(losses))),
         "purchase_success_rate": _as_float(Fraction(successes, len(results))),
+        "failure_rate": _as_float(Fraction(len(results) - successes, len(results))),
         "mean_query_count": _as_float(
             Fraction(sum(result.query_count for result in results), len(results))
         ),
@@ -360,6 +361,26 @@ def _feature_summary(episodes: list[Episode]) -> dict[str, Any]:
         return {}
     dispersions = sorted(episode.features.price_dispersion_ratio for episode in episodes)
     merchants = sorted(episode.features.merchant_count for episode in episodes)
+    merchant_counts = {
+        str(count): merchants.count(count) for count in sorted(set(merchants))
+    }
+    dispersion_bins = (
+        ("at_or_below_1_01", Fraction(101, 100)),
+        ("above_1_01_to_1_10", Fraction(11, 10)),
+        ("above_1_10_to_1_30", Fraction(13, 10)),
+        ("above_1_30", None),
+    )
+    distribution: dict[str, int] = {}
+    lower = Fraction(0)
+    for label, upper in dispersion_bins:
+        if upper is None:
+            distribution[label] = sum(1 for value in dispersions if value > lower)
+        else:
+            distribution[label] = sum(
+                1 for value in dispersions if lower < value <= upper
+            )
+            lower = upper
+    currencies = sorted({episode.currency for episode in episodes})
     return {
         "median_price_dispersion_ratio": _as_float(dispersions[len(dispersions) // 2]),
         "max_price_dispersion_ratio": _as_float(dispersions[-1]),
@@ -368,7 +389,12 @@ def _feature_summary(episodes: list[Episode]) -> dict[str, Any]:
         ),
         "median_merchant_count": merchants[len(merchants) // 2],
         "max_merchant_count": merchants[-1],
-        "currencies": sorted({episode.currency for episode in episodes}),
+        "merchant_count_distribution": merchant_counts,
+        "price_dispersion_distribution": distribution,
+        "currency_distribution": {
+            currency: sum(1 for episode in episodes if episode.currency == currency)
+            for currency in currencies
+        },
     }
 
 
@@ -539,6 +565,7 @@ def _evaluate_cell(
         "mean_difference_minor": comparison["mean_difference_minor"],
         "ci_lower_minor": comparison["ci_lower_minor"],
         "ci_upper_minor": comparison["ci_upper_minor"],
+        "bootstrap_replicates": comparison["replicates"],
         "relative_improvement": round(-relative, 4),
         "adaptive_wins": comparison["favors_treatment"],
         "significant": comparison["significant"],
@@ -622,6 +649,11 @@ def derive_criteria(cells: list[dict[str, Any]]) -> dict[str, Any]:
                     "dispersion_ratio": cell["dispersion_ratio"],
                     "budget_fraction": cell["budget_fraction"],
                     "relative_improvement": cell["relative_improvement"],
+                    "mean_difference_minor": cell["mean_difference_minor"],
+                    "ci_lower_minor": cell["ci_lower_minor"],
+                    "ci_upper_minor": cell["ci_upper_minor"],
+                    "held_out_episodes": cell["held_out_episodes"],
+                    "bootstrap_replicates": cell["bootstrap_replicates"],
                     "verdict": (
                         "use_adaptive"
                         if cell["adaptive_wins"]

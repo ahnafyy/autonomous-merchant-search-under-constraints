@@ -23,9 +23,11 @@ tightness they face, should they use adaptive stopping or not?
 
 ## Why This Is Answerable Now
 
-The Universal Commerce Protocol (UCP) exposes machine-readable catalogs across many
+Tool-using shopping agents can query machine-readable catalogs across many
 independent merchants, so real cross-merchant price panels can be collected instead
-of simulated. Two facts measured from this corpus make the question tractable:
+of simulated. We use UCP capability records to discover catalog-search interfaces;
+UCP is collection infrastructure, not the object of study. Two facts measured from
+this corpus make the question tractable:
 
 - Repeated scans of the same merchant minutes apart are byte-identical, so the
   measurement instrument itself contributes no noise.
@@ -43,7 +45,10 @@ single currency. The agent queries merchants one at a time. Each query consumes 
 resource vector (elapsed time, tokens, API calls, API spend) and reveals current
 availability and price.
 
-- **No recall (primary).** An offer must be accepted when seen or lost.
+- **Commit or continue (primary).** After observing a catalog offer, the agent either
+  attempts purchase immediately or continues searching. Continuing does not reserve
+  the observed catalog offer; a later query is a new observation rather than a
+  guaranteed recall of the earlier price or availability.
 - **Held offer (robustness).** The best observed offer stays purchasable until the
   episode ends.
 - An episode ends with a purchase, an exhausted merchant list, or an exhausted

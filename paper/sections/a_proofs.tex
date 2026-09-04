@@ -12,10 +12,12 @@ An episode has merchants $1, \dots, n$ in a fixed order, a hard budget vector $b
 over time, tokens, API calls, and spend, a hard purchase-price cap $P_{\max}$, and a
 failure penalty $\Pi$ charged when the episode ends without a purchase. Querying
 merchant $t$ consumes a known resource vector $c_t$ and reveals either that the offer
-is unavailable, with weight $u_t$, or a price $p$ drawn from a finite support with
-weights $w_{t,p}$. Let $W_t = u_t + \sum_p w_{t,p}$.
+is unavailable, with weight $q_t$, or a price $p$ drawn from a finite support with
+weights $w_{t,p}$. Let $W_t = q_t + \sum_p w_{t,p}$.
 
-Offers are not recallable: an available offer is accepted when seen or lost.
+The primary policy is commit-or-continue: an available catalog offer is accepted for
+an immediate purchase attempt or the agent continues. Continuing does not reserve the
+observed offer; a later query is treated as a new observation.
 
 \subsection{Recurrence}
 
@@ -32,7 +34,7 @@ $V_{t+1}(b - c_t)$ for the continuation value:
 
 \begin{equation}
   V_t(b) = \frac{1}{W_t}\left[
-    u_t\,V_{t+1}(b - c_t)
+    q_t\,V_{t+1}(b - c_t)
     + \sum_{p} w_{t,p}\,
       \begin{cases}
         \min\{p,\; V_{t+1}(b - c_t)\} & p \le P_{\max} \\

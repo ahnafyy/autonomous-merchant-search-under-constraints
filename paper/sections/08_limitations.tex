@@ -1,11 +1,13 @@
 \section{Limitations}
 \label{sec:limitations}
 
-\paragraph{One protocol, two dates.}
-The corpus covers merchants implementing a single commerce protocol, sampled on two
-days a month apart. Nothing here establishes that these merchants represent retail
-commerce, and two snapshots cannot resolve intra-month dynamics. A price that fell
-and recovered between our dates is recorded as unchanged.
+\paragraph{One catalog-search ecosystem, two dates.}
+The corpus covers merchants discovered through one agentic-commerce capability
+standard and sampled on two days a month apart. Nothing here establishes that these
+merchants represent retail commerce, and two snapshots cannot resolve intra-month
+dynamics. A price that fell and recovered between our dates is recorded as unchanged.
+Daily panel observations and weekly discovery runs are ongoing, but are outside the
+evidence release evaluated here.
 
 \paragraph{The effect is small enough to be fragile.}
 The live-panel improvement is a fraction of a percent of purchase cost. The interval
@@ -25,11 +27,13 @@ them would need an exchange-rate assumption at a fixed date, which we judged wor
 than a smaller corpus. The surviving episodes span only two currencies and may not be
 representative of the ones we dropped.
 
-\paragraph{Availability is inferred, not tested.}
+\paragraph{Catalog offers are not checkout outcomes.}
 We treat presence in a merchant's catalog as availability and absence as a delisting,
 and only for merchants whose catalogs were paginated in full. No checkout was
-attempted, so a listed item may not have been purchasable. Rate limits are assumed
-rather than published.
+attempted, so a listed item may not have been purchasable at the displayed catalog
+price. Re-querying a merchant is technically possible; the primary model instead
+assumes that continuing does not reserve the earlier catalog offer. Rate limits are
+assumed rather than published.
 
 \paragraph{The declared-capability assumption.}
 Merchants are included because they advertise the read operation we exercised. This

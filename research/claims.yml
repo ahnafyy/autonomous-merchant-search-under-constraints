@@ -2,7 +2,7 @@ schema_version: 1
 claims:
   - id: "OFFER-EPHEMERALITY-001"
     statement: >-
-      Offers in the live UCP merchant corpus are ephemeral: between the two dated
+      Offers in the live agentic-commerce merchant corpus are ephemeral: between the two dated
       snapshots a measurable share of tracked listings is delisted and a measurable
       share of surviving listings changes price, so deciding when to stop searching
       is a real decision rather than a formality.
@@ -50,15 +50,16 @@ claims:
 
   - id: "STOPPING-ADVANTAGE-001"
     statement: >-
-      On frozen held-out panels built from live UCP merchants, adaptive stopping
+      On frozen held-out panels built from live merchant catalog-search observations, adaptive stopping
       attains lower failure-penalized purchase loss than the strongest fixed rule
       tuned on calibration data, with the whole paired bootstrap confidence interval
       below zero.
     status: "numerical"
     scope: >-
       Single-currency episodes in which one exact SKU is offered by at least two
-      independent merchants, replayed under no-recall semantics with a per-episode
-      failure penalty and a shared merchant arrival order.
+      independent merchants, replayed under commit-or-continue semantics with a
+      per-episode failure penalty and a shared merchant arrival order. Continuing does
+      not reserve a catalog offer; a later query is a new observation.
     evaluator: "paperkit.evaluators:evaluate_live_panel_advantage"
     result_key: "adaptive_vs_fixed_ci_upper_minor"
     evidence:
@@ -88,7 +89,7 @@ claims:
     status: "computational-pattern"
     scope: >-
       A simulation sweep over merchant count, price dispersion, and budget fraction,
-      with stockout and drift rates calibrated to the measured UCP corpus. Simulation
+      with stockout and drift rates calibrated to the measured merchant corpus. Simulation
       evidence, not a live-panel measurement.
     evaluator: "paperkit.evaluators:evaluate_no_advantage_region"
     evidence:
@@ -185,7 +186,7 @@ claims:
 
   - id: "OVERLAP-SPARSITY-001"
     statement: >-
-      Cross-merchant product overlap in the live UCP ecosystem is thin: after scanning
+      Cross-merchant product overlap in the live agentic-commerce catalog ecosystem is thin: after scanning
       every discoverable merchant, most products offered by more than one independent
       seller are offered by exactly two, and only a minority reach three or more. Since
       an optimal stopping rule and a one-step lookahead coincide when only one

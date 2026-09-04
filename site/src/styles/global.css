@@ -225,6 +225,25 @@ h1 {
   font-variant-numeric: tabular-nums;
 }
 
+.collection-status {
+  max-width: 72ch;
+  margin-bottom: 2rem;
+  border-left: 3px solid var(--moss);
+  padding-left: 0.9rem;
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.collection-status span {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--moss);
+  font-size: 0.67rem;
+  font-weight: 760;
+  text-transform: uppercase;
+}
+
 .author-block {
   margin-bottom: 2.5rem;
 }

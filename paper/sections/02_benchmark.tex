@@ -7,9 +7,11 @@ two properties that make it usable as a benchmark.
 
 \subsection{Collection}
 
-Merchants implementing the Universal Commerce Protocol publish a discovery document
-and expose a read-only catalog search operation. We probed every discoverable such
-merchant and paginated each catalog, reaching
+We study a tool-using shopping agent that queries read-only merchant catalog-search
+interfaces. The Universal Commerce Protocol (UCP) supplies capability records that
+let us discover these interfaces; it is collection infrastructure, not the subject
+of the study. We probed every discoverable merchant with an advertised catalog-search
+operation and paginated each catalog, reaching
 \ResultOverlapMerchantsScanned{} merchants. Of the products offered by more than
 one independent seller in a single currency,
 \ResultOverlapEpisodeEligibleProducts{} qualify as potential episodes.
@@ -40,34 +42,32 @@ shallow scan against a deep one. Restricting the comparison to merchants whose
 catalogs were paginated \emph{in full} on both dates removes the artifact, and we
 report only that restricted figure.
 
-\subsection{Why offers are not recallable}
+\subsection{The commit-or-continue policy model}
 
-The benchmark treats an offer as accept-now-or-lose-it. That assumption is often
-defended by arguing that prices move, which invites the objection that they move
-slowly: the online price-rigidity literature consistently finds long spells of fixed
-prices, and finds online prices \emph{stickier} than earlier estimates
-suggested~\citep{cavallo2018scraped,gorodnichenko2018jeea,gorodnichenko2017basic}.
-Our own instrument agrees at short horizons, since two scans minutes apart are
-byte-identical.
+The primary benchmark is a commit-or-continue model: after an agent observes a
+catalog offer, it either attempts purchase immediately or continues searching. The
+model does not say that a merchant can never be queried again. It says that declining
+an offer does not reserve that observed price or availability; a later query is a new
+observation. This is the decision an agent faces when it has no transactional hold.
 
-We therefore do not rest the assumption on price movement. We rest it on the
-protocol. The UCP catalog specification states that catalog responses ``are not
-transactional commitments'' and ``SHOULD NOT be reused across sessions without
-re-validation''~\citep{ucp2026catalog}. A checkout session carries an explicit
-expiry, defaulting to six hours~\citep{ucp2026checkout}, and the corresponding
-payment-authorisation protocol issues mandates with a one-hour validity window in its
-normative example~\citep{ap22026checkout}.
+This distinction matters because catalog prices can be stable over a short session.
+The online price-rigidity literature finds long spells of fixed prices and estimates
+that online prices are \emph{stickier} than earlier work suggested
+~\citep{cavallo2018scraped,gorodnichenko2018jeea,gorodnichenko2017basic}; our own
+instrument agrees, returning byte-identical catalog responses minutes apart. Neither
+fact turns a catalog response into a transactional commitment.
 
-An agent that observes a catalog price and does not convert it within the session
-thus has no protocol-guaranteed claim on that price, whether or not the number
-changed. No-recall holds by construction, and the episode horizon is bounded by the
-quote lifetime rather than by any drift rate we measure.
+The UCP catalog specification likewise says catalog responses are not transactional
+commitments and should not be reused across sessions without re-validation
+~\citep{ucp2026catalog}. Its checkout specification defines an explicit expiry,
+defaulting to six hours~\citep{ucp2026checkout}. These specifications motivate the
+conservative policy model, but they do not prove that every merchant will reject a
+stale catalog price.
 
-Two caveats. The protocols differ: the checkout specification we cite defines an
-expiry field, while at least one competing agentic-commerce specification does not,
-so this argument is not uniform across the ecosystem. And a specification bounds what
-an agent may \emph{rely} on, not what merchants do in practice; a merchant may well
-honour a stale price. The assumption is therefore conservative rather than exact.
+No checkout is attempted in this study, so we measure catalog offers rather than
+checkout prices. The daily panel being collected will estimate how catalog-offer
+survival and repricing vary with delay; it is not used to claim an immediate loss of
+recall during a short shopping session.
 
 \subsection{Offers move}
 

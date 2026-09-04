@@ -141,6 +141,8 @@ def test_derive_criteria_separates_wins_from_harm() -> None:
             "mean_difference_minor": 0.0,
             "ci_lower_minor": 0.0,
             "ci_upper_minor": 0.0,
+            "held_out_episodes": 20,
+            "bootstrap_replicates": 200,
             "adaptive_wins": False,
         },
         {
@@ -151,6 +153,8 @@ def test_derive_criteria_separates_wins_from_harm() -> None:
             "mean_difference_minor": -50.0,
             "ci_lower_minor": -80.0,
             "ci_upper_minor": -20.0,
+            "held_out_episodes": 20,
+            "bootstrap_replicates": 200,
             "adaptive_wins": True,
         },
         {
@@ -161,6 +165,8 @@ def test_derive_criteria_separates_wins_from_harm() -> None:
             "mean_difference_minor": 30.0,
             "ci_lower_minor": 10.0,
             "ci_upper_minor": 60.0,
+            "held_out_episodes": 20,
+            "bootstrap_replicates": 200,
             "adaptive_wins": False,
         },
     ]
@@ -173,3 +179,4 @@ def test_derive_criteria_separates_wins_from_harm() -> None:
     assert criteria["no_advantage_rule"]["dispersion_ratio_at_or_below"] == 1.1
     verdicts = {row["verdict"] for row in criteria["decision_table"]}
     assert verdicts == {"use_adaptive", "use_fixed", "no_difference"}
+    assert all(row["held_out_episodes"] == 20 for row in criteria["decision_table"])

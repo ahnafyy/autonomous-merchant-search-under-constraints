@@ -11,6 +11,11 @@ failure penalty. The bootstrap resamples whole episode pairs rather than indepen
 draws per policy. An apparent ranking that came from which episodes were sampled
 would not survive this, and the interval still excludes zero.
 
+The bootstrap treats episodes as independent units. It does not cluster resampling
+by merchant or SKU, and the two-snapshot corpus is too small to support a stable
+clustered alternative; the reported interval should therefore not be read as solving
+dependence among listings that share a merchant.
+
 \paragraph{Honestly tuned baselines.}
 Search depth and price threshold for the fixed rules are selected on calibration
 episodes and then frozen. Had we tuned them on the evaluation panels, the fixed rules

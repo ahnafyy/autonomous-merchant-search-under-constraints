@@ -1,4 +1,4 @@
-"""Build frozen merchant panels from dated UCP catalog snapshots.
+"""Build frozen merchant panels from dated catalog-search snapshots.
 
 An episode is one exact SKU offered by at least two independent merchants in a
 single currency. Merchant price and availability forecasts come from the earlier

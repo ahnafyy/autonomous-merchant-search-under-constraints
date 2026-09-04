@@ -57,6 +57,13 @@ def test_build_is_deterministic_and_claims_pass(tmp_path: Path) -> None:
     claim_table = (first / "tables" / "claim_status.tex").read_text(encoding="utf-8")
     assert "STOPPING-ADVANTAGE-001" in claim_table
     assert "MERCHANT-BELLMAN-002" not in claim_table
+    decision_table = (first / "tables" / "decision_table.tex").read_text(encoding="utf-8")
+    assert "95\\% CI" in decision_table
+    assert "Favors adaptive" in decision_table
+    episode_features = (first / "tables" / "episode_features.tex").read_text(
+        encoding="utf-8"
+    )
+    assert "Held-out panel characteristic" in episode_features
 
 
 def test_generated_tex_can_be_staged(tmp_path: Path) -> None:

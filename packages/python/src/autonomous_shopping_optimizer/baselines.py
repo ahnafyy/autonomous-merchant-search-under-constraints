@@ -4,9 +4,10 @@ Every arm sees exactly the same panel, the same merchant order seed, and the sam
 hard budget. Only the stopping and routing decisions differ, so a paired comparison
 across arms isolates the policy rather than the episode.
 
-All arms operate under no-recall semantics: an available offer is accepted at the
-moment it is seen or lost for the rest of the episode. The exhaustive oracle is the
-only arm allowed to inspect unqueried merchants, and it is scored offline.
+All arms use commit-or-continue semantics: an available catalog offer is accepted
+for an immediate purchase attempt or the agent continues without reserving it. A
+later query is a new observation. The exhaustive oracle is the only arm allowed to
+inspect unqueried merchants, and it is scored offline.
 """
 from __future__ import annotations
 

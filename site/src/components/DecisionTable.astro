@@ -4,6 +4,10 @@ interface DecisionRow {
   dispersion_ratio: number;
   budget_fraction: number;
   relative_improvement: number;
+  ci_lower_minor: number;
+  ci_upper_minor: number;
+  held_out_episodes: number;
+  bootstrap_replicates: number;
   verdict: "use_adaptive" | "use_fixed" | "no_difference";
 }
 
@@ -14,9 +18,9 @@ interface Props {
 const { rows } = Astro.props;
 
 const verdictLabel: Record<DecisionRow["verdict"], string> = {
-  use_adaptive: "Use adaptive",
-  use_fixed: "Use fixed",
-  no_difference: "No difference",
+  use_adaptive: "Favors adaptive",
+  use_fixed: "Favors fixed",
+  no_difference: "No detectable difference",
 };
 ---
 
@@ -30,8 +34,8 @@ const verdictLabel: Record<DecisionRow["verdict"], string> = {
     <caption>
       Whether adaptive stopping beats a tuned fixed rule, by merchant count, cross-merchant price
       spread, and the fraction of merchants the budget allows querying. Values come from a
-      simulation calibrated to the measured corpus; a verdict is only reported when the paired
-      bootstrap interval excludes zero.
+      simulation calibrated to the measured corpus. Evidence labels report only the direction of
+      the paired bootstrap interval; choose a policy using the effect, interval, and local query cost.
     </caption>
     <thead>
       <tr>
@@ -39,7 +43,9 @@ const verdictLabel: Record<DecisionRow["verdict"], string> = {
         <th scope="col">Price spread</th>
         <th scope="col">Budget</th>
         <th scope="col">Improvement</th>
-        <th scope="col">Verdict</th>
+        <th scope="col">95% CI</th>
+        <th scope="col">N / reps</th>
+        <th scope="col">Evidence</th>
       </tr>
     </thead>
     <tbody>
@@ -49,6 +55,8 @@ const verdictLabel: Record<DecisionRow["verdict"], string> = {
           <td>{row.dispersion_ratio.toFixed(2)}×</td>
           <td>{Math.round(row.budget_fraction * 100)}%</td>
           <td>{(row.relative_improvement * 100).toFixed(2)}%</td>
+          <td>[{row.ci_lower_minor.toFixed(1)}, {row.ci_upper_minor.toFixed(1)}]</td>
+          <td>{row.held_out_episodes} / {row.bootstrap_replicates}</td>
           <td>
             <span class={`verdict verdict--${row.verdict}`}>{verdictLabel[row.verdict]}</span>
           </td>

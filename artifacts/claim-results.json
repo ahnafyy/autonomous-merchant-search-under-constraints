@@ -13,7 +13,7 @@
       "passed": true,
       "scope": "Merchants that the later snapshot paginated in full, so that an absent SKU means a delisting rather than a page-cap truncation. One calibration and one evaluation date, one protocol, and no claim about retail commerce beyond this corpus.",
       "site_visible": true,
-      "statement": "Offers in the live UCP merchant corpus are ephemeral: between the two dated snapshots a measurable share of tracked listings is delisted and a measurable share of surviving listings changes price, so deciding when to stop searching is a real decision rather than a formality.",
+      "statement": "Offers in the live agentic-commerce merchant corpus are ephemeral: between the two dated snapshots a measurable share of tracked listings is delisted and a measurable share of surviving listings changes price, so deciding when to stop searching is a real decision rather than a formality.",
       "status": "numerical"
     },
     {
@@ -44,9 +44,9 @@
       ],
       "observed": -8.559211,
       "passed": true,
-      "scope": "Single-currency episodes in which one exact SKU is offered by at least two independent merchants, replayed under no-recall semantics with a per-episode failure penalty and a shared merchant arrival order.",
+      "scope": "Single-currency episodes in which one exact SKU is offered by at least two independent merchants, replayed under commit-or-continue semantics with a per-episode failure penalty and a shared merchant arrival order. Continuing does not reserve a catalog offer; a later query is a new observation.",
       "site_visible": true,
-      "statement": "On frozen held-out panels built from live UCP merchants, adaptive stopping attains lower failure-penalized purchase loss than the strongest fixed rule tuned on calibration data, with the whole paired bootstrap confidence interval below zero.",
+      "statement": "On frozen held-out panels built from live merchant catalog-search observations, adaptive stopping attains lower failure-penalized purchase loss than the strongest fixed rule tuned on calibration data, with the whole paired bootstrap confidence interval below zero.",
       "status": "numerical"
     },
     {
@@ -60,7 +60,7 @@
       ],
       "observed": 1.01,
       "passed": true,
-      "scope": "A simulation sweep over merchant count, price dispersion, and budget fraction, with stockout and drift rates calibrated to the measured UCP corpus. Simulation evidence, not a live-panel measurement.",
+      "scope": "A simulation sweep over merchant count, price dispersion, and budget fraction, with stockout and drift rates calibrated to the measured merchant corpus. Simulation evidence, not a live-panel measurement.",
       "site_visible": true,
       "statement": "Adaptive stopping provides no measurable advantage over a tuned fixed rule when cross-merchant price dispersion is negligible, and can be significantly worse when the query budget is too tight to act on what a query reveals.",
       "status": "computational-pattern"
@@ -115,7 +115,7 @@
       "passed": true,
       "scope": "Products offered by two or more independent registrable domains in a single currency, measured on the widest available discovery snapshot. Independence is by registrable domain, so multiple storefronts of one company count once.",
       "site_visible": true,
-      "statement": "Cross-merchant product overlap in the live UCP ecosystem is thin: after scanning every discoverable merchant, most products offered by more than one independent seller are offered by exactly two, and only a minority reach three or more. Since an optimal stopping rule and a one-step lookahead coincide when only one alternative remains, this bounds what any stopping policy can achieve here.",
+      "statement": "Cross-merchant product overlap in the live agentic-commerce catalog ecosystem is thin: after scanning every discoverable merchant, most products offered by more than one independent seller are offered by exactly two, and only a minority reach three or more. Since an optimal stopping rule and a one-step lookahead coincide when only one alternative remains, this bounds what any stopping policy can achieve here.",
       "status": "numerical"
     },
     {

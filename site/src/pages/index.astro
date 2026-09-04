@@ -85,6 +85,11 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
             calibrated decision map shows when the extra search is worth taking
           </strong>
         </p>
+        <p class="collection-status">
+          <span>Study status</span>
+          Daily panel observations and weekly discovery runs are ongoing. This release reports the verified
+          two-snapshot analysis; later observations will measure how catalog offers change across minutes, hours, and days.
+        </p>
         <div class="author-block">
           <p class="byline">{authorNames}</p>
           <p class="affiliations">{affiliations}</p>
@@ -221,26 +226,26 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
         below zero and {results.hard_budget_violations} budget violations. The gain is real, but not universal: the median
         episode has only {results.median_merchant_count} merchants and a price ratio of
         {results.median_price_dispersion_ratio}, which is exactly why the advantage is modest in practice. The table below
-        shows when another check is worth its cost and when a fixed threshold is the better choice.
+        reports calibrated simulation evidence; it does not make a universal shopping recommendation.
       </p>
       <p class="decision-context">
         Calibrated from the live dataset, not a universal retail rule.
       </p>
       <div class="decision-spotlight" aria-label="Adaptive stopping decision summary">
         <div class="spotlight-card spotlight-card--win">
-          <span class="spotlight-kicker">Compare more stores</span>
+          <span class="spotlight-kicker">Cells favoring adaptive</span>
           <strong>Prices differ by 1.1× or more</strong>
           <small>When another store could offer a meaningfully different price, searching can pay.</small>
         </div>
         <div class="spotlight-card spotlight-card--flat">
-          <span class="spotlight-kicker">Buy sooner</span>
+          <span class="spotlight-kicker">No adaptive advantage</span>
           <strong>Prices differ by 1.01× or less</strong>
           <small>When stores offer nearly the same price, a simple fixed rule is usually enough.</small>
         </div>
         <div class="spotlight-card spotlight-card--tight">
-          <span class="spotlight-kicker">Save the last call</span>
-          <strong>Too little budget remains</strong>
-          <small>Do not spend a final check when there is no room left to benefit from its answer.</small>
+          <span class="spotlight-kicker">Fixed-rule counterexamples</span>
+          <strong>Some modest-spread cells favor fixed</strong>
+          <small>They occur at both constrained and full budgets, so the grid does not establish one mechanism.</small>
         </div>
       </div>
       <figure class="research-figure">
@@ -248,8 +253,8 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
         <figcaption>
           <strong>Table 1.</strong> Decision table over {results.sweep_cells} calibrated cells. Adaptive
           stopping never wins at or below a {results.no_advantage_dispersion_at_or_below}× price spread, and
-          loses outright in {results.sweep_cells_favoring_fixed} cells where the budget is too tight to act
-          on what a query reveals.
+          loses outright in {results.sweep_cells_favoring_fixed} cells. Each row reports its paired interval,
+          held-out simulations, and bootstrap replicates; the evidence label is not a shopping recommendation.
         </figcaption>
       </figure>
       <ClaimLedger claims={displayedClaims} />

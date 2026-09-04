@@ -19,6 +19,7 @@ def stage_generated_files(root: Path) -> Path:
         artifacts / "tables" / "claim_status.tex": generated / "claim_status.tex",
         artifacts / "tables" / "decision_table.tex": generated / "decision_table.tex",
         artifacts / "tables" / "arm_comparison.tex": generated / "arm_comparison.tex",
+        artifacts / "tables" / "episode_features.tex": generated / "episode_features.tex",
         artifacts / "tables" / "rule_comparison.tex": generated / "rule_comparison.tex",
         artifacts / "tables" / "references.bib": generated / "references.bib",
     }

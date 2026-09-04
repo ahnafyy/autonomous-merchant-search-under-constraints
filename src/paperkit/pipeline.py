@@ -18,6 +18,7 @@ from paperkit.publication import (
     render_bibliography,
     render_claim_table,
     render_decision_table,
+    render_episode_feature_table,
     render_project_metadata,
     render_rule_table,
 )
@@ -289,6 +290,9 @@ def build(root: Path, output_dir: Path | None = None) -> Path:
         )
         (staging / "tables" / "arm_comparison.tex").write_text(
             render_arm_table(results), encoding="utf-8"
+        )
+        (staging / "tables" / "episode_features.tex").write_text(
+            render_episode_feature_table(results), encoding="utf-8"
         )
         (staging / "tables" / "rule_comparison.tex").write_text(
             render_rule_table(results), encoding="utf-8"
