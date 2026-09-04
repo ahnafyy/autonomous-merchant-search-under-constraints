@@ -179,3 +179,13 @@ chicology.com  # unavailable after 3 attempts: <urlopen error [Errno 8] nodename
 thehairbowcompany.com  # unavailable after 3 attempts: <urlopen error [Errno 8] nodename nor servname provided, or not known>
 shophomework.com  # unavailable after 3 attempts: <urlopen error [Errno 8] nodename nor servname provided, or not known>
 tooturnttony.com  # unavailable after 3 attempts: <urlopen error [Errno 8] nodename nor servname provided, or not known>
+littlerednursery.com  # unavailable after 3 attempts: The read operation timed out
+petmarketnyc.com  # unavailable after 3 attempts: HTTP Error 500: Internal Server Error
+theyetee.com  # unavailable after 3 attempts: <urlopen error [Errno 54] Connection reset by peer>
+suburbanskiandbike.com  # unavailable after 3 attempts: HTTP Error 500: Internal Server Error
+bensdeals.com  # unavailable after 3 attempts: HTTP Error 500: Internal Server Error
+shenzhenaudio.com  # unavailable after 3 attempts: HTTP Error 500: Internal Server Error
+ggfleetsupply.com  # unavailable after 3 attempts: HTTP Error 500: Internal Server Error
+cuddlesandcarriages.com  # unavailable after 3 attempts: HTTP Error 500: Internal Server Error
+shop.gathergoodsco.com  # unavailable after 3 attempts: HTTP Error 500: Internal Server Error
+leisurespaceus.com  # unavailable after 3 attempts: HTTP Error 500: Internal Server Error
