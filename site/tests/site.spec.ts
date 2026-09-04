@@ -13,7 +13,9 @@ test("renders verified research content without overflow", async ({ page }, test
     "When Should a Shopping Agent Stop Searching?",
   );
   const primaryResult = page.locator(".hero-result strong");
-  await expect(primaryResult).toContainText("Adaptive stopping beats a tuned fixed rule");
+  await expect(primaryResult).toContainText(
+    "A budget-aware stopping rule beats the strongest tuned fixed alternative",
+  );
   await expect(primaryResult).toBeInViewport();
   await expect(page.getByText("Ahnaf Prio", { exact: true }).first()).toBeVisible();
   await expect(page.getByRole("link", { name: "Generated artifacts" })).toBeVisible();
