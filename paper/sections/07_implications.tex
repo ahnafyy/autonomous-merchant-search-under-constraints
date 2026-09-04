@@ -12,13 +12,14 @@ agent is actually in.
 \begin{enumerate}
   \item \textbf{Do merchants charge different prices for this product?} Measure the
     ratio of the dearest to the cheapest offer on a sample of real products. Below
-    roughly \ResultNoAdvantageDispersionAtOrBelow{}$\times$, stop here and use a
-    constant rule; there is nothing to optimize and the machinery will not pay for
-    itself.
-  \item \textbf{Can you afford to query most of the alternatives?} If your budget
-    covers only a small fraction of the reachable merchants, an adaptive rule can
-    make things worse by declining acceptable offers it cannot follow up. Either
-    raise the budget or accept early deliberately.
+    roughly \ResultNoAdvantageDispersionAtOrBelow{}$\times$, price variation is
+    negligible, so a simpler fixed rule performs identically without dynamic
+    reservation thresholds.
+  \item \textbf{Can you afford to query available alternatives?} Check the decision
+    grid in Table~\ref{tab:decision} against your query budget. When query capacity
+    is very constrained relative to merchant count, inspect the effect size to
+    confirm that your search horizon leaves enough room to act on what an inquiry
+    reveals.
   \item \textbf{Is more than one alternative genuinely reachable?} With a single
     fallback, an optimal rule and a one-step lookahead coincide. Implement the simple
     one.
