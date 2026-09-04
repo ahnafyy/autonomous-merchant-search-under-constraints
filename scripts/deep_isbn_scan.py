@@ -116,18 +116,32 @@ def deep_scan_domain(
     max_pages: int,
     page_size: int,
     delay_seconds: float,
+    request_timeout_seconds: float = 15.0,
+    max_domain_seconds: float | None = None,
 ) -> tuple[list[dict[str, object]], str]:
     """Return (rows, status) for one domain."""
-    endpoint = known_endpoint or discover_mcp_endpoint(domain)
+    started_at = time.monotonic()
+    endpoint = known_endpoint or discover_mcp_endpoint(
+        domain, timeout_seconds=request_timeout_seconds
+    )
     if endpoint is None:
         return [], "no_mcp_endpoint"
     rows: list[dict[str, object]] = []
     cursor: str | None = None
     for page_index in range(max_pages):
+        if (
+            max_domain_seconds is not None
+            and time.monotonic() - started_at >= max_domain_seconds
+        ):
+            return rows, "timed_out"
         if page_index and delay_seconds:
             time.sleep(delay_seconds)
         products, cursor, has_next = search_catalog_page(
-            endpoint, query="", limit=page_size, cursor=cursor
+            endpoint,
+            query="",
+            limit=page_size,
+            cursor=cursor,
+            timeout_seconds=request_timeout_seconds,
         )
         for product in products:
             price = product.get("price_range", {}).get("min", {})

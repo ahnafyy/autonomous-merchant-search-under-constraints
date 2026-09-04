@@ -22,7 +22,11 @@ echo "panel: $PANEL"
   --max-pages 40 \
   --page-size 50 \
   --workers 10 \
-  --delay-seconds 1.0
+  --delay-seconds 1.0 &
+PROBE_PID=$!
+trap 'kill -TERM "$PROBE_PID" 2>/dev/null || true; wait "$PROBE_PID" || true; exit 143' TERM INT
+wait "$PROBE_PID"
+trap - TERM INT
 
 # Needs two or more observation dates before it reports anything.
 "$PYTHON" scripts/offer_survival.py || true

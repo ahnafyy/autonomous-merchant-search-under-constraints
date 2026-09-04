@@ -39,3 +39,4 @@ data/ucp/deep-scan-matches-*-expanded.json
 
 # Daily panel observations accumulate; keep the compressed series, ignore scratch.
 data/ucp/panel-observations-*.manifest.json
+data/ucp/panel-observations-*.status.json

@@ -44,6 +44,7 @@ USER_AGENT = (
 MAX_ATTEMPTS = 3
 BACKOFF_SECONDS = 2.0
 MAX_BACKOFF_SECONDS = 30.0
+REQUEST_TIMEOUT_SECONDS = 15.0
 
 
 class MerchantRefused(RuntimeError):
@@ -58,7 +59,15 @@ class MerchantRefused(RuntimeError):
         self.status = status
 
 
-def _fetch_json(url: str, *, method: str = "GET", body: bytes | None = None) -> dict:
+def _fetch_json(
+    url: str,
+    *,
+    method: str = "GET",
+    body: bytes | None = None,
+    timeout_seconds: float = REQUEST_TIMEOUT_SECONDS,
+) -> dict:
+    if timeout_seconds <= 0:
+        raise ValueError("timeout_seconds must be positive")
     last_error: Exception | None = None
     for attempt in range(MAX_ATTEMPTS):
         request = urllib.request.Request(url, data=body, method=method)
@@ -67,7 +76,7 @@ def _fetch_json(url: str, *, method: str = "GET", body: bytes | None = None) -> 
             request.add_header("Content-Type", "application/json")
             request.add_header("Accept", "application/json, text/event-stream")
         try:
-            with urllib.request.urlopen(request, timeout=15) as response:
+            with urllib.request.urlopen(request, timeout=timeout_seconds) as response:
                 return json.loads(response.read().decode("utf-8"))
         except urllib.error.HTTPError as error:
             # Treat these as a request to stop, never as something to retry harder.
@@ -85,8 +94,12 @@ def _fetch_json(url: str, *, method: str = "GET", body: bytes | None = None) -> 
     raise MerchantRefused(url, f"unavailable after {MAX_ATTEMPTS} attempts: {last_error}")
 
 
-def discover_mcp_endpoint(domain: str) -> str | None:
-    doc = _fetch_json(f"https://{domain}/.well-known/ucp")
+def discover_mcp_endpoint(
+    domain: str, *, timeout_seconds: float = REQUEST_TIMEOUT_SECONDS
+) -> str | None:
+    doc = _fetch_json(
+        f"https://{domain}/.well-known/ucp", timeout_seconds=timeout_seconds
+    )
     services = doc.get("ucp", {}).get("services", {}).get("dev.ucp.shopping", [])
     for service in services:
         if not isinstance(service, dict):
@@ -106,7 +119,12 @@ def search_catalog(
 
 
 def search_catalog_page(
-    endpoint: str, query: str = "", *, limit: int = 10, cursor: str | None = None
+    endpoint: str,
+    query: str = "",
+    *,
+    limit: int = 10,
+    cursor: str | None = None,
+    timeout_seconds: float = REQUEST_TIMEOUT_SECONDS,
 ) -> tuple[list[dict], str | None, bool]:
     pagination: dict[str, object] = {"limit": limit}
     if cursor is not None:
@@ -125,7 +143,9 @@ def search_catalog_page(
             "id": 1,
         }
     ).encode("utf-8")
-    response = _fetch_json(endpoint, method="POST", body=payload)
+    response = _fetch_json(
+        endpoint, method="POST", body=payload, timeout_seconds=timeout_seconds
+    )
     if "error" in response:
         raise RuntimeError(response["error"])
     text = response["result"]["content"][0]["text"]

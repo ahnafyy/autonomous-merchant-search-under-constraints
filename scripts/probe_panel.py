@@ -22,6 +22,7 @@ import gzip
 import json
 import sys
 import threading
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -45,6 +46,12 @@ def load_panel(path: Path) -> dict[str, set[str]]:
     return tracked
 
 
+def _write_json_atomically(path: Path, value: dict[str, object]) -> None:
+    temporary = path.with_suffix(path.suffix + ".partial")
+    temporary.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    temporary.replace(path)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--date", required=True, help="Observation date, YYYY-MM-DD")
@@ -58,12 +65,25 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--page-size", type=int, default=50)
     parser.add_argument("--workers", type=int, default=10)
     parser.add_argument("--delay-seconds", type=float, default=1.0)
+    parser.add_argument("--request-timeout-seconds", type=float, default=10.0)
+    parser.add_argument("--max-domain-seconds", type=float, default=90.0)
     parser.add_argument("--data-dir", type=Path, default=DATA_DIR)
     args = parser.parse_args(argv)
 
     tracked = load_panel(args.panel)
     denied = load_denylist()
     targets = {d: skus for d, skus in tracked.items() if d not in denied}
+    status_path = args.data_dir / f"panel-observations-{args.date}.status.json"
+    _write_json_atomically(
+        status_path,
+        {
+            "status": "running",
+            "observation_date": args.date,
+            "panel_source": args.panel.name,
+            "merchants_targeted": len(targets),
+            "started_unix_seconds": round(time.time()),
+        },
+    )
     print(
         f"probing {len(targets)} panel merchants for "
         f"{sum(len(s) for s in targets.values())} tracked offers"
@@ -83,6 +103,8 @@ def main(argv: list[str] | None = None) -> int:
                 max_pages=args.max_pages,
                 page_size=args.page_size,
                 delay_seconds=args.delay_seconds,
+                request_timeout_seconds=args.request_timeout_seconds,
+                max_domain_seconds=args.max_domain_seconds,
             )
         except MerchantRefused as refusal:
             with lock:
@@ -122,9 +144,11 @@ def main(argv: list[str] | None = None) -> int:
 
     observations.sort(key=lambda row: (row["domain"], row["sku"]))
     out = args.data_dir / f"panel-observations-{args.date}.jsonl.gz"
-    with gzip.open(out, "wt", encoding="utf-8") as handle:
+    temporary_out = out.with_suffix(out.suffix + ".partial")
+    with gzip.open(temporary_out, "wt", encoding="utf-8") as handle:
         for row in observations:
             handle.write(json.dumps(row, sort_keys=True) + "\n")
+    temporary_out.replace(out)
 
     answered = [row for row in observations if row["merchant_fully_paginated"]]
     present = sum(1 for row in answered if row["present"])
@@ -145,8 +169,17 @@ def main(argv: list[str] | None = None) -> int:
         "domain_status": dict(sorted(domain_status.items())),
     }
     manifest_path = args.data_dir / f"panel-observations-{args.date}.manifest.json"
-    manifest_path.write_text(
-        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    _write_json_atomically(manifest_path, manifest)
+    _write_json_atomically(
+        status_path,
+        {
+            "status": "completed",
+            "observation_date": args.date,
+            "panel_source": args.panel.name,
+            "merchants_targeted": len(targets),
+            "finished_unix_seconds": round(time.time()),
+            "manifest": manifest_path.name,
+        },
     )
 
     if answered:
