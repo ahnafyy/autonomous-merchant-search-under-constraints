@@ -40,16 +40,19 @@ runs the exact dynamic program instead and returns a `Fraction`.
 
 ## Is it worth using?
 
-Not always, and the honest answer depends on your situation:
+The repository's calibrated simulation sweep reports evidence, not a universal
+deployment prescription:
 
-| Situation | What to do |
+| Simulation condition | Evidence against the tuned fixed rule |
 | --- | --- |
-| Merchants charge nearly the same price (spread ≤ 1.01×) | Use a constant rule |
-| Budget covers only a few of the reachable merchants | Use a constant rule; adaptive can be worse |
-| Real price spread and budget to act on it | Use this package |
+| Price spread at or below 1.01× | No cell favors adaptive stopping |
+| Modest 1.10× spread | Fixed rule wins in two cells, at both constrained and full budgets |
+| Larger spread in selected cells | Adaptive stopping is favored |
 
-That table is measured, not asserted. See the paper and `research/claims.yml` in the
-repository for the experiment and its limits.
+The table is simulation calibrated to the measured corpus, not a measurement of retail
+outcomes. Each row includes its paired interval and sample size in the generated paper
+and site tables. In the replay model, a catalog offer is accepted for an immediate
+purchase attempt or not reserved; a later query is a new observation.
 
 ## Enforcing budgets
 

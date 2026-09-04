@@ -57,14 +57,19 @@ than detected afterwards.
 
 ## Is it worth using?
 
-| Situation | What to do |
-| --- | --- |
-| Merchants charge nearly the same price (spread ≤ 1.01×) | Use a constant rule |
-| Budget covers only a few of the reachable merchants | Use a constant rule; adaptive can be worse |
-| Real price spread and budget to act on it | Use this package |
+The repository's calibrated simulation sweep reports evidence, not a universal
+deployment prescription:
 
-That table is measured on live merchant data, not asserted. See the paper in the
-repository for the experiment and its limits.
+| Simulation condition | Evidence against the tuned fixed rule |
+| --- | --- |
+| Price spread at or below 1.01× | No cell favors adaptive stopping |
+| Modest 1.10× spread | Fixed rule wins in two cells, at both constrained and full budgets |
+| Larger spread in selected cells | Adaptive stopping is favored |
+
+The table is simulation calibrated to the measured corpus, not a measurement of retail
+outcomes. Each row includes its paired interval and sample size in the generated paper
+and site tables. In the replay model, a catalog offer is accepted for an immediate
+purchase attempt or not reserved; a later query is a new observation.
 
 ## Also included
 
