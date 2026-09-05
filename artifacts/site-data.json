@@ -178,6 +178,12 @@
     "title": "When Should a Shopping Agent Stop Searching?"
   },
   "release": {
+    "preprint": {
+      "release_label": "v0.1",
+      "scope": "Verified two-snapshot analysis, with daily panel re-observation and weekly discovery continuing outside the results reported in this version.",
+      "status": "prepared",
+      "venue": "arXiv"
+    },
     "version": "0.1.0"
   },
   "results": {
