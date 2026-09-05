@@ -41,6 +41,13 @@ research:
   random_seed: 20260723
 release:
   version: "0.1.0"
+  preprint:
+    venue: "arXiv"
+    release_label: "v0.1"
+    status: "prepared"
+    scope: >-
+      Verified two-snapshot analysis, with daily panel re-observation and weekly
+      discovery continuing outside the results reported in this version.
 packages:
   python:
     distribution: "autonomous-shopping-optimizer"
