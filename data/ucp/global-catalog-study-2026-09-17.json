@@ -1,0 +1,305 @@
+{
+  "analysis": {
+    "cost_rate_card": {
+      "as_of": "2026-09-28",
+      "path": "research/cost-rate-card-2026-09.json",
+      "sha256": "49950de9190bcbe6347c65469a3b5e5cfccdb20ad98ae0e503f0b5b035648ad2"
+    },
+    "minimum_required_product_decks": 4,
+    "random_seed": 20260723,
+    "status": "analyzed"
+  },
+  "collection": {
+    "collection_id": "shopify-global-catalog-2026-09-17",
+    "collection_manifest_sha256": "1734053fb7a232308be142d63a1f0d30078f060e690418fbb306b49e5a444071",
+    "eligible_offer_row_count": 9302,
+    "offer_row_count": 9312,
+    "offers_sha256": "6a2b764ea62be20e6611d2f42478294f644781cc509490477605e1fe3c8465a9"
+  },
+  "cost_rate_card": {
+    "as_of": "2026-09-28",
+    "path": "research/cost-rate-card-2026-09.json",
+    "sha256": "49950de9190bcbe6347c65469a3b5e5cfccdb20ad98ae0e503f0b5b035648ad2"
+  },
+  "deck_build": {
+    "deck_audit": [
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 12900,
+          "median": 12900.0,
+          "min": 8999
+        },
+        "seller_count": 4,
+        "source_queries": [
+          "wireless earbuds"
+        ],
+        "title": "Apple AirPods 4 Wireless Earbuds"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 14100,
+          "median": 14100,
+          "min": 14100
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "calculator"
+        ],
+        "title": "Casio MS-20YC Small Desk Calculator Black"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 25499,
+          "median": 17699,
+          "min": 12400
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "fitness tracker"
+        ],
+        "title": "Fitbit Charge 6 Fitness Tracker with Google Apps - Heart Rate on Exercise Equipment - 3-Month Google Health Premium Membership Included - Health Tools - Obsidian/Black - Small&Large Bands Included"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 15999,
+          "median": 15999.0,
+          "min": 7895
+        },
+        "seller_count": 8,
+        "source_queries": [
+          "fitness tracker"
+        ],
+        "title": "Fitbit Inspire 2 Health & Fitness Tracker with a Free 1-Year Fitbit Premium Trial, 24/7 Heart Rate, Black/Black, One Size (S & L Bands Included)"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 14022,
+          "median": 11198,
+          "min": 9238
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "printer paper"
+        ],
+        "title": "Hammermill Printer Paper, 20 lb Copy, 8.5 x 11-8 Ream"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 29999,
+          "median": 29999,
+          "min": 22999
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "bicycle helmet"
+        ],
+        "title": "S-Works Prevail 3"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 129999,
+          "median": 119999,
+          "min": 119999
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "baby stroller"
+        ],
+        "title": "Silver Cross Reef 2 Stroller"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 19584,
+          "median": 19584,
+          "min": 19584
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "portable ssd"
+        ],
+        "title": "Transcend 250GB ESD270C Portable SSD Up to 520MB/s Credit Card Size Type-C"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 6799,
+          "median": 6799,
+          "min": 6799
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "printer paper"
+        ],
+        "title": "UNIS Paper 8.5x14 500Ct 10/Bx"
+      }
+    ],
+    "eligible_rows": 8684,
+    "exclusion_counts": {
+      "insufficient_independent_sellers": 8650,
+      "non_target_currency": 618,
+      "unavailable": 10
+    },
+    "input_rows": 9312,
+    "product_deck_count": 9,
+    "product_identity": {
+      "excluded_title_phrases": [
+        "multiple weight ranges"
+      ],
+      "generic_titles_fall_back_to_catalog_product_option": true,
+      "minimum_informative_title_tokens": 3,
+      "require_digit_bearing_title_token": true,
+      "strategy": "exact_normalized_model_title_or_catalog_product_option"
+    },
+    "seller_card_count": 33,
+    "seller_count_distribution": {
+      "3": 7,
+      "4": 1,
+      "8": 1
+    }
+  },
+  "schema_version": 1,
+  "study": {
+    "calibration_product_count": 5,
+    "calibration_replay_deck_count": 5,
+    "cost_results": [
+      {
+        "adaptive_continue_state_count": 29,
+        "adaptive_vs_search_all": {
+          "bootstrap_replicates": 2000,
+          "ci_lower": -0.002365156963565452,
+          "ci_upper": 0.014027494499314631,
+          "favors_treatment": false,
+          "mean_difference": 0.0037889001021602004,
+          "permutations_are_independent": false,
+          "product_clusters": 4
+        },
+        "arms": {
+          "adaptive_dynamic": {
+            "mean_normalized_item_price": 0.9047440666832134,
+            "mean_normalized_total_cost": 0.9361373247389667,
+            "mean_price_regret_minor": 76.5625,
+            "mean_reveals": 2.7421875,
+            "oracle_hit_rate": 0.9609375,
+            "product_clusters": 4,
+            "replay_rows": 128
+          },
+          "search_all": {
+            "mean_normalized_item_price": 0.8979069082620668,
+            "mean_normalized_total_cost": 0.9323484246368066,
+            "mean_price_regret_minor": 0.0,
+            "mean_reveals": 3.0,
+            "oracle_hit_rate": 1.0,
+            "product_clusters": 4,
+            "replay_rows": 128
+          }
+        },
+        "cost_components_minor": {
+          "input_tokens": 0.6,
+          "output_tokens": 0.675,
+          "shopping_api": 1.0,
+          "time": 250.0
+        },
+        "cost_scenario": "catalog_expansion",
+        "inspection_cost_minor": 252.275,
+        "inspection_cost_usd": 2.52275
+      },
+      {
+        "adaptive_continue_state_count": 25,
+        "adaptive_vs_search_all": {
+          "bootstrap_replicates": 2000,
+          "ci_lower": -0.044659127297329,
+          "ci_upper": 0.023605141387035636,
+          "favors_treatment": false,
+          "mean_difference": -0.010997873272173801,
+          "permutations_are_independent": false,
+          "product_clusters": 4
+        },
+        "arms": {
+          "adaptive_dynamic": {
+            "mean_normalized_item_price": 0.9298109994301709,
+            "mean_normalized_total_cost": 1.026299732516835,
+            "mean_price_regret_minor": 700.0,
+            "mean_reveals": 2.0390625,
+            "oracle_hit_rate": 0.84375,
+            "product_clusters": 4,
+            "replay_rows": 128
+          },
+          "search_all": {
+            "mean_normalized_item_price": 0.8979069082620668,
+            "mean_normalized_total_cost": 1.0372976057890089,
+            "mean_price_regret_minor": 0.0,
+            "mean_reveals": 3.0,
+            "oracle_hit_rate": 1.0,
+            "product_clusters": 4,
+            "replay_rows": 128
+          }
+        },
+        "cost_components_minor": {
+          "input_tokens": 10.0,
+          "output_tokens": 10.0,
+          "shopping_api": 1.0,
+          "time": 1000.0
+        },
+        "cost_scenario": "agentic_review_2m",
+        "inspection_cost_minor": 1021.0,
+        "inspection_cost_usd": 10.21
+      },
+      {
+        "adaptive_continue_state_count": 11,
+        "adaptive_vs_search_all": {
+          "bootstrap_replicates": 2000,
+          "ci_lower": -0.25912821752279525,
+          "ci_upper": -0.014552328981887488,
+          "favors_treatment": true,
+          "mean_difference": -0.13684027325234138,
+          "permutations_are_independent": false,
+          "product_clusters": 4
+        },
+        "arms": {
+          "adaptive_dynamic": {
+            "mean_normalized_item_price": 0.9936575116209564,
+            "mean_normalized_total_cost": 1.109952949926572,
+            "mean_price_regret_minor": 2463.75,
+            "mean_reveals": 1.0,
+            "oracle_hit_rate": 0.5859375,
+            "product_clusters": 4,
+            "replay_rows": 128
+          },
+          "search_all": {
+            "mean_normalized_item_price": 0.8979069082620668,
+            "mean_normalized_total_cost": 1.2467932231789134,
+            "mean_price_regret_minor": 0.0,
+            "mean_reveals": 3.0,
+            "oracle_hit_rate": 1.0,
+            "product_clusters": 4,
+            "replay_rows": 128
+          }
+        },
+        "cost_components_minor": {
+          "input_tokens": 30.0,
+          "output_tokens": 18.0,
+          "shopping_api": 7.5,
+          "time": 2500.0
+        },
+        "cost_scenario": "long_horizon_research_5m",
+        "inspection_cost_minor": 2555.5,
+        "inspection_cost_usd": 25.555
+      }
+    ],
+    "held_out_product_count": 4,
+    "held_out_replay_deck_count": 4,
+    "independent_unit": "exact_normalized_model_title",
+    "permutations_are_independent": false,
+    "permutations_per_product": 32,
+    "random_seed": 20260723,
+    "schema_version": 1
+  }
+}

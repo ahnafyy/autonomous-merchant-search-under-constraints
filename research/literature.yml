@@ -98,8 +98,9 @@ works:
     verified_on: "2026-07-24"
     overlap: "Costly sequential inspection under precedence and order restrictions."
     distinction: >-
-      Uses known stochastic alternatives and permits selecting the best opened
-      alternative, unlike externally ordered ephemeral offers with no recall.
+      Uses known stochastic alternatives and precedence constraints; our benchmark
+      learns from calibration products and evaluates random seller order with free
+      recall.
     confidence: high
     status: candidate
   - citation_key: "berger2024pandora"
@@ -118,8 +119,9 @@ works:
     verified_on: "2026-07-24"
     overlap: "Sequential inspection cost and reservation-value stopping rules."
     distinction: >-
-      Assumes known independent distributions, adaptive inspection order, and recall
-      of the best inspected alternative rather than ephemeral no-recall offers.
+      Assumes known independent distributions and adaptive inspection order; our
+      benchmark estimates from disjoint calibration products and randomizes seller
+      order while retaining recall.
     confidence: high
     status: candidate
   - citation_key: "rothschild1974searching"
@@ -128,8 +130,8 @@ works:
     verified_on: "2026-07-24"
     overlap: "Sequential consumer price search when the price law is initially unknown."
     distinction: >-
-      Learns an unknown but persistent distribution; recall details require full-text
-      confirmation and differ from a nonstationary trace with no reusable law.
+      Learns an unknown persistent distribution over repeated search; our empirical
+      policy is frozen after calibration and evaluated on separate product decks.
     confidence: medium
     status: candidate
   - citation_key: "esfandiari2017prophet"

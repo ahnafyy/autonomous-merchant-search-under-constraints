@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-09-28",
+  "currency": "USD",
+  "model_rates": [
+    {
+      "id": "openai-gpt-5-4-mini-standard",
+      "provider": "OpenAI",
+      "model": "gpt-5.4-mini",
+      "input_cost_minor_per_million": 75,
+      "output_cost_minor_per_million": 450,
+      "source": "https://developers.openai.com/api/docs/pricing"
+    },
+    {
+      "id": "anthropic-claude-sonnet-5-standard",
+      "provider": "Anthropic",
+      "model": "Claude Sonnet 5",
+      "input_cost_minor_per_million": 200,
+      "output_cost_minor_per_million": 1000,
+      "source": "https://platform.claude.com/docs/en/docs/about-claude/pricing"
+    },
+    {
+      "id": "google-gemini-3-8-flash-standard",
+      "provider": "Google",
+      "model": "Gemini 3.8 Flash",
+      "input_cost_minor_per_million": 75,
+      "output_cost_minor_per_million": 375,
+      "source": "https://ai.google.dev/gemini-api/docs/pricing"
+    },
+    {
+      "id": "xai-grok-4-7-short-context",
+      "provider": "xAI",
+      "model": "grok-4.7",
+      "input_cost_minor_per_million": 200,
+      "output_cost_minor_per_million": 600,
+      "source": "https://docs.x.ai/docs/models"
+    }
+  ],
+  "shopping_api_rates": [
+    {
+      "id": "openai-web-search",
+      "provider": "OpenAI",
+      "billing": "usage",
+      "cost_minor_numerator_per_call": 1,
+      "cost_minor_denominator_per_call": 1,
+      "source": "https://developers.openai.com/api/docs/pricing"
+    },
+    {
+      "id": "google-grounding-search",
+      "provider": "Google",
+      "billing": "usage_after_free_allowance",
+      "cost_minor_numerator_per_call": 7,
+      "cost_minor_denominator_per_call": 5,
+      "source": "https://ai.google.dev/gemini-api/docs/pricing"
+    },
+    {
+      "id": "serpapi-starter-amortized",
+      "provider": "SerpApi",
+      "billing": "subscription_amortization",
+      "monthly_fee_minor": 2500,
+      "included_calls_per_month": 1000,
+      "cost_minor_numerator_per_call": 5,
+      "cost_minor_denominator_per_call": 2,
+      "source": "https://serpapi.com/pricing"
+    },
+    {
+      "id": "priceapi-basic-eur-excluded",
+      "provider": "PriceAPI",
+      "billing": "subscription_amortization",
+      "currency": "EUR",
+      "monthly_fee_minor": 25900,
+      "included_credits_per_month": 20000,
+      "cost_minor_numerator_per_credit": 3,
+      "cost_minor_denominator_per_credit": 2,
+      "source": "https://www.priceapi.com/pricing/",
+      "excluded_from_usd_scenarios": true,
+      "reason": "A dated EUR/USD conversion must be registered before combining this rate with USD product prices."
+    }
+  ],
+  "notes": [
+    "Published rates are evidence; token counts, tool-call counts, and elapsed time are scenario assumptions until execution telemetry is collected.",
+    "Subscription amortization is an average allocation, not the incremental bill for one call after the plan has been purchased.",
+    "Provider prices exclude tax, negotiated discounts, regional premiums, and free allowances unless explicitly stated."
+  ]
+}

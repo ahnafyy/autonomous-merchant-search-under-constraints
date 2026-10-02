@@ -24,8 +24,14 @@ from autonomous_shopping_optimizer.panels import Episode
 from autonomous_shopping_optimizer.permits import ResourceVector
 from autonomous_shopping_optimizer.replay import (
     FrozenPanel,
+    HiddenCardOutcome,
+    HiddenCardState,
     OutcomeMetrics,
+    SellerDeck,
     exhaustive_oracle,
+    hidden_card_oracle,
+    replay_fixed_depth,
+    replay_hidden_cards,
     score_selection,
 )
 
@@ -49,6 +55,72 @@ class ArmResult:
     selected_merchant_id: str | None
     query_count: int
     metrics: OutcomeMetrics
+
+
+def buy_first_hidden_card(
+    deck: SellerDeck,
+    order: tuple[str, ...],
+    *,
+    inspection_cost: Fraction,
+    max_reveals: int,
+) -> HiddenCardOutcome:
+    """Reveal one seller, retain that offer, and stop immediately."""
+    return replay_hidden_cards(
+        deck,
+        order,
+        arm="buy_first",
+        inspection_cost=inspection_cost,
+        max_reveals=max_reveals,
+        should_stop=lambda _state: True,
+    )
+
+
+def fixed_depth_hidden_card(
+    deck: SellerDeck,
+    order: tuple[str, ...],
+    *,
+    depth: int,
+    inspection_cost: Fraction,
+    max_reveals: int,
+) -> HiddenCardOutcome:
+    """Reveal a fixed count of seller cards, retaining the best observed offer."""
+    return replay_fixed_depth(
+        deck,
+        order,
+        depth=depth,
+        inspection_cost=inspection_cost,
+        max_reveals=max_reveals,
+    )
+
+
+def fixed_threshold_hidden_card(
+    deck: SellerDeck,
+    order: tuple[str, ...],
+    *,
+    threshold: Fraction,
+    inspection_cost: Fraction,
+    max_reveals: int,
+) -> HiddenCardOutcome:
+    """Stop once the retained best offer clears a first-card-relative threshold."""
+    if threshold < 0:
+        raise ValueError("threshold must be non-negative")
+
+    def should_stop(state: HiddenCardState) -> bool:
+        return Fraction(state.best.price_minor, state.revealed[0].price_minor) <= threshold
+
+    return replay_hidden_cards(
+        deck,
+        order,
+        arm="fixed_threshold",
+        inspection_cost=inspection_cost,
+        max_reveals=max_reveals,
+        should_stop=should_stop,
+    )
+
+
+def oracle_hidden_card(deck: SellerDeck) -> HiddenCardOutcome:
+    """Return the cost-free offline lower bound for a seller deck."""
+    return hidden_card_oracle(deck)
 
 
 def merchant_order(panel: FrozenPanel, seed: int) -> tuple[str, ...]:

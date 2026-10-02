@@ -441,6 +441,71 @@ h3 {
   margin: 0;
 }
 
+.research-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.recalled-workbench {
+  margin-top: 1.5rem;
+}
+
+.recalled-workbench__controls {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 0.8fr;
+  border-block: 1px solid var(--line);
+}
+
+.recalled-workbench__controls fieldset {
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding: 1rem;
+}
+
+.recalled-workbench__controls fieldset + fieldset {
+  border-left: 1px solid var(--line);
+}
+
+.recalled-workbench__controls legend {
+  margin-bottom: 0.65rem;
+  color: var(--ink-soft);
+  font-size: 0.68rem;
+  font-weight: 720;
+  text-transform: uppercase;
+}
+
+.recalled-workbench__controls label {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(5.75rem, 0.9fr);
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.5rem;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+}
+
+.recalled-workbench__controls label:first-of-type {
+  margin-top: 0;
+}
+
+.recalled-workbench__controls input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line-dark);
+  border-radius: 2px;
+  background: var(--surface);
+  padding: 0.35rem;
+  color: var(--ink);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.recalled-workbench__table td:last-child {
+  font-weight: 720;
+}
+
 .decision-spotlight {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -4,8 +4,12 @@ import test from "node:test";
 
 import {
   AutonomousShoppingOptimizer,
+  createRecalledSearchHook,
+  decideRecalledSearch,
   planShoppingDecision,
   reservationPrice,
+  recalledSearchToolSchema,
+  runRecalledSearchTool,
   ShoppingAgentMiddleware,
   simulatePolicy,
 } from "../src/index.js";
@@ -49,6 +53,13 @@ for (const [index, vector] of vectors.planner_cases.entries()) {
   });
 }
 
+for (const [index, vector] of vectors.recalled_search_cases.entries()) {
+  test(`conforms for recalled-search decision case ${index + 1}`, () => {
+    const result = decideRecalledSearch(vector.input);
+    assert.deepEqual(result, vector.expected);
+  });
+}
+
 test("middleware routes, accounts, and stops across a host tool loop", () => {
   const middleware = new AutonomousShoppingOptimizer({
     merchants: [
@@ -82,6 +93,43 @@ test("middleware routes, accounts, and stops across a host tool loop", () => {
 
 test("legacy middleware name aliases the optimizer", () => {
   assert.equal(ShoppingAgentMiddleware, AutonomousShoppingOptimizer);
+});
+
+test("recalled-search hook returns the formula decision after an offer", () => {
+  const input = {
+    currentBestMinor: 100,
+    priceSamplesMinor: [80, 90, 110, 120],
+    resources: { api_calls: 1 },
+    shadowPrices: { api_calls: 2 },
+    remainingBudget: { api_calls: 1 },
+  };
+  const direct = decideRecalledSearch(input);
+  const hook = createRecalledSearchHook({
+    priceSamplesMinor: input.priceSamplesMinor,
+    shadowPrices: input.shadowPrices,
+  });
+
+  assert.equal(direct.action, "SEARCH");
+  assert.equal(direct.net_value_minor, 5.5);
+  assert.deepEqual(hook({
+    currentBestMinor: input.currentBestMinor,
+    nextInspectionResources: input.resources,
+    remainingBudget: input.remainingBudget,
+  }), direct);
+});
+
+test("recalled-search JSON tool adapter has a stable vendor-neutral schema", () => {
+  const input = {
+    currentBestMinor: 100,
+    priceSamplesMinor: [80, 90, 110, 120],
+    resources: { api_calls: 1 },
+    shadowPrices: { api_calls: 2.5 },
+    remainingBudget: { api_calls: 1 },
+  };
+
+  assert.equal(recalledSearchToolSchema().name, "decide_recalled_search");
+  assert.deepEqual(runRecalledSearchTool(input), decideRecalledSearch(input));
+  assert.throws(() => runRecalledSearchTool({ ...input, unexpected: true }));
 });
 
 for (const [index, vector] of vectors.reservation_cases.entries()) {

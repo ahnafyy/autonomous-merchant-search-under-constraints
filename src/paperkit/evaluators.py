@@ -198,3 +198,113 @@ def evaluate_offer_ephemerality(results: dict[str, Any], claim: Claim) -> ClaimE
             f"delisted and {price_change:.1%} of survivors changed price."
         ),
     )
+
+
+def evaluate_shopify_deck_study(results: dict[str, Any], claim: Claim) -> ClaimEvaluation:
+    """Verify that the registered Shopify snapshot produced replayable seller decks."""
+    shopify = results["shopify_global_catalog"]
+    decks = shopify.get("product_deck_count", 0)
+    cards = shopify.get("seller_card_count", 0)
+    passed = isinstance(decks, int) and decks >= 4 and isinstance(cards, int) and cards >= decks * 3
+    return ClaimEvaluation(
+        passed=passed,
+        observed=decks,
+        expected=4,
+        detail=(
+            f"Frozen Shopify collection produced {decks} title-normalized seller decks "
+            f"and {cards} seller cards for the registered held-out search study."
+        ),
+    )
+
+
+def evaluate_no_reliable_pandora_improvement(
+    results: dict[str, Any], claim: Claim
+) -> ClaimEvaluation:
+    """Verify the registered Shopify adaptive-versus-search-all result pattern."""
+    costs = results["shopify_global_catalog"].get("cost_results", [])
+    comparisons = [
+        row.get("adaptive_vs_search_all", {})
+        for row in costs
+        if isinstance(row, dict)
+    ]
+    favorable = [comparison.get("favors_treatment") is True for comparison in comparisons]
+    expected_pattern = [False, False, True]
+    return ClaimEvaluation(
+        passed=favorable == expected_pattern,
+        observed=favorable,
+        expected=expected_pattern,
+        detail=(
+            "Shopify adaptive-versus-search-all intervals favor adaptive stopping only "
+            "in the registered long-horizon scenario."
+        ),
+    )
+
+
+def evaluate_ucp_pandora_replay(
+    results: dict[str, Any], claim: Claim
+) -> ClaimEvaluation:
+    """Verify that every registered UCP replay scenario favors adaptive stopping."""
+    replay = results["ucp_direct_panels"].get("pandora_replay", {})
+    costs = replay.get("cost_results", [])
+    comparisons = [
+        row.get("adaptive_vs_search_all", {})
+        for row in costs
+        if isinstance(row, dict)
+    ]
+    favorable = [comparison.get("favors_treatment") is True for comparison in comparisons]
+    return ClaimEvaluation(
+        passed=bool(favorable) and all(favorable),
+        observed=favorable,
+        expected=[True] * len(favorable),
+        detail=(
+            f"Every one of {len(comparisons)} registered UCP panel scenarios has a "
+            "held-out interval favoring adaptive stopping over costed search-all."
+        ),
+    )
+
+
+def evaluate_ucp_market_rate_sensitivity(
+    results: dict[str, Any], claim: Claim
+) -> ClaimEvaluation:
+    """Verify zero-cost search-all, low-cost uncertainty, and adaptive high-cost regions."""
+    rows = results["ucp_cost_sensitivity"].get("cost_results", [])
+    comparisons = [row.get("adaptive_vs_search_all", {}) for row in rows if isinstance(row, dict)]
+    favorable = [comparison.get("favors_treatment") is True for comparison in comparisons]
+    expected_pattern = [False, False, False, True, True]
+    zero_cost_favors_search_all = bool(comparisons) and comparisons[0].get("ci_lower", 0) > 0
+    low_costs_are_inconclusive = all(
+        comparison.get("ci_lower", 0) <= 0 <= comparison.get("ci_upper", 0)
+        for comparison in comparisons[1:3]
+    )
+    passed = (
+        favorable == expected_pattern
+        and zero_cost_favors_search_all
+        and low_costs_are_inconclusive
+    )
+    return ClaimEvaluation(
+        passed=passed,
+        observed=favorable,
+        expected=expected_pattern,
+        detail=(
+            "At zero cost search-all is favorable; at 0.01x and 0.1x the interval "
+            "crosses zero; at 1x and 10x adaptive stopping is favorable."
+        ),
+    )
+def evaluate_ucp_panel_quality(results: dict[str, Any], claim: Claim) -> ClaimEvaluation:
+    """Verify that UCP lifecycle reporting records and excludes retrieval anomalies."""
+    panel = results["ucp_direct_panels"]
+    excluded = panel.get("excluded_dates", {})
+    included = panel.get("included_lifecycle_dates", [])
+    has_exclusions = isinstance(excluded, dict) and bool(excluded)
+    has_included_dates = isinstance(included, list) and bool(included)
+    passed = has_exclusions and has_included_dates
+    return ClaimEvaluation(
+        passed=passed,
+        observed=len(excluded) if isinstance(excluded, dict) else 0,
+        expected=1,
+        detail=(
+            f"Lifecycle report retains {len(included) if isinstance(included, list) else 0} "
+            f"observation dates and excludes {len(excluded) if isinstance(excluded, dict) else 0} "
+            "common-mode retrieval discontinuities from offer outcomes."
+        ),
+    )

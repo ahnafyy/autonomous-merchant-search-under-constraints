@@ -1,0 +1,19 @@
+{
+  "cross_merchant_products": 18029,
+  "episode_eligible_products": 18029,
+  "histogram_all": {
+    "2": 17747,
+    "3": 274,
+    "4": 7,
+    "5": 1
+  },
+  "histogram_single_currency": {
+    "2": 17747,
+    "3": 274,
+    "4": 7,
+    "5": 1
+  },
+  "merchants_with_rows": 1101,
+  "minimum_identity_confidence": "high",
+  "snapshot_date": "2026-09-02-expanded"
+}

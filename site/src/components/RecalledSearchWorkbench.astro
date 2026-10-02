@@ -1,0 +1,90 @@
+<div class="experiment recalled-workbench" data-recalled-workbench>
+  <div class="experiment__toolbar">
+    <div>
+      <span class="eyebrow">Interactive decision table</span>
+      <h3>Buy now or search one more seller?</h3>
+    </div>
+    <strong class="decision-badge" data-recalled-action>Calculating</strong>
+  </div>
+
+  <form class="recalled-workbench__controls" data-recalled-form>
+    <fieldset>
+      <legend>Offer and forecast</legend>
+      <label><span>Best retained offer</span><span class="input-unit"><b>$</b><input name="currentPrice" type="number" min="0.01" step="0.01" value="100.00" /></span></label>
+      <label><span>Low next price</span><span class="input-unit"><b>$</b><input name="lowPrice" type="number" min="0.01" step="0.01" value="86.00" /></span></label>
+      <label><span>Likely next price</span><span class="input-unit"><b>$</b><input name="likelyPrice" type="number" min="0.01" step="0.01" value="95.00" /></span></label>
+      <label><span>High next price</span><span class="input-unit"><b>$</b><input name="highPrice" type="number" min="0.01" step="0.01" value="108.00" /></span></label>
+    </fieldset>
+    <fieldset>
+      <legend>Next inspection</legend>
+      <label><span>Tool time</span><span class="input-unit"><input name="toolSeconds" type="number" min="0" step="1" value="30" /><b>sec</b></span></label>
+      <label><span>Value of time</span><span class="input-unit"><b>$</b><input name="timeValue" type="number" min="0" step="0.01" value="5.00" /><b>/min</b></span></label>
+      <label><span>Tool/API spend</span><span class="input-unit"><b>$</b><input name="toolSpend" type="number" min="0" step="0.01" value="0.25" /></span></label>
+    </fieldset>
+    <fieldset>
+      <legend>Remaining hard budget</legend>
+      <label><span>Time left</span><span class="input-unit"><input name="timeBudget" type="number" min="0" step="1" value="60" /><b>sec</b></span></label>
+      <label><span>Tool spend left</span><span class="input-unit"><b>$</b><input name="spendBudget" type="number" min="0" step="0.01" value="2.00" /></span></label>
+    </fieldset>
+  </form>
+
+  <div class="exact-table-wrap" role="region" aria-label="Interactive recalled-search decision" tabindex="0">
+    <table class="exact-table recalled-workbench__table">
+      <caption>One additional seller inspection using the retained-offer formula</caption>
+      <thead><tr><th scope="col">Best offer</th><th scope="col">Expected saving</th><th scope="col">Time value</th><th scope="col">Tool spend</th><th scope="col">Total inspection cost</th><th scope="col">Budget fits</th><th scope="col">Decision</th></tr></thead>
+      <tbody><tr><td data-current>--</td><td data-saving>--</td><td data-time-cost>--</td><td data-api-cost>--</td><td data-cost>--</td><td data-feasible>--</td><td data-decision>--</td></tr></tbody>
+    </table>
+  </div>
+  <p class="experiment__readout" aria-live="polite" data-recalled-readout></p>
+  <p class="workbench__boundary">The forecast is an equal-weight local calibration example. The decision runs in your browser and does not call a merchant or an LLM.</p>
+</div>
+
+<script>
+  import { decideRecalledSearch } from "autonomous-shopping-optimizer";
+
+  const workbench = document.querySelector<HTMLElement>("[data-recalled-workbench]");
+  const form = workbench?.querySelector<HTMLFormElement>("[data-recalled-form]");
+  const money = (value: number) => `$${(value / 100).toFixed(2)}`;
+  const cents = (data: FormData, name: string) => Math.max(1, Math.round(Number(data.get(name)) * 100));
+  const nonNegative = (data: FormData, name: string) => Math.max(0, Number(data.get(name)) || 0);
+
+  const update = () => {
+    if (!workbench || !form) return;
+    const data = new FormData(form);
+    const toolSeconds = nonNegative(data, "toolSeconds");
+    const result = decideRecalledSearch({
+      currentBestMinor: cents(data, "currentPrice"),
+      priceSamplesMinor: [cents(data, "lowPrice"), cents(data, "likelyPrice"), cents(data, "highPrice")],
+      resources: { time_ms: Math.round(toolSeconds * 1000), api_cost_minor: cents(data, "toolSpend") - 1 },
+      shadowPrices: { time_ms: (nonNegative(data, "timeValue") * 100) / 60 },
+      remainingBudget: {
+        time_ms: Math.round(nonNegative(data, "timeBudget") * 1000),
+        api_cost_minor: cents(data, "spendBudget") - 1,
+      },
+    });
+    const set = (selector: string, value: string) => {
+      workbench.querySelector<HTMLElement>(selector)!.textContent = value;
+    };
+    const action = workbench.querySelector<HTMLElement>("[data-recalled-action]")!;
+    action.textContent = result.action === "SEARCH" ? "Search again" : "Buy now";
+    action.className = `decision-badge decision-badge--${result.action === "SEARCH" ? "continue" : "buy"}`;
+    set("[data-current]", money(result.current_best_minor));
+    set("[data-saving]", money(result.expected_saving_minor));
+    set("[data-time-cost]", money(result.cost_components_minor.time));
+    set("[data-api-cost]", money(result.cost_components_minor.api_spend));
+    set("[data-cost]", money(result.inspection_cost_minor));
+    set("[data-feasible]", result.feasible ? "Yes" : "No");
+    set("[data-decision]", result.action === "SEARCH" ? "Search" : "Buy");
+    set(
+      "[data-recalled-readout]",
+      result.action === "SEARCH"
+        ? `Search: expected saving ${money(result.expected_saving_minor)} exceeds the ${money(result.inspection_cost_minor)} inspection cost.`
+        : result.feasible
+          ? `Buy: expected saving ${money(result.expected_saving_minor)} does not repay the ${money(result.inspection_cost_minor)} inspection cost.`
+          : "Buy: the next inspection does not fit the remaining hard budget.",
+    );
+  };
+
+  form?.addEventListener("input", update);
+  update();
+</script>

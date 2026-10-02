@@ -1,0 +1,72 @@
+{
+  "business": "https://catalog.shopify.com",
+  "ucp": {
+    "version": "2026-08-25",
+    "status": "ok"
+  },
+  "result": {
+    "products": [
+      {
+        "id": "gid://shopify/p/example-shoe",
+        "title": "Example Road Shoe",
+        "url": "https://catalog.shopify.com/products/example-shoe",
+        "categories": ["Sporting Goods > Shoes"],
+        "options": [
+          {
+            "name": "Shoe size",
+            "values": [{"label": "us 10", "available": true, "exists": true}]
+          }
+        ],
+        "selected": [{"name": "Shoe size", "label": "us 10"}],
+        "variants": [
+          {
+            "id": "gid://shopify/ProductVariant/alpha",
+            "title": "us 10",
+            "price": {"amount": 12999, "currency": "USD"},
+            "availability": {"available": true, "status": "in_stock"},
+            "requires": {"shipping": true, "components": false},
+            "seller": {
+              "id": "gid://shopify/Shop/1",
+              "name": "Alpha Running",
+              "domain": "ALPHA-RUNNING.MYSHOPIFY.COM.",
+              "url": "https://alpha-running.example"
+            },
+            "url": "https://alpha-running.example/products/example-shoe?variant=alpha",
+            "checkout_url": "https://alpha-running.example/cart/alpha:1"
+          },
+          {
+            "id": "gid://shopify/ProductVariant/beta",
+            "title": "us 10",
+            "price": {"amount": 12499, "currency": "USD"},
+            "availability": {"available": false, "status": "out_of_stock"},
+            "requires": {"shipping": true, "components": false},
+            "seller": {
+              "id": "gid://shopify/Shop/2",
+              "name": "Beta Shoes",
+              "domain": "https://beta-shoes.myshopify.com",
+              "url": "https://beta-shoes.example"
+            }
+          },
+          {
+            "id": "gid://shopify/ProductVariant/gamma",
+            "title": "us 10",
+            "price": {"amount": 11999, "currency": "EUR"},
+            "availability": {"available": true, "status": "in_stock"},
+            "requires": {"shipping": true, "components": false},
+            "seller": {
+              "id": "gid://shopify/Shop/3",
+              "name": "Gamma Sport",
+              "domain": "gamma-sport.myshopify.com",
+              "url": "https://gamma-sport.example"
+            }
+          }
+        ]
+      }
+    ],
+    "pagination": {
+      "cursor": "next-page-token",
+      "has_next_page": true,
+      "total_count": 125
+    }
+  }
+}

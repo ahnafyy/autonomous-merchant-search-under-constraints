@@ -1,0 +1,385 @@
+{
+  "excluded_dates": {
+    "2026-09-16": {
+      "classification": "common_mode_protocol_discontinuity",
+      "reason": "A full same-day rerun fully paginated all 486 eligible merchants but returned zero tracked offers for 276 of them. Relative to September 15, 8,126 of 9,758 comparable offers disappeared across 206 of 309 comparable domains, confirming a coordinated protocol-level retrieval change rather than independently attributable merchant delisting."
+    }
+  },
+  "flagged_common_mode_dates": [
+    "2026-09-16"
+  ],
+  "included_lifecycle_dates": [
+    "2026-09-03",
+    "2026-09-04",
+    "2026-09-05",
+    "2026-09-06",
+    "2026-09-08",
+    "2026-09-09",
+    "2026-09-10",
+    "2026-09-11",
+    "2026-09-14",
+    "2026-09-15"
+  ],
+  "lifecycle": {
+    "examples": [
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "14952"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "15120"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "15122"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "15125"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "15126"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "15127"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16678"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16679"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16680"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16681"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16684"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16685"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16686"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16687"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16690"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16691"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16692"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16693"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16702"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16703"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16704"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16705"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16857"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16858"
+      },
+      {
+        "consecutive_absent_observations_at_horizon": 1,
+        "domain": "1stphorm.com",
+        "first_disappearance_date": "2026-09-04",
+        "last_fully_observed_state": "absent",
+        "reappearance_dates": [],
+        "sku": "16859"
+      }
+    ],
+    "offers_that_reappeared": 135,
+    "offers_with_first_disappearance": 1835,
+    "persistent_absence_at_horizon": 1107,
+    "persistent_definition": "absent in at least two consecutive fully observed records after the most recent presence, with no later reappearance",
+    "reappearance_events": 260,
+    "unresolved_single_absence_at_horizon": 600
+  },
+  "transitions": [
+    {
+      "affected_domain_fraction": 0.025111,
+      "affected_domains": 17,
+      "common_mode_anomaly": false,
+      "comparable_domains": 677,
+      "comparable_present_offers": 36330,
+      "current_date": "2026-09-04",
+      "lost_offers": 198,
+      "offer_loss_fraction": 0.00545,
+      "prior_date": "2026-09-03",
+      "thresholds": {
+        "affected_domain_fraction": 0.15,
+        "offer_loss_fraction": 0.15
+      }
+    },
+    {
+      "affected_domain_fraction": 0.003891,
+      "affected_domains": 2,
+      "common_mode_anomaly": false,
+      "comparable_domains": 514,
+      "comparable_present_offers": 18544,
+      "current_date": "2026-09-05",
+      "lost_offers": 12,
+      "offer_loss_fraction": 0.000647,
+      "prior_date": "2026-09-04",
+      "thresholds": {
+        "affected_domain_fraction": 0.15,
+        "offer_loss_fraction": 0.15
+      }
+    },
+    {
+      "affected_domain_fraction": 0.003289,
+      "affected_domains": 1,
+      "common_mode_anomaly": false,
+      "comparable_domains": 304,
+      "comparable_present_offers": 7426,
+      "current_date": "2026-09-06",
+      "lost_offers": 9,
+      "offer_loss_fraction": 0.001212,
+      "prior_date": "2026-09-05",
+      "thresholds": {
+        "affected_domain_fraction": 0.15,
+        "offer_loss_fraction": 0.15
+      }
+    },
+    {
+      "affected_domain_fraction": 0.029221,
+      "affected_domains": 9,
+      "common_mode_anomaly": false,
+      "comparable_domains": 308,
+      "comparable_present_offers": 12031,
+      "current_date": "2026-09-08",
+      "lost_offers": 37,
+      "offer_loss_fraction": 0.003075,
+      "prior_date": "2026-09-06",
+      "thresholds": {
+        "affected_domain_fraction": 0.15,
+        "offer_loss_fraction": 0.15
+      }
+    },
+    {
+      "affected_domain_fraction": 0.015625,
+      "affected_domains": 5,
+      "common_mode_anomaly": false,
+      "comparable_domains": 320,
+      "comparable_present_offers": 12264,
+      "current_date": "2026-09-09",
+      "lost_offers": 32,
+      "offer_loss_fraction": 0.002609,
+      "prior_date": "2026-09-08",
+      "thresholds": {
+        "affected_domain_fraction": 0.15,
+        "offer_loss_fraction": 0.15
+      }
+    },
+    {
+      "affected_domain_fraction": 0.086093,
+      "affected_domains": 26,
+      "common_mode_anomaly": false,
+      "comparable_domains": 302,
+      "comparable_present_offers": 9434,
+      "current_date": "2026-09-10",
+      "lost_offers": 390,
+      "offer_loss_fraction": 0.04134,
+      "prior_date": "2026-09-09",
+      "thresholds": {
+        "affected_domain_fraction": 0.15,
+        "offer_loss_fraction": 0.15
+      }
+    },
+    {
+      "affected_domain_fraction": 0.09901,
+      "affected_domains": 30,
+      "common_mode_anomaly": false,
+      "comparable_domains": 303,
+      "comparable_present_offers": 10529,
+      "current_date": "2026-09-11",
+      "lost_offers": 1022,
+      "offer_loss_fraction": 0.097065,
+      "prior_date": "2026-09-10",
+      "thresholds": {
+        "affected_domain_fraction": 0.15,
+        "offer_loss_fraction": 0.15
+      }
+    },
+    {
+      "affected_domain_fraction": 0.032967,
+      "affected_domains": 9,
+      "common_mode_anomaly": false,
+      "comparable_domains": 273,
+      "comparable_present_offers": 7750,
+      "current_date": "2026-09-14",
+      "lost_offers": 34,
+      "offer_loss_fraction": 0.004387,
+      "prior_date": "2026-09-11",
+      "thresholds": {
+        "affected_domain_fraction": 0.15,
+        "offer_loss_fraction": 0.15
+      }
+    },
+    {
+      "affected_domain_fraction": 0.047782,
+      "affected_domains": 14,
+      "common_mode_anomaly": false,
+      "comparable_domains": 293,
+      "comparable_present_offers": 9280,
+      "current_date": "2026-09-15",
+      "lost_offers": 136,
+      "offer_loss_fraction": 0.014655,
+      "prior_date": "2026-09-14",
+      "thresholds": {
+        "affected_domain_fraction": 0.15,
+        "offer_loss_fraction": 0.15
+      }
+    },
+    {
+      "affected_domain_fraction": 0.666667,
+      "affected_domains": 206,
+      "common_mode_anomaly": true,
+      "comparable_domains": 309,
+      "comparable_present_offers": 9758,
+      "current_date": "2026-09-16",
+      "lost_offers": 8126,
+      "offer_loss_fraction": 0.832753,
+      "prior_date": "2026-09-15",
+      "thresholds": {
+        "affected_domain_fraction": 0.15,
+        "offer_loss_fraction": 0.15
+      }
+    }
+  ]
+}

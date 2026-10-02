@@ -17,10 +17,10 @@ def stage_generated_files(root: Path) -> Path:
         artifacts / "tables" / "project_metadata.tex": generated / "project_metadata.tex",
         artifacts / "tables" / "result_macros.tex": generated / "result_macros.tex",
         artifacts / "tables" / "claim_status.tex": generated / "claim_status.tex",
-        artifacts / "tables" / "decision_table.tex": generated / "decision_table.tex",
-        artifacts / "tables" / "arm_comparison.tex": generated / "arm_comparison.tex",
-        artifacts / "tables" / "episode_features.tex": generated / "episode_features.tex",
-        artifacts / "tables" / "rule_comparison.tex": generated / "rule_comparison.tex",
+        artifacts / "tables" / "source_context.tex": generated / "source_context.tex",
+        artifacts / "tables" / "pandora_study.tex": generated / "pandora_study.tex",
+        artifacts / "tables" / "ucp_pandora_study.tex": generated / "ucp_pandora_study.tex",
+        artifacts / "tables" / "ucp_cost_sensitivity.tex": generated / "ucp_cost_sensitivity.tex",
         artifacts / "tables" / "references.bib": generated / "references.bib",
     }
     missing = [str(source) for source in required if not source.is_file()]

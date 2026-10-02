@@ -7,9 +7,10 @@ as far as the literature review found, unmeasured: the hazard rate at which an
 offer stops being available at all.
 
 Reads every `panel-observations-*.jsonl.gz` and reports, per elapsed day, the
-share of originally tracked offers still present. Offers on merchants that did
-not answer, or that were truncated at the page cap, are excluded rather than
-counted as gone, so an unreachable merchant never inflates the hazard.
+share of a fixed, fully observed baseline cohort still present. An observation
+date is excluded when no baseline offer can be checked fully; an offer is in the
+cohort only when its merchant was fully paginated on every included date. This
+prevents changing daily reachability from being mistaken for offer disappearance.
 """
 from __future__ import annotations
 
@@ -54,42 +55,52 @@ def main(argv: list[str] | None = None) -> int:
     print(f"baseline {baseline_date}: {len(start)} offers present\n")
     header = (
         f"{'date':>12} {'days':>5} {'checked':>8} {'present':>8} "
-        f"{'survival':>9} {'daily hazard':>13}"
+        f"{'survival':>9}"
     )
     print(header)
 
     rows: list[dict[str, Any]] = []
-    previous_survival = 1.0
-    for path in files[1:]:
-        current = _load(path)
+    loaded = [(path, _load(path)) for path in files[1:]]
+    included = [
+        (path, current)
+        for path, current in loaded
+        if any(
+            key in current and current[key]["merchant_fully_paginated"]
+            for key in start
+        )
+    ]
+    missing_dates = [
+        observed_on(path).isoformat()
+        for path, current in loaded
+        if not any(
+            key in current and current[key]["merchant_fully_paginated"]
+            for key in start
+        )
+    ]
+    cohort = set(start)
+    for _path, current in included:
+        cohort &= {
+            key for key in current if current[key]["merchant_fully_paginated"]
+        }
+
+    if not cohort:
+        raise ValueError("no offers were fully observed on every included date")
+
+    print(f"fixed fully observed cohort: {len(cohort)} offers\n")
+    for path, current in included:
         observation_date = observed_on(path)
         elapsed = (observation_date - baseline_date).days
-        # Only judge offers whose merchant answered fully on this date.
-        checkable = {
-            key
-            for key in start
-            if key in current and current[key]["merchant_fully_paginated"]
-        }
-        if not checkable:
-            continue
-        present = sum(1 for key in checkable if current[key]["present"])
-        survival = present / len(checkable)
-        hazard = (
-            1 - (survival / previous_survival)
-            if previous_survival > 0
-            else 0.0
-        )
-        per_day = hazard / max(elapsed, 1)
-        previous_survival = survival
+        present = sum(1 for key in cohort if current[key]["present"])
+        survival = present / len(cohort)
         print(
-            f"{observation_date!s:>12} {elapsed:>5} {len(checkable):>8} {present:>8} "
-            f"{survival:>8.2%} {per_day:>12.3%}"
+            f"{observation_date!s:>12} {elapsed:>5} {len(cohort):>8} {present:>8} "
+            f"{survival:>8.2%}"
         )
         rows.append(
             {
                 "observation_date": observation_date.isoformat(),
                 "elapsed_days": elapsed,
-                "offers_checked": len(checkable),
+                "offers_checked": len(cohort),
                 "offers_present": present,
                 "survival": round(survival, 6),
             }
@@ -98,6 +109,8 @@ def main(argv: list[str] | None = None) -> int:
     payload = {
         "baseline_date": baseline_date.isoformat(),
         "baseline_offers": len(start),
+        "fixed_fully_observed_cohort": len(cohort),
+        "missing_observation_dates": missing_dates,
         "observations": rows,
     }
     out = args.data_dir / "offer-survival.json"

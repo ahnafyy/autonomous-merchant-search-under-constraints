@@ -5,18 +5,30 @@ build-backend = "hatchling.build"
 [project]
 name = "autonomous-shopping-optimizer"
 version = "0.1.0"
-description = "Hard-budget optimizer middleware for autonomous shopping"
+description = "Recalled-search tool hooks and hard-budget shopping optimizer middleware"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
 authors = [{ name = "Ahnaf Prio" }]
+dependencies = ["tldextract>=5.1,<6"]
+classifiers = [
+	"Development Status :: 4 - Beta",
+	"Intended Audience :: Developers",
+	"License :: OSI Approved :: MIT License",
+	"Programming Language :: Python :: 3",
+	"Programming Language :: Python :: 3 :: Only",
+	"Programming Language :: Python :: 3.11",
+	"Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 
 [project.urls]
 Repository = "https://github.com/ahnafyy/autonomous-merchant-search-under-constraints"
 Paper = "https://ahnafyy.github.io/autonomous-merchant-search-under-constraints/"
+Documentation = "https://ahnafyy.github.io/autonomous-merchant-search-under-constraints/"
 
 [tool.hatch.build.targets.wheel]
 packages = [
 	"src/autonomous_shopping_optimizer",
 	"src/autonomous_shopping",
 ]
+force-include = { "src/autonomous_shopping_optimizer/py.typed" = "autonomous_shopping_optimizer/py.typed" }

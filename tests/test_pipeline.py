@@ -28,20 +28,37 @@ def test_build_is_deterministic_and_claims_pass(tmp_path: Path) -> None:
     assert "results.json" in manifest["files"]
     assert "conformance/merchant-search.json" in manifest["files"]
     site_data = json.loads((first / "site-data.json").read_text(encoding="utf-8"))
-    assert site_data["results"]["hard_constraint_action_signature"] == (
-        "relaxed:continue|time-tight:buy|token-tight:buy|api-tight:buy|"
-        "api-spend-tight:buy|combined:buy|price-capped:continue"
-    )
+    assert site_data["results"]["study_design"] == "source_stratified_recalled_pandora_search"
+    assert site_data["results"]["empirical_claims_ready"] is False
+    assert site_data["results"]["shopify_global_catalog"]["product_deck_count"] == 40
+    assert site_data["results"]["shopify_global_catalog"]["held_out_product_count"] == 16
+    ucp_costs = site_data["results"]["ucp_direct_panels"]["cost_overlay"]
+    assert ucp_costs["status"] == "declared_historical_cost_overlay"
+    assert ucp_costs["total_merchant_probe_calls"] > 0
+    assert [row["cost_scenario"] for row in ucp_costs["scenarios"]] == [
+        "catalog_expansion",
+        "agentic_review_2m",
+        "long_horizon_research_5m",
+    ]
+    ucp_replay = site_data["results"]["ucp_direct_panels"]["pandora_replay"]
+    assert ucp_replay["status"] == "analyzed_frozen_panel_series"
+    assert ucp_replay["product_deck_count"] > 3445
+    assert ucp_replay["held_out_product_count"] == 1381
+    assert ucp_replay["held_out_replay_deck_count"] > ucp_replay["held_out_product_count"]
+    assert len(ucp_replay["cost_results"]) == 3
+    sensitivity = site_data["results"]["ucp_cost_sensitivity"]
+    assert sensitivity["status"] == "analyzed_registered_market_rate_multipliers"
+    assert [
+        row["adaptive_vs_search_all"]["favors_treatment"]
+        for row in sensitivity["cost_results"]
+    ] == [False, False, False, True, True]
     claim_statuses = {claim["id"]: claim["status"] for claim in site_data["claims"]}
     assert claim_statuses == {
-        "CLOSED-FORM-RULE-001": "exact-computational",
-        "NO-ADVANTAGE-REGION-001": "computational-pattern",
-        "OFFER-EPHEMERALITY-001": "numerical",
-        "OVERLAP-SPARSITY-001": "numerical",
-        "PERMIT-SAFETY-001": "conjecture",
-        "SECRETARY-RULE-001": "computational-pattern",
-        "SOLVER-AGREEMENT-001": "exact-computational",
-        "STOPPING-ADVANTAGE-001": "numerical",
+        "PANDORA-ADVANTAGE-001": "numerical",
+        "SHOPIFY-SELLER-DECK-STUDY-001": "numerical",
+        "UCP-MARKET-RATE-SENSITIVITY-001": "numerical",
+        "UCP-OBSERVATION-QUALITY-001": "numerical",
+        "UCP-PANDORA-REPLAY-001": "numerical",
     }
     assert site_data["packages"]["python"]["distribution"] == (
         "autonomous-shopping-optimizer"
@@ -55,15 +72,20 @@ def test_build_is_deterministic_and_claims_pass(tmp_path: Path) -> None:
     metadata = (first / "tables" / "project_metadata.tex").read_text(encoding="utf-8")
     assert "\\newcommand{\\PaperTitle}" in metadata
     claim_table = (first / "tables" / "claim_status.tex").read_text(encoding="utf-8")
-    assert "STOPPING-ADVANTAGE-001" in claim_table
-    assert "MERCHANT-BELLMAN-002" not in claim_table
-    decision_table = (first / "tables" / "decision_table.tex").read_text(encoding="utf-8")
-    assert "95\\% CI" in decision_table
-    assert "Favors adaptive" in decision_table
-    episode_features = (first / "tables" / "episode_features.tex").read_text(
+    assert "PANDORA-ADVANTAGE-001" in claim_table
+    source_table = (first / "tables" / "source_context.tex").read_text(encoding="utf-8")
+    assert "not pooled with Shopify decks" in source_table
+    study_table = (first / "tables" / "pandora_study.tex").read_text(encoding="utf-8")
+    assert "search all" in study_table
+    ucp_study_table = (first / "tables" / "ucp_pandora_study.tex").read_text(
         encoding="utf-8"
     )
-    assert "Held-out panel characteristic" in episode_features
+    assert "Adaptive improvement" in ucp_study_table
+    sensitivity_table = (first / "tables" / "ucp_cost_sensitivity.tex").read_text(
+        encoding="utf-8"
+    )
+    assert "Adaptive improvement" in sensitivity_table
+    assert "Search-all improvement" in sensitivity_table
 
 
 def test_generated_tex_can_be_staged(tmp_path: Path) -> None:
@@ -84,3 +106,4 @@ def test_generated_tex_can_be_staged(tmp_path: Path) -> None:
     build(ROOT)
     generated = stage_generated_files(ROOT)
     assert (generated / "claim_status.tex").is_file()
+    assert (generated / "ucp_cost_sensitivity.tex").is_file()

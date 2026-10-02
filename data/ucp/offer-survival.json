@@ -1,0 +1,186 @@
+{
+  "baseline_date": "2026-09-03",
+  "baseline_offers": 72791,
+  "fixed_fully_observed_cohort": 266,
+  "missing_observation_dates": [
+    "2026-09-12",
+    "2026-09-13"
+  ],
+  "observations": [
+    {
+      "elapsed_days": 1,
+      "observation_date": "2026-09-04",
+      "offers_checked": 266,
+      "offers_present": 266,
+      "survival": 1.0
+    },
+    {
+      "elapsed_days": 2,
+      "observation_date": "2026-09-05",
+      "offers_checked": 266,
+      "offers_present": 266,
+      "survival": 1.0
+    },
+    {
+      "elapsed_days": 3,
+      "observation_date": "2026-09-06",
+      "offers_checked": 266,
+      "offers_present": 266,
+      "survival": 1.0
+    },
+    {
+      "elapsed_days": 5,
+      "observation_date": "2026-09-08",
+      "offers_checked": 266,
+      "offers_present": 266,
+      "survival": 1.0
+    },
+    {
+      "elapsed_days": 6,
+      "observation_date": "2026-09-09",
+      "offers_checked": 266,
+      "offers_present": 266,
+      "survival": 1.0
+    },
+    {
+      "elapsed_days": 7,
+      "observation_date": "2026-09-10",
+      "offers_checked": 266,
+      "offers_present": 266,
+      "survival": 1.0
+    },
+    {
+      "elapsed_days": 8,
+      "observation_date": "2026-09-11",
+      "offers_checked": 266,
+      "offers_present": 266,
+      "survival": 1.0
+    },
+    {
+      "elapsed_days": 11,
+      "observation_date": "2026-09-14",
+      "offers_checked": 266,
+      "offers_present": 266,
+      "survival": 1.0
+    },
+    {
+      "elapsed_days": 12,
+      "observation_date": "2026-09-15",
+      "offers_checked": 266,
+      "offers_present": 262,
+      "survival": 0.984962
+    },
+    {
+      "elapsed_days": 13,
+      "observation_date": "2026-09-16",
+      "offers_checked": 266,
+      "offers_present": 174,
+      "survival": 0.654135
+    },
+    {
+      "elapsed_days": 14,
+      "observation_date": "2026-09-17",
+      "offers_checked": 266,
+      "offers_present": 167,
+      "survival": 0.62782
+    },
+    {
+      "elapsed_days": 15,
+      "observation_date": "2026-09-18",
+      "offers_checked": 266,
+      "offers_present": 264,
+      "survival": 0.992481
+    },
+    {
+      "elapsed_days": 16,
+      "observation_date": "2026-09-19",
+      "offers_checked": 266,
+      "offers_present": 264,
+      "survival": 0.992481
+    },
+    {
+      "elapsed_days": 17,
+      "observation_date": "2026-09-20",
+      "offers_checked": 266,
+      "offers_present": 264,
+      "survival": 0.992481
+    },
+    {
+      "elapsed_days": 18,
+      "observation_date": "2026-09-21",
+      "offers_checked": 266,
+      "offers_present": 264,
+      "survival": 0.992481
+    },
+    {
+      "elapsed_days": 19,
+      "observation_date": "2026-09-22",
+      "offers_checked": 266,
+      "offers_present": 263,
+      "survival": 0.988722
+    },
+    {
+      "elapsed_days": 20,
+      "observation_date": "2026-09-23",
+      "offers_checked": 266,
+      "offers_present": 264,
+      "survival": 0.992481
+    },
+    {
+      "elapsed_days": 21,
+      "observation_date": "2026-09-24",
+      "offers_checked": 266,
+      "offers_present": 263,
+      "survival": 0.988722
+    },
+    {
+      "elapsed_days": 22,
+      "observation_date": "2026-09-25",
+      "offers_checked": 266,
+      "offers_present": 261,
+      "survival": 0.981203
+    },
+    {
+      "elapsed_days": 23,
+      "observation_date": "2026-09-26",
+      "offers_checked": 266,
+      "offers_present": 264,
+      "survival": 0.992481
+    },
+    {
+      "elapsed_days": 24,
+      "observation_date": "2026-09-27",
+      "offers_checked": 266,
+      "offers_present": 242,
+      "survival": 0.909774
+    },
+    {
+      "elapsed_days": 25,
+      "observation_date": "2026-09-28",
+      "offers_checked": 266,
+      "offers_present": 264,
+      "survival": 0.992481
+    },
+    {
+      "elapsed_days": 26,
+      "observation_date": "2026-09-29",
+      "offers_checked": 266,
+      "offers_present": 264,
+      "survival": 0.992481
+    },
+    {
+      "elapsed_days": 27,
+      "observation_date": "2026-09-30",
+      "offers_checked": 266,
+      "offers_present": 264,
+      "survival": 0.992481
+    },
+    {
+      "elapsed_days": 28,
+      "observation_date": "2026-10-01",
+      "offers_checked": 266,
+      "offers_present": 263,
+      "survival": 0.988722
+    }
+  ]
+}

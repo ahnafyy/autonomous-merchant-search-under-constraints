@@ -1,0 +1,6 @@
+{
+  "2026-09-16": {
+    "classification": "common_mode_protocol_discontinuity",
+    "reason": "A full same-day rerun fully paginated all 486 eligible merchants but returned zero tracked offers for 276 of them. Relative to September 15, 8,126 of 9,758 comparable offers disappeared across 206 of 309 comparable domains, confirming a coordinated protocol-level retrieval change rather than independently attributable merchant delisting."
+  }
+}

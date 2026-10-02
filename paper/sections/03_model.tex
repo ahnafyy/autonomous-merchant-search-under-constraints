@@ -1,135 +1,48 @@
-\section{The Stopping Rule in Plain Terms}
+\section{The Search-or-Stop Decision}
 \label{sec:model}
 
-The rule we test has one moving part: a \emph{reservation price}. At every step the
-agent computes the price it would expect to end up paying if it kept searching, and
-buys whatever is in front of it if that offer is at least as good.
-
-\begin{quote}
-\textbf{Buy if the offer in hand is no worse than what continuing is worth.}
-\end{quote}
-
-Everything else is bookkeeping about what "continuing is worth" means when search can
-fail.
-
-\subsection{What makes continuing worth less than it looks}
-
-Three forces push the reservation price up, making the agent more willing to accept:
-
-\begin{description}
-  \item[Fewer merchants left.] With nobody else to ask, the reservation price is just
-    the offer in hand, and the agent accepts. This is why the last reachable query
-    always ends in a purchase if a purchase is possible.
-  \item[Risk that the next offer is unavailable.] A merchant that may be out of stock
-    contributes its price only part of the time and the fallback value the rest. In
-    our corpus this risk is calibrated from the measured delisting rate.
-  \item[A budget that will run out.] Resources are part of the state, not a penalty
-    term. A merchant that cannot be afforded is not a worse option; it is not an
-    option, and it drops out of the calculation entirely.
-\end{description}
-
-The one force pushing the reservation price down is genuine price dispersion. If
-another merchant is likely to be meaningfully cheaper, continuing is worth more than
-the offer in hand and the agent keeps looking. This is the entire mechanism, and it
-explains the central empirical finding in advance: when merchants charge the same
-price, there is nothing for the rule to exploit.
-
-\subsection{Why the budget cannot be traded away}
-
-Time, tokens, API calls, and spend are hard limits, not costs to be balanced against
-price. The agent reserves the full permit for a query \emph{before} dispatching it,
-so a call can never begin unless it is affordable in the worst case. When a call is
-cancelled or truncated and its true usage is unknown, it is charged at the full
-permit rather than at an optimistic estimate.
-
-The consequence is that budget overruns are impossible by construction rather than
-unlikely in practice, and we treat any overrun as a correctness bug. Across every
-episode and every policy replayed in this paper, there were
-\ResultHardBudgetViolations{} violations.
-
-\subsection{A rule you can compute by hand}
-\label{sec:rule}
-
-The dynamic program needs a forecast for every merchant. In practice an engineer
-knows three cruder things, and those are enough.
-
-\paragraph{Step one: the budget is one number, not four.}
-Resources are consumed in fixed amounts per query, so a budget over time, tokens,
-calls, and spend collapses to a single integer: how many further queries are
-affordable. It is a minimum, not a sum, because whichever resource runs out first
-is the one that binds.
+For a product deck, seller card $i$ has a price $P_i$ revealed only when inspected.
+After any inspection the agent retains the cheapest observed card as its incumbent.
+Its state is
 
 \begin{equation}
-  k = \min_{r} \left\lfloor \frac{B_r}{c_r} \right\rfloor
-  \label{eq:horizon}
+  (p^\star, S, b),
 \end{equation}
 
-This is a modelling convention rather than a result. It assumes deterministic
-per-query costs, no partial queries, no substitution between resources, and a
-budget that is never replenished.
+where $p^\star$ is the best retained price, $S$ is the set of unopened cards, and
+$b$ is remaining inspection budget. The action is to buy $p^\star$ or inspect a
+feasible card. Recall is free within this model: buying a retained card does not
+require a second price draw or revalidation.
 
-\paragraph{Step two: accept below a fraction of the price range.}
-With $k$ further queries affordable and prices expected to fall in
-$[p_{\min}, p_{\max}]$, accept the offer in hand when
+Inspection must appear in the objective. With free recall and zero opening cost,
+opening every feasible card weakly improves the retained best price, leaving no
+meaningful stopping decision. We therefore score a replay by retained item price
+plus a declared inspection cost. The reported USD rate-card scenarios and their
+market-rate multipliers are sensitivity analysis, not observed provider billing.
+
+For a price-minimization Pandora model with scalar inspection cost $c_i$, a
+reservation price $z_i$ satisfies
 
 \begin{equation}
-  p \;\le\; p_{\min} + u_k\,(p_{\max} - p_{\min}),
-  \qquad u_0 = 1, \quad u_{k+1} = u_k - \tfrac{1}{2}u_k^2 .
-  \label{eq:closedform}
+  \mathbb{E}[(z_i-P_i)^+] = c_i.
+  \label{eq:pandora-reservation}
 \end{equation}
 
-The sequence falls quickly at first and then flattens: $u_1 = \tfrac12$,
-$u_2 = \tfrac38$, $u_3 = \tfrac{39}{128}$, and $u_k \sim 2/k$ thereafter. So with
-one fallback left you accept the midpoint of the range; with six, only the cheapest
-fifth of it.
+The comparison policy opens another card only when its estimated improvement over
+$p^\star$ exceeds its cost; the dynamic policy uses calibration decks to estimate
+the same search-or-stop decision. This follows the reservation-value structure of
+costly inspection, rather than irreversible selection rules
+~\citep{weitzman1979optimal,boodaghians2020pandora}.
 
-Note that \eqref{eq:closedform} contains no per-query cost term. Cost does not enter
-the objective; it enters only through \eqref{eq:horizon}, which converts the budget
-into a horizon. A model charging inspection cost in the objective would instead give
-$R_k = \mathbb{E}[\min(P, R_{k-1})] + c$.
+\subsection{Replay protocol}
 
-\paragraph{This is a known result.}
-Equation~\eqref{eq:closedform} is not new. Substituting $\mu_k = 1 - u_k$ turns it
-into the classical Cayley--Moser recursion
-$\mu_n = \mathbb{E}[\max(X, \mu_{n-1})] = \tfrac12(1 + \mu_{n-1}^2)$ for uniform
-offers, a problem posed by Cayley in 1875 and solved by Moser in 1956, treated at
-length by \citet{gilbert1966recognizing} and surveyed
-by~\citet{ferguson1989secretary}. The asymptotic $u_k \sim 2/k$ is the leading term
-of a published expansion~\citep{finch2024quadratic,entwistle2022asymptotics}, and the
-recursion remains under active study~\citep{katriel2025cayley}. The declining
-finite-horizon reservation value is standard in search
-theory~\citep{kohn1974theory,lippman1976job}.
+The product-level split prevents a policy from calibrating on the seller prices of a
+held-out title. The reported online control, search-all, reveals every card and pays
+every inspection cost. Adaptive stopping sees the same replay order and can stop after
+any reveal; it retains the cheapest card observed so far. Held-out cards are never
+used by either policy until the replay reveals them.
 
-We claim only the instantiation: mapping a multi-resource query budget onto the
-Cayley--Moser horizon, checking the sequence against our solver, and measuring what
-it is worth on merchant data. Appendix~\ref{app:proofs} gives the derivation.
-
-\subsection{Why the classical secretary rule is the wrong tool here}
-
-The most widely known stopping result says to inspect about $37\%$ of the candidates
-and then take the next record. It is tempting to reach for it, and it answers a
-different question: it maximizes the \emph{probability of selecting the single best}
-candidate using only ordinal comparisons, with no knowledge of price levels.
-
-Our objective is the expected price paid, and our agent observes actual prices. Under
-a cardinal objective the optimal cutoff is not $n/e$~\citep{bearden2006secretary}, and
-the gap between rank-only and full-information sequential search is
-established~\citep{palley2014sequential}. Applying the $37\%$ rule here is therefore a
-category error rather than a fair contest. Section~\ref{sec:results} reports what that
-error costs, because the rule is popular enough that the size of the penalty is worth
-knowing.
-
-\subsection{Is the rule actually optimal?}
-
-For instances small enough to check exhaustively, yes. We enumerate every
-deterministic accept-or-continue policy and compare the best achievable expected loss
-against what the solver returns, in exact rational arithmetic with no floating-point
-tolerance. Across \ResultSolverCasesVerified{} registered instances, spanning ties,
-stockouts, a binding price cap, and a failure penalty large enough to dominate, the
-two agree exactly (claim \texttt{SOLVER-AGREEMENT-001}).
-
-This is a check on the implementation, not a proof of general optimality, and
-agreement on small fixed-order instances says nothing about adaptive merchant
-routing. The recurrence itself is stated in Appendix~\ref{app:proofs}, where readers
-who want the backward induction can find it. Nothing in
-Sections~\ref{sec:results}--\ref{sec:implications} depends on having read it.
+The model is intentionally narrower than commerce. It assumes retained catalog
+offers can be purchased at their observed price and omits shipping, tax, stock
+changes, checkout, and revalidation. Those are state transitions for a future model,
+not evidence supplied by the present data.

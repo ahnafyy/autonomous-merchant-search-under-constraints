@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import gzip
+import json
 from collections.abc import Mapping, Sequence
 from dataclasses import asdict, dataclass
 from fractions import Fraction
 from functools import cache
+from pathlib import Path
 from typing import Any
 
 RESOURCE_FIELDS = ("time", "tokens", "api_calls", "api_cost")
@@ -351,21 +354,229 @@ def simulate_policy(
     )
 
 
+@cache
 def run_analysis(seed: int) -> dict[str, Any]:
-    """Generate the empirical stopping study plus the exact mechanism demonstration."""
-    # Imported here because `experiment` depends on this module.
-    from autonomous_shopping_optimizer.experiment import run_study
-    from autonomous_shopping_optimizer.verification import (
-        verify_solver_against_enumeration,
-    )
+    """Load source-stratified Pandora and UCP evidence without pooling them."""
+    from autonomous_shopping_optimizer.pandora import pandora_cost_table
 
-    results = run_study(seed)
-    verification = verify_solver_against_enumeration()
-    results["solver_verification"] = verification
-    results["solver_cases_verified"] = verification["case_count"]
-    results["solver_agrees_with_enumeration"] = verification["all_agree"]
-    results.update(mechanism_demonstration(seed))
+    root = Path(__file__).resolve().parents[4]
+    data_dir = root / "data" / "ucp"
+    report_path = data_dir / "global-catalog-study-2026-09-18-deep.json"
+    panel_quality_path = data_dir / "panel-observation-quality.json"
+    results: dict[str, Any] = {
+        "random_seed": seed,
+        "study_design": "source_stratified_recalled_pandora_search",
+        "empirical_claims_ready": False,
+        "pandora": pandora_cost_table(),
+        "shopify_global_catalog": {
+            "status": "awaiting_registered_collection",
+            "report": None,
+        },
+        "ucp_direct_panels": _ucp_panel_summary(panel_quality_path, data_dir, root),
+        "ucp_cost_sensitivity": _ucp_cost_sensitivity(
+            data_dir, root / "research" / "hidden-card-analysis.json"
+        ),
+    }
+    if not report_path.is_file():
+        return results
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    analysis = report.get("analysis", {})
+    if analysis.get("random_seed") != seed:
+        raise ValueError("hidden-card report seed does not match project.yml")
+    study = report.get("study")
+    if not isinstance(study, dict):
+        results["shopify_global_catalog"] = {
+            "status": "collected_insufficient_eligible_products",
+            "report": report,
+            "product_deck_count": report["deck_build"]["product_deck_count"],
+            "seller_card_count": report["deck_build"]["seller_card_count"],
+        }
+        return results
+    results["shopify_global_catalog"] = {
+        "status": "exploratory_recovered_deep_query_prefix",
+        "report": report,
+        "collection_status": report["collection"].get("collection_status"),
+        "planned_query_count": report["collection"].get("planned_query_count"),
+        "completed_query_count": report["collection"].get("completed_query_count"),
+        "product_deck_count": report["deck_build"]["product_deck_count"],
+        "seller_card_count": report["deck_build"]["seller_card_count"],
+        "calibration_product_count": study["calibration_product_count"],
+        "held_out_product_count": study["held_out_product_count"],
+        "permutations_per_product": study["permutations_per_product"],
+        "independent_unit": study["independent_unit"],
+        "cost_results": study["cost_results"],
+    }
     return results
+
+
+def _ucp_panel_summary(path: Path, data_dir: Path, root: Path) -> dict[str, object]:
+    if not path.is_file():
+        return {"status": "awaiting_panel_quality_report"}
+    report = json.loads(path.read_text(encoding="utf-8"))
+    excluded = report.get("excluded_dates", {})
+    included = report.get("included_lifecycle_dates", [])
+    lifecycle = report.get("lifecycle", {})
+    summary: dict[str, object] = {
+        "status": "collected_observability_context",
+        "included_lifecycle_dates": included,
+        "excluded_dates": excluded,
+        "persistent_absence_at_horizon": lifecycle.get("persistent_absence_at_horizon"),
+        "offers_that_reappeared": lifecycle.get("offers_that_reappeared"),
+        "reappearance_events": lifecycle.get("reappearance_events"),
+    }
+    summary["cost_overlay"] = _ucp_cost_overlay(
+        data_dir, included, root / "research" / "hidden-card-analysis.json"
+    )
+    summary["pandora_replay"] = _ucp_pandora_replay(
+        data_dir, root / "research" / "hidden-card-analysis.json"
+    )
+    return summary
+
+
+def _ucp_pandora_replay(data_dir: Path, config_path: Path) -> dict[str, object]:
+    """Run a SKU-clustered recalled-search replay across frozen UCP panel dates."""
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    observation_dates = config.get("ucp_pandora_observation_dates")
+    if not isinstance(observation_dates, list) or not all(
+        isinstance(date, str) for date in observation_dates
+    ):
+        return {"status": "unavailable_no_registered_panel_dates"}
+    from autonomous_shopping_optimizer.hidden_card_study import (
+        run_hidden_card_study,
+        split_panel_decks,
+    )
+    from autonomous_shopping_optimizer.ucp_pandora import build_ucp_panel_series
+
+    decks, deck_counts = build_ucp_panel_series(data_dir, observation_dates)
+    if len({deck.product_id for deck in decks}) < 4:
+        return {
+            "status": "insufficient_replayable_decks",
+            "observation_dates": observation_dates,
+            "product_deck_count": len({deck.product_id for deck in decks}),
+            "deck_counts_by_date": deck_counts,
+        }
+    study = run_hidden_card_study(decks, config, splitter=split_panel_decks)
+    return {
+        "status": "analyzed_frozen_panel_series",
+        "observation_dates": observation_dates,
+        "product_deck_count": len({deck.product_id for deck in decks}),
+        "repeated_date_deck_count": len(decks),
+        "deck_counts_by_date": deck_counts,
+        **study,
+    }
+
+
+def _ucp_cost_sensitivity(data_dir: Path, config_path: Path) -> dict[str, object]:
+    """Replay one market-rate workload over registered total-cost multipliers."""
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    sensitivity = config.get("ucp_cost_sensitivity")
+    if not isinstance(sensitivity, dict):
+        return {"status": "unavailable_no_registered_cost_sensitivity"}
+    scenario_id = sensitivity.get("base_scenario_id")
+    multipliers = sensitivity.get("multipliers_basis_points")
+    if not isinstance(scenario_id, str) or not isinstance(multipliers, list):
+        return {"status": "unavailable_invalid_cost_sensitivity"}
+    base = next(
+        (row for row in config["cost_scenarios"] if row.get("id") == scenario_id), None
+    )
+    if not isinstance(base, dict) or not all(
+        isinstance(value, int) and not isinstance(value, bool) and value >= 0
+        for value in multipliers
+    ):
+        return {"status": "unavailable_invalid_cost_sensitivity"}
+    from autonomous_shopping_optimizer.hidden_card_study import (
+        run_hidden_card_study,
+        split_panel_decks,
+    )
+    from autonomous_shopping_optimizer.ucp_pandora import build_ucp_panel_series
+
+    scenarios = [
+        {
+            **base,
+            "id": f"{scenario_id}_x{multiplier / 10_000:g}",
+            "cost_multiplier_basis_points": multiplier,
+        }
+        for multiplier in multipliers
+    ]
+    decks, _ = build_ucp_panel_series(data_dir, config["ucp_pandora_observation_dates"])
+    study_config = {**config, "cost_scenarios": scenarios}
+    study = run_hidden_card_study(decks, study_config, splitter=split_panel_decks)
+    return {
+        "status": "analyzed_registered_market_rate_multipliers",
+        "base_scenario_id": scenario_id,
+        "market_rate_multiplier_basis_points": multipliers,
+        "interpretation": (
+            "Multipliers scale the complete declared per-inspection cost while holding "
+            "the dated provider-rate card and workload composition fixed."
+        ),
+        **study,
+    }
+
+
+def _ucp_cost_overlay(
+    data_dir: Path, included_dates: object, config_path: Path
+) -> dict[str, object]:
+    """Apply registered declared per-call costs to frozen UCP probe manifests."""
+    if not isinstance(included_dates, list):
+        return {"status": "unavailable_no_included_dates"}
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    calls_by_date: list[dict[str, object]] = []
+    for observation_date in included_dates:
+        if not isinstance(observation_date, str):
+            continue
+        manifest_path = data_dir / f"panel-observations-{observation_date}.manifest.json"
+        if manifest_path.is_file():
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            calls = manifest.get("merchants_probed")
+            if isinstance(calls, int) and calls >= 0:
+                calls_by_date.append(
+                    {
+                        "observation_date": observation_date,
+                        "merchant_probe_calls": calls,
+                        "call_count_source": "manifest.merchants_probed",
+                    }
+                )
+                continue
+        observation_path = data_dir / f"panel-observations-{observation_date}.jsonl.gz"
+        if observation_path.is_file():
+            with gzip.open(observation_path, "rt", encoding="utf-8") as handle:
+                domains = {json.loads(line)["domain"] for line in handle}
+            calls_by_date.append(
+                {
+                    "observation_date": observation_date,
+                    "merchant_probe_calls": len(domains),
+                    "call_count_source": "unique_observation_domains_lower_bound",
+                }
+            )
+    total_calls = sum(item["merchant_probe_calls"] for item in calls_by_date)
+    from autonomous_shopping_optimizer.hidden_card_study import scenario_cost_minor
+
+    scenarios = []
+    for scenario in config["cost_scenarios"]:
+        cost_minor, components = scenario_cost_minor(scenario)
+        scenarios.append(
+            {
+                "cost_scenario": scenario["id"],
+                "cost_per_merchant_probe_minor": float(cost_minor),
+                "cost_per_merchant_probe_usd": float(cost_minor / 100),
+                "total_cost_minor": float(cost_minor * total_calls),
+                "total_cost_usd": float(cost_minor * total_calls / 100),
+                "cost_components_minor_per_probe": {
+                    key: float(value) for key, value in components.items()
+                },
+            }
+        )
+    return {
+        "status": "declared_historical_cost_overlay",
+        "replay_unit": "one merchant-targeted catalog probe",
+        "assumption": (
+            "Every merchant probe is charged one registered scenario cost; this is a "
+            "counterfactual cost allocation, not observed provider billing."
+        ),
+        "included_observation_dates": calls_by_date,
+        "total_merchant_probe_calls": total_calls,
+        "scenarios": scenarios,
+    }
 
 
 def reservation_price_for_conformance(

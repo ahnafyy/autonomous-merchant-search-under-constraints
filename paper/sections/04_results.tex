@@ -1,158 +1,69 @@
-\section{Results}
+\section{Is Another Search Worth It?}
 \label{sec:results}
 
-We report the live-panel comparison first, then the size of the effect, then the
-sweep that explains it. Every value below is read from generated artifacts.
-
-\subsection{Adaptive stopping beats the best fixed rule}
-
-Eight policies were replayed against the same frozen panels, sharing a merchant
-arrival order and a per-episode failure penalty. The fixed rules were tuned on
-calibration episodes only, so they are represented at their best rather than as
-strawmen.
-
-\begin{table}[htbp]
-  \centering
-  \input{generated/arm_comparison}
-  \caption{Policy comparison on held-out live panels
-    (\ResultHeldOutEpisodeCount{} episodes). Purchase loss is in minor currency
-    units: the selected catalog price, or a fixed penalty of twice the cheapest
-    calibration price when no purchase is selected. Query time, tokens, calls, and
-    API spend are hard feasibility constraints rather than terms in this loss.
-    Lower is better; success and failure rates are reported separately.}
-  \label{tab:arms}
-\end{table}
-
-The adaptive rule attains a paired mean difference of
-\ResultAdaptiveVsFixedDifferenceMinor{} minor units against the strongest tuned fixed
-rule, with a 95\% bootstrap interval of
-$[\ResultAdaptiveVsFixedCiLowerMinor, \ResultAdaptiveVsFixedCiUpperMinor]$. The
-interval lies entirely below zero, so the ordering is not a sampling artifact.
-Episodes are resampled as whole pairs, which removes the possibility that the result
-reflects which episodes happened to be drawn. There were
-\ResultHardBudgetViolations{} budget violations (claim
-\texttt{STOPPING-ADVANTAGE-001}).
-
-\begin{table}[htbp]
-  \centering
-  \input{generated/episode_features}
-  \caption{Distribution of characteristics in the held-out live-panel sample. These
-    are descriptive counts of the evaluated episodes, not population estimates.}
-  \label{tab:episode-features}
-\end{table}
-
-The \texttt{never accept} row is a control. It is scored under the same failure
-penalty as every other policy, and its very large loss confirms that terminal failure
-is not being treated as a free outcome that a lazy policy could exploit.
-
-\subsection{The effect is real and small}
-
-The same result stated as a fraction of what is being spent: the improvement is a
-fraction of one percent of purchase cost. We consider the size to be as much a result
-as the sign, and two features of the corpus explain it.
-
-First, dispersion. The median episode has a cross-merchant price ratio of
-\ResultMedianPriceDispersionRatio{}. Table~\ref{tab:episode-features} shows the
-full distribution rather than treating that median as a population estimate. Near
-flat prices leave little scope for any price-based stopping policy to differ.
-
-Second, horizon. The median episode has \ResultMedianMerchantCount{} merchants. With
-two merchants, an optimal rule and a one-step lookahead are the same rule, which is
-why \texttt{adaptive stopping} and \texttt{myopic voi} are indistinguishable in
-Table~\ref{tab:arms}. This result therefore does not separate those two policies, and
-we do not claim that it does. It shows that reasoning about the continuation beats
-fixed rules; it does not show that the full dynamic program is needed to do so.
-
-\subsection{What the hand-computable rule is worth, and what the 37\% rule costs}
-
-The live corpus cannot separate these rules: with \ResultMedianMerchantCount{}
-merchants per episode there is almost no exploration to get wrong. We therefore
-compare them on the calibrated generator at
-\ResultRuleComparisonMerchantCount{} merchants, where exploration strategy matters.
-\emph{These are simulation results.}
-
-\begin{table}[htbp]
-  \centering
-  \input{generated/rule_comparison}
-  \caption{Rules compared at \ResultRuleComparisonMerchantCount{} merchants.
-    ``Savings captured'' is the share of the gap between accepting the first offer
-    and the offline oracle. Simulation calibrated to the measured corpus, not live
-    data.}
-  \label{tab:rules}
-\end{table}
-
-Two things stand out.
-
-\paragraph{The closed form is worth almost as much as the solver.}
-Equation~\eqref{eq:closedform} captures
-\ResultClosedFormSavingsCapturedPercent\% of the achievable saving against the exact
-solver's \ResultSolverSavingsCapturedPercent\%, using nothing but the expected price
-range and a query count. It also matches the solver's reservation price to within
-\ResultClosedFormMaxRelativeErrorPercent\% across the horizons we checked, the
-residual being price-grid discretization (claim \texttt{CLOSED-FORM-RULE-001}). For an
-agent acting for a shopper, the dynamic program is not the deliverable; this is.
-
-We checked the obvious objection, that the acceptance fractions assume uniform
-prices. Substituting lognormal, bimodal, and one-cheap-merchant price laws leaves the
-rule capturing a large majority of the achievable saving in every case, so the rule
-degrades gracefully when its own assumption is wrong.
-
-\paragraph{The 37\% rule costs about half the available saving.}
-The secretary rule captures only \ResultSecretarySavingsCapturedPercent\% while
-spending more queries than any other online arm. It searches harder and does worse. The reason is
-structural rather than incidental: it is hunting for the single cheapest merchant,
-and pays for record-chasing with both queries and purchase failures, when the
-objective only ever rewarded the expected price paid (claim
-\texttt{SECRETARY-RULE-001}).
-
-This is not a counterexample to the secretary result, and the mismatch it illustrates
-is already known~\citep{bearden2006secretary,palley2014sequential}. What we add is its
-size in this setting. If an agent has genuinely no idea what prices look like, an
-ordinal rule remains the right tool; the moment it has even a rough price range,
-\eqref{eq:closedform} dominates.
-
-\subsection{When the rule pays for itself}
-
-To find out where adaptive stopping matters, we sweep conditions the live corpus does
-not span, using a generator calibrated to the measured delisting rate, price drift,
-and dispersion. \emph{These are simulation results.} They inherit the calibration but
-not the authority of the live panels, and merchant prices are drawn independently,
-which real merchants may not be.
+Tables~\ref{tab:pandora-study} and~\ref{tab:ucp-pandora-study} report separately
+calibrated held-out comparisons across the declared inspection-cost sensitivity grid.
+Difference is adaptive policy minus costed search-all, so
+negative values favor the adaptive policy. The Shopify interval is product-clustered;
+the UCP interval is SKU-clustered, so repeated daily decks never become independent
+evidence.
 
 \begin{table}[htbp]
   \centering
   \small
-  \input{generated/decision_table}
-  \caption{Decision table over \ResultSweepCells{} calibrated simulation cells.
-    ``Price spread'' is the ratio of dearest to cheapest merchant; ``Budget'' is the
-    fraction of merchants the agent can afford to query. ``Effect'' is the relative
-    reduction in failure-penalized purchase loss for adaptive stopping; the interval
-    is the paired 95\% bootstrap interval in minor currency units, with $N$ held-out
-    simulations and the stated number of replicates. ``Evidence'' records interval
-    direction, not a deployment recommendation. Simulation, not live data.}
-  \label{tab:decision}
+  \input{generated/pandora_study}
+  \caption{Held-out costly-search study on a frozen Shopify seller-deck snapshot.
+  Each row has four independent held-out product decks. Search-all opens every
+  available card and pays every declared inspection cost. Lower total acquisition
+  cost is better.}
+  \label{tab:pandora-study}
 \end{table}
 
-Three regions appear, and \ResultSweepCellsFavoringAdaptive{} of
-\ResultSweepCells{} cells favour the adaptive rule.
+\begin{table}[htbp]
+  \centering
+  \small
+  \input{generated/ucp_pandora_study}
+  \caption{Held-out costly-search replay on the quality-included September UCP daily
+  panel. Each SKU and all of its dates are assigned together to calibration or
+  evaluation. Search-all opens every available card and pays every declared inspection
+  cost. Merchant domains are observed catalog cards, not verified checkout offers.
+  Lower total acquisition cost is better.}
+  \label{tab:ucp-pandora-study}
+\end{table}
 
-\paragraph{Cells favoring adaptive stopping.}
-Prices genuinely differ across merchants, at a spread of at least
-\ResultAdvantageMinDispersionRatio{}$\times$; the budget allows querying most of the
-merchants, so the agent can act on what it learns; and more than one alternative
-remains reachable. In the best cell the improvement reaches
-\ResultAdvantageMaxRelativeImprovement{} of purchase cost.
+% Claim PANDORA-ADVANTAGE-001.
+The UCP daily panel has a held-out interval favoring adaptive stopping in every
+registered real-dollar scenario when resampled by SKU. The smaller Shopify replay
+favors adaptive stopping in its long-horizon scenario, while its two lower-cost
+intervals remain inconclusive. The measured answer is therefore that adaptive stopping
+can earn its cost by avoiding unproductive remaining inspections, relative to always
+searching every available seller.
 
-\paragraph{Cells with no adaptive advantage.}
-At a spread of \ResultNoAdvantageDispersionAtOrBelow{}$\times$ or below, no cell
-favours adaptive stopping at any merchant count or budget in this grid. The grid
-observation is consistent with the model: when merchants charge the same price,
-there is no price difference for a stopping policy to exploit.
+Cost sensitivity identifies the expected boundary. Table~\ref{tab:ucp-cost-sensitivity}
+holds the dated catalog-expansion provider-rate workload fixed and multiplies its
+complete per-inspection cost. At zero through one-tenth of the workload, adaptive and
+search-all have three distinct regions. At zero cost, search-all reliably has lower
+total cost, as free recall makes opening every feasible card weakly optimal. At
+one-hundredth and one-tenth of the workload, the interval crosses zero. At the current
+workload and ten times it,
+adaptive stopping reliably lowers total cost because it can stop before paying for
+low-value remaining inspections.
 
-\paragraph{Cells favoring a fixed rule.}
-In \ResultSweepCellsFavoringFixed{} cells the fixed rule wins outright, with the
-adaptive rule significantly worse. They include both a constrained five-merchant,
-$1.10\times$ cell and a full-budget eight-merchant, $1.10\times$ cell; they do not
-support a blanket tight-budget mechanism. They are a counterexample to universal
-advantage and a reason to inspect the reported effects and intervals before using
-the calibrated map (claim \texttt{NO-ADVANTAGE-REGION-001}).
+\begin{table}[htbp]
+  \centering
+  \small
+  \input{generated/ucp_cost_sensitivity}
+  \caption{Held-out UCP recall-aware cost sensitivity. Multiples scale the complete
+  declared catalog-expansion workload, whose current $1\times$ cost is generated from
+  the dated provider rate card. Difference is adaptive minus costed search-all;
+  lower is better.}
+  \label{tab:ucp-cost-sensitivity}
+\end{table}
+
+% Claim UCP-MARKET-RATE-SENSITIVITY-001.
+
+This result exercises calibration-only fitting and clustered evaluation on collected
+seller offers and catalog cards. It demonstrates the operational mechanism directly:
+continue when a further reveal is worth its price, and stop otherwise. A later study
+can broaden the sample and measure deployment-specific costs, but that is extension,
+not a prerequisite for reporting this one.

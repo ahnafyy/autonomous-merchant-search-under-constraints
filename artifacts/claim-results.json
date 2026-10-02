@@ -1,137 +1,111 @@
 {
   "claims": [
     {
-      "detail": "Between snapshots 2026-08-02 and 2026-09-02, 5.1% of tracked listings were delisted and 7.6% of survivors changed price.",
-      "expected": null,
-      "id": "OFFER-EPHEMERALITY-001",
+      "detail": "Frozen Shopify collection produced 40 title-normalized seller decks and 172 seller cards for the registered held-out search study.",
+      "expected": 4,
+      "id": "SHOPIFY-SELLER-DECK-STUDY-001",
       "limitations": [
-        "Two snapshots one month apart cannot resolve intra-month price dynamics.",
-        "Delisting is measured only on fully paginated merchants, a minority of the corpus.",
-        "Catalog membership is a proxy for purchasable availability, not a checkout test."
+        "Title matching was revised after collection and is therefore exploratory.",
+        "Catalog offers do not establish checkout price or seller independence.",
+        "The study reports a fixed snapshot and is not a population sample."
       ],
-      "observed": 0.127158,
+      "observed": 40,
       "passed": true,
-      "scope": "Merchants that the later snapshot paginated in full, so that an absent SKU means a delisting rather than a page-cap truncation. One calibration and one evaluation date, one protocol, and no claim about retail commerce beyond this corpus.",
+      "scope": "The recovered complete 39-query prefix of the September 18--19, 2026 deep Shopify Global Catalog collection, USD offers, and the post-collection exact-normalized- model-title identity rule. Seller domains are not verified independent companies, and the snapshot is not a population sample.",
       "site_visible": true,
-      "statement": "Offers in the live agentic-commerce merchant corpus are ephemeral: between the two dated snapshots a measurable share of tracked listings is delisted and a measurable share of surviving listings changes price, so deciding when to stop searching is a real decision rather than a formality.",
+      "statement": "A frozen Shopify Global Catalog snapshot contains replayable, single-currency same-title seller decks with at least three distinct Shopify shop domains.",
       "status": "numerical"
     },
     {
-      "detail": "5 enumerated instances checked; all agree with the solver in exact arithmetic.",
-      "expected": 5,
-      "id": "SOLVER-AGREEMENT-001",
+      "detail": "Lifecycle report retains 10 observation dates and excludes 1 common-mode retrieval discontinuities from offer outcomes.",
+      "expected": 1,
+      "id": "UCP-OBSERVATION-QUALITY-001",
       "limitations": [
-        "Enumeration is only feasible for small horizons and small price supports.",
-        "Agreement on these instances does not by itself prove optimality in general.",
-        "Adaptive merchant routing is not covered by these fixed-order instances."
+        "Direct panel observations are not pooled with Shopify seller decks.",
+        "The observed catalog surface is incomplete and protocol changes can affect retrieval."
       ],
-      "observed": 5,
+      "observed": 1,
       "passed": true,
-      "scope": "Registered instances with a fixed merchant order, discrete price supports, optional stockout weight, a hard purchase-price cap, and a terminal failure penalty, small enough for complete policy enumeration.",
+      "scope": "The September 2026 direct-merchant panel collection and its deterministic lifecycle-quality analysis. It measures catalog observability, not checkout persistence, seller coverage, or the recalled Pandora policy outcome.",
       "site_visible": true,
-      "statement": "The finite-horizon stopping solver returns exactly the minimum expected purchase loss achievable by any deterministic accept-or-continue policy on every registered small instance, in exact rational arithmetic.",
-      "status": "exact-computational"
-    },
-    {
-      "detail": "Paired mean difference -26.32 minor units over 152 held-out episodes; 95% CI upper bound -8.56 excludes zero.",
-      "expected": null,
-      "id": "STOPPING-ADVANTAGE-001",
-      "limitations": [
-        "The measured effect is statistically detectable but economically small, because most episodes in this corpus have near-identical prices across merchants.",
-        "Nearly every episode has exactly two merchants, so the result does not establish behaviour at longer search horizons.",
-        "Only two currencies survive the single-currency filter.",
-        "With two merchants the adaptive rule coincides with one-step lookahead, so this result does not separate the two policies."
-      ],
-      "observed": -8.559211,
-      "passed": true,
-      "scope": "Single-currency episodes in which one exact SKU is offered by at least two independent merchants, replayed under commit-or-continue semantics with a per-episode failure penalty and a shared merchant arrival order. Continuing does not reserve a catalog offer; a later query is a new observation.",
-      "site_visible": true,
-      "statement": "On frozen held-out panels built from live merchant catalog-search observations, adaptive stopping attains lower failure-penalized purchase loss than the strongest fixed rule tuned on calibration data, with the whole paired bootstrap confidence interval below zero.",
+      "statement": "The direct-merchant UCP panel series detects and excludes common-mode retrieval discontinuities instead of treating them as merchant-offer disappearance.",
       "status": "numerical"
     },
     {
-      "detail": "Adaptive stopping never wins at price dispersion at or below 1.01; 2 of 32 cells favour the fixed rule outright.",
-      "expected": null,
-      "id": "NO-ADVANTAGE-REGION-001",
-      "limitations": [
-        "The generator is calibrated to the measured corpus but is still synthetic.",
-        "Prices are drawn independently across merchants; real merchants may co-move.",
-        "The reported thresholds are grid boundaries, not fitted decision surfaces, so the true boundary lies somewhere between adjacent grid levels."
+      "detail": "Every one of 3 registered UCP panel scenarios has a held-out interval favoring adaptive stopping over costed search-all.",
+      "expected": [
+        true,
+        true,
+        true
       ],
-      "observed": 1.01,
-      "passed": true,
-      "scope": "A simulation sweep over merchant count, price dispersion, and budget fraction, with stockout and drift rates calibrated to the measured merchant corpus. Simulation evidence, not a live-panel measurement.",
-      "site_visible": true,
-      "statement": "Adaptive stopping provides no measurable advantage over a tuned fixed rule when cross-merchant price dispersion is negligible, and can be significantly worse when the query budget is too tight to act on what a query reveals.",
-      "status": "computational-pattern"
-    },
-    {
-      "detail": "Closed form matches the solver to 0.02% across 8 horizons, and captures 81.5% of achievable savings against the solver's 89.8%.",
-      "expected": 0.001,
-      "id": "CLOSED-FORM-RULE-001",
+      "id": "UCP-PANDORA-REPLAY-001",
       "limitations": [
-        "The recursion and its asymptotic are established prior results (Cayley 1875; Moser 1956; Gilbert and Mosteller 1966; Finch 2024). No novelty is claimed for the formula itself.",
-        "The recursion carries no per-query cost term; cost enters only through the map from budget to remaining horizon.",
-        "Derived for a uniform price law; other shapes give a different acceptance fraction, though the two-step structure is unchanged.",
-        "Agreement is checked to a relative tolerance because the solver takes a discrete price support while the closed form is continuous.",
-        "Requires an estimate of the cheapest and dearest reachable price; a bad range estimate degrades the rule.",
-        "Savings capture is measured on the calibrated generator, not on live panels.",
-        "Reducing a multi-resource budget to a single query count is a modelling convention, not a result, and assumes deterministic per-query costs."
+        "Merchant domains are replay cards, not verified independent sellers or checkout offers.",
+        "Inspection costs are declared rate-card scenarios, not observed UCP billing.",
+        "Same-SKU decks establish catalog identity but not shipping, tax, or availability at checkout."
       ],
-      "observed": 0.00024715,
-      "passed": true,
-      "scope": "Prices uniform on a known range, a fixed per-query resource cost so the budget reduces to a count of affordable queries, and horizons up to eight further queries. The acceptance fraction follows u(0) = 1, u(k+1) = u(k) - u(k)^2 / 2, which under u = 1 - mu is the Cayley-Moser recursion mu(n) = (1 + mu(n-1)^2) / 2. This claim asserts correct reproduction of a known result, not a new one.",
-      "site_visible": true,
-      "statement": "Our implementation reproduces the classical Cayley-Moser reservation sequence in a price-minimization parameterization: accepting when the observed price falls within a horizon-dependent fraction of the expected price range matches the exact solver to within grid-discretization error, and captures most of the savings the solver captures without running the dynamic program.",
-      "status": "exact-computational"
-    },
-    {
-      "detail": "At 10 merchants the n/e rule captures 44.3% of achievable savings versus 81.5% for the closed-form threshold, costing 1936 more minor units while using 8.01 queries against 3.43.",
-      "expected": null,
-      "id": "SECRETARY-RULE-001",
-      "limitations": [
-        "That rank-based rules are suboptimal under a cardinal objective is established prior work (Bearden 2006; Palley and Kremer 2014). We measure the size of the penalty; we do not show the mismatch for the first time.",
-        "This compares the rules under an objective the secretary rule was never designed for; it is not a counterexample to the secretary result.",
-        "The comparison assumes a usable estimate of price levels. With no price knowledge at all, an ordinal rule is the appropriate tool.",
-        "Simulation evidence, not a live-panel measurement."
+      "observed": [
+        true,
+        true,
+        true
       ],
-      "observed": 0.4434,
       "passed": true,
-      "scope": "A calibrated simulation at a horizon long enough for exploration rules to differ, with stockout and drift rates taken from the measured corpus. The live corpus has too few merchants per episode to separate these rules.",
+      "scope": "Same-SKU, USD seller decks with at least three observed UCP merchant domains from ten registered quality-included daily panel dates. All dates for a SKU stay together in either calibration or held-out evaluation. Search-all opens every card and pays every declared inspection cost; the result is not pooled with Shopify decks.",
       "site_visible": true,
-      "statement": "We quantify a known information mismatch: the classical secretary rule, sampling n/e candidates before accepting the next record, captures substantially less of the achievable saving than a price threshold and spends more queries doing so, because it maximizes the chance of finding the single cheapest merchant rather than the expected price paid.",
-      "status": "computational-pattern"
-    },
-    {
-      "detail": "Across 2785 scanned merchants, 37750 products are offered by two or more independent sellers in a single currency, but only 4452 (11.8%) reach three or more. The widest observed overlap is 14 merchants.",
-      "expected": null,
-      "id": "OVERLAP-SPARSITY-001",
-      "limitations": [
-        "Overlap is detected by exact SKU equality, so the same product listed under different identifiers at two merchants is counted as two products. The measured overlap is therefore a lower bound.",
-        "Merchants truncated at the pagination cap may carry additional shared products that were never observed.",
-        "One protocol on one date; not a claim about retail commerce generally."
-      ],
-      "observed": 0.117934,
-      "passed": true,
-      "scope": "Products offered by two or more independent registrable domains in a single currency, measured on the widest available discovery snapshot. Independence is by registrable domain, so multiple storefronts of one company count once.",
-      "site_visible": true,
-      "statement": "Cross-merchant product overlap in the live agentic-commerce catalog ecosystem is thin: after scanning every discoverable merchant, most products offered by more than one independent seller are offered by exactly two, and only a minority reach three or more. Since an optimal stopping rule and a one-step lookahead coincide when only one alternative remains, this bounds what any stopping policy can achieve here.",
+      "statement": "Across every registered inspection-cost scenario, adaptive recalled search reliably improves held-out total cost over costed search-all on the frozen September 2026 direct-merchant UCP panel series.",
       "status": "numerical"
     },
     {
-      "detail": "0 hard-budget violations across every replayed episode and arm.",
-      "expected": 0,
-      "id": "PERMIT-SAFETY-001",
-      "limitations": [
-        "The evaluator confirms zero violations across the replayed episodes; it is evidence for the conjecture, not a proof of it.",
-        "The claim does not apply when an upstream service can spend beyond an issued permit."
+      "detail": "At zero cost search-all is favorable; at 0.01x and 0.1x the interval crosses zero; at 1x and 10x adaptive stopping is favorable.",
+      "expected": [
+        false,
+        false,
+        false,
+        true,
+        true
       ],
-      "observed": 0,
+      "id": "UCP-MARKET-RATE-SENSITIVITY-001",
+      "limitations": [
+        "The multipliers are counterfactual cost sensitivity values, not observed billing.",
+        "Merchant domains are replay cards, not verified independent sellers or checkout offers.",
+        "The result is clustered by SKU and does not make dates independent evidence."
+      ],
+      "observed": [
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
       "passed": true,
-      "scope": "Sequential merchant calls whose host runtime enforces each issued permit and whose reconciliation records cannot be forged, reused, or omitted.",
-      "site_visible": false,
-      "statement": "Atomic reservation of every enforceable resource permit, followed by exact reclamation for known usage and permit-level charging for censored usage, keeps cumulative conservative charges within every initial episode budget on every execution path.",
-      "status": "conjecture"
+      "scope": "Same SKU-clustered UCP daily-panel replay as UCP-PANDORA-REPLAY-001. The five registered multipliers scale the complete catalog-expansion per-inspection cost while holding its dated September 2026 provider rates and workload composition fixed. It is a sensitivity result, not observed provider billing.",
+      "site_visible": true,
+      "statement": "In the frozen September 2026 UCP recall-aware panel replay, adaptive search reliably improves held-out total cost at the current catalog-expansion market rate and at ten times that workload. Search-all reliably improves at zero cost, while one-hundredth and one-tenth of the workload are inconclusive.",
+      "status": "numerical"
+    },
+    {
+      "detail": "Shopify adaptive-versus-search-all intervals favor adaptive stopping only in the registered long-horizon scenario.",
+      "expected": [
+        false,
+        false,
+        true
+      ],
+      "id": "PANDORA-ADVANTAGE-001",
+      "limitations": [
+        "Seller-order permutations are repeated replays, not independent products.",
+        "Only the complete 39-query prefix of 48 registered deep queries is analyzed.",
+        "Inspection costs use declared provider rate cards and workloads, not observed Shopify billing."
+      ],
+      "observed": [
+        false,
+        false,
+        true
+      ],
+      "passed": true,
+      "scope": "Forty title-normalized product decks from one frozen Shopify collection, 24 used for calibration and 16 held out, evaluated across three registered declared real-dollar inspection-cost scenarios. Search-all opens every card and pays every declared inspection cost. The post-collection identity revision limits external interpretation but does not alter the registered held-out calculation.",
+      "site_visible": true,
+      "statement": "In the frozen Shopify seller-deck replay, adaptive recalled search reliably improves held-out total cost over costed search-all in the registered long-horizon scenario, but not in the two lower-cost scenarios.",
+      "status": "numerical"
     }
   ]
 }

@@ -1,0 +1,716 @@
+{
+  "analysis": {
+    "cost_rate_card": {
+      "as_of": "2026-09-28",
+      "path": "research/cost-rate-card-2026-09.json",
+      "sha256": "49950de9190bcbe6347c65469a3b5e5cfccdb20ad98ae0e503f0b5b035648ad2"
+    },
+    "minimum_required_product_decks": 4,
+    "random_seed": 20260723,
+    "status": "analyzed"
+  },
+  "collection": {
+    "collection_id": "shopify-global-catalog-2026-09-18-deep",
+    "collection_manifest_sha256": "27d776f16f03bf722f037f44e32715aa2c76cab7dd15c716eae927b2f2e85bd2",
+    "collection_status": "recovered_complete_query_prefix",
+    "completed_query_count": 39,
+    "eligible_offer_row_count": 18552,
+    "offer_row_count": 18572,
+    "offers_sha256": "e24513cfd6d24bb71ac84cef17dc1976165987898f5fbe2061410c3384378ba2",
+    "planned_query_count": 48
+  },
+  "cost_rate_card": {
+    "as_of": "2026-09-28",
+    "path": "research/cost-rate-card-2026-09.json",
+    "sha256": "49950de9190bcbe6347c65469a3b5e5cfccdb20ad98ae0e503f0b5b035648ad2"
+  },
+  "deck_build": {
+    "deck_audit": [
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 33150,
+          "median": 33150,
+          "min": 25350
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "adjustable dumbbells"
+        ],
+        "title": "Adjustable Dumbbells Set 12.5LB/22.5LB Pair, 1-Sec Fast Adjustable 5 Weights by Turning Handle, Premium Comfort Non-slip Metal Dumbbells with Tray, Compact Size for Full Body Home Workout"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 24900,
+          "median": 24900,
+          "min": 24900
+        },
+        "seller_count": 7,
+        "source_queries": [
+          "wireless earbuds"
+        ],
+        "title": "AIRPODS PRO 3 EARBUDS"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 19999,
+          "median": 19999.0,
+          "min": 19999
+        },
+        "seller_count": 4,
+        "source_queries": [
+          "usb c charger"
+        ],
+        "title": "Anker Laptop Charger, 140W MAX USB C Charger, 4-Port Multi-Device Fast Charging, Advanced GaN Power Adapter, Intuitive Touch Controls, for MacBook, iPhone 16 Series, Samsung Galaxy, Pixel, and More"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 12900,
+          "median": 12900.0,
+          "min": 8999
+        },
+        "seller_count": 4,
+        "source_queries": [
+          "wireless earbuds"
+        ],
+        "title": "Apple AirPods 4 Wireless Earbuds"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 10010,
+          "median": 8491,
+          "min": 7999
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "electric toothbrush"
+        ],
+        "title": "Burst Original Sonic Electric Toothbrush for Adults (Black) | Soft Bristle Deep Clean Stain & Plaque Removal | 3 Modes: Teeth Whitening, Sensitive & Massage"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 12168,
+          "median": 8560.0,
+          "min": 7263
+        },
+        "seller_count": 10,
+        "source_queries": [
+          "electric toothbrush"
+        ],
+        "title": "Burst Original Sonic Electric Toothbrush for Adults (White) | Soft Bristles | Deep Clean Stain & Plaque Removal | 3 Modes: Teeth Whitening, Sensitive & Massage"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 59999,
+          "median": 59998.5,
+          "min": 59998
+        },
+        "seller_count": 6,
+        "source_queries": [
+          "adjustable dumbbells"
+        ],
+        "title": "CAP ADJUSTABELL\u00ae 55 lb Pair of Adjustable Dumbbells with Contoured Full Rotation Handle, Honeycomb Chrome and Black Handle"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 64798,
+          "median": 59998,
+          "min": 29999
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "adjustable dumbbells"
+        ],
+        "title": "CAP Barbell 55 lb Pair of Adjustable Dumbbells with Full Rotation Black Handle"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 21598,
+          "median": 14998,
+          "min": 14998
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "air fryer"
+        ],
+        "title": "DASH Deluxe Electric Air Fryer + Oven Cooker with Temperature Control, Non-stick Fry Basket, Recipe Guide + Auto Shut Off Feature, 1700-Watt, 6 Quart - Aqua"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 2799,
+          "median": 2519,
+          "min": 2519
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "electric toothbrush"
+        ],
+        "title": "DY156 Essential Sonic Toothbrush"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 5282,
+          "median": 5282,
+          "min": 5282
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "fitness tracker"
+        ],
+        "title": "Fitbit Charge 3 Fitness Tracker - Black/Graphite - FB409GMBK"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 25499,
+          "median": 25499,
+          "min": 18300
+        },
+        "seller_count": 5,
+        "source_queries": [
+          "fitness tracker"
+        ],
+        "title": "Fitbit Charge 6 Fitness Tracker with Google Apps - Heart Rate on Exercise Equipment - 3-Month Google Health Premium Membership Included - Health Tools - Obsidian/Black - Small&Large Bands Included"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 29999,
+          "median": 29999,
+          "min": 20392
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "fitness tracker"
+        ],
+        "title": "Fitbit Charge 6 Fitness Tracker with Google apps, Heart Rate on Exercise Equipment, 6-Months Premium Membership Included, GPS, Health Tools and More, Gold/Coral, One Size (S & L Bands Included)"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 34549,
+          "median": 18472.0,
+          "min": 16999
+        },
+        "seller_count": 6,
+        "source_queries": [
+          "fitness tracker"
+        ],
+        "title": "Fitbit Charge 6 Fitness Tracker with Google apps, Heart Rate on Exercise Equipment, 6-Months Premium Membership Included, GPS, Health Tools and More, Obsidian/Black, One Size (S & L Bands Included)"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 31990,
+          "median": 23899,
+          "min": 15795
+        },
+        "seller_count": 5,
+        "source_queries": [
+          "fitness tracker"
+        ],
+        "title": "Fitbit Charge 6 Fitness Tracker with Google apps, Heart Rate on Exercise Equipment, 6-Months Premium Membership Included, GPS, Health Tools and More, Porcelain/Silver, One Size (S & L Bands Included)"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 5282,
+          "median": 5282,
+          "min": 5282
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "fitness tracker"
+        ],
+        "title": "Fitbit - Inspire 2 Fitness Tracker - Black - FB418BKBK"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 5282,
+          "median": 5282.0,
+          "min": 5282
+        },
+        "seller_count": 4,
+        "source_queries": [
+          "fitness tracker"
+        ],
+        "title": "Fitbit Inspire 2 Fitness Tracker Lunar White - FB418BKWT"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 15999,
+          "median": 15999,
+          "min": 7895
+        },
+        "seller_count": 11,
+        "source_queries": [
+          "fitness tracker"
+        ],
+        "title": "Fitbit Inspire 2 Health & Fitness Tracker with a Free 1-Year Fitbit Premium Trial, 24/7 Heart Rate, Black/Black, One Size (S & L Bands Included)"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 31299,
+          "median": 9499,
+          "min": 8995
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "fitness tracker"
+        ],
+        "title": "Fitbit Inspire 3 Fitness Tracker"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 21249,
+          "median": 17895,
+          "min": 14100
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "fitness tracker"
+        ],
+        "title": "Fitbit Inspire 3 Health & Fitness Activity Tracker (Black) with Workout Intensity, Sleep Tracking, Heart Rate, S & L Bands, 3.3foot Charging Cable, Wall Adapter, Screen Protectors & PremGear Cloth"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 16999,
+          "median": 16999,
+          "min": 11825
+        },
+        "seller_count": 9,
+        "source_queries": [
+          "fitness tracker"
+        ],
+        "title": "Fitbit Inspire 3 Health & Fitness Tracker with Stress Management, Workout Intensity, Sleep Tracking, 24/7 Heart Rate - 3-Month Google Health Premium Membership Included - Midnight Zen/Black"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 4299,
+          "median": 3599.0,
+          "min": 2999
+        },
+        "seller_count": 4,
+        "source_queries": [
+          "portable ssd"
+        ],
+        "title": "\ud83c\udfc6Flash Sale\u26a1 50K+ SOLD! Almost Gone-\ud83d\udd2516TB Large-Capacity Type-C Portable Mini SSD"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 5282,
+          "median": 5282.0,
+          "min": 5282
+        },
+        "seller_count": 4,
+        "source_queries": [
+          "fitness tracker"
+        ],
+        "title": "Garmin v\u00a1vosmart 4, Activity and Fitness Tracker Midnight w/Black Band, Large - 010-01995-13"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 9047,
+          "median": 8995,
+          "min": 7995
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "over ear headphones"
+        ],
+        "title": "JBL Tune 720BT Wireless Over-Ear Headphones"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 68250,
+          "median": 36974,
+          "min": 13049
+        },
+        "seller_count": 5,
+        "source_queries": [
+          "adjustable dumbbells"
+        ],
+        "title": "Keppi Adjustable Dumbbells Set-25lb/40lb/55lb/60lb, Anti-Slip Metal Fast Adjust Weight Handle, Exercise & Fitness for Full Body Workout - Adjustable Dumbbell Series"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 3199,
+          "median": 3119,
+          "min": 2878
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "wireless mouse"
+        ],
+        "title": "Lenovo 530 Wireless Mouse \u2013 Full Size Computer Mouse for PC, Laptop, Windows Computer - 2.4 GHz Nano USB Receiver - Ambidextrous Design - 12 Months Battery Life \u2013 Cordless"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 23920,
+          "median": 23920,
+          "min": 18400
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "portable ssd"
+        ],
+        "title": "Lexar 1TB Professional Go Portable SSD, Supports Apple 4K 60fps ProRes, Up to 1050MB/s, USB 3.2 Gen 2, Rugged, IP65, Ultracompact, Compatible w/iPhone 15/16, External SSD (LSL400X001T-RNSNU)"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 39999,
+          "median": 35998,
+          "min": 35998
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "portable ssd"
+        ],
+        "title": "Lexar 1TB Professional Go Portable SSD w/Hub, Supports Apple 4K 60fps ProRes, Up to 1050MB/s, USB 3.2, Rugged, IP65, Ultracompact, Compatible w/iPhone 15/16 (Not 17), External SSD (LSL400S001T-RNSNU)"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 43998,
+          "median": 20850,
+          "min": 18148
+        },
+        "seller_count": 7,
+        "source_queries": [
+          "blender"
+        ],
+        "title": "Ninja BL660 Professional Compact Smoothie & Food Processing Blender, 1100-Watts, 3 Functions -for Frozen Drinks, Smoothies, Sauces, & More, 72-oz.* Pitcher, (2) 16-oz. To-Go Cups & Spout Lids, Gray"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 44999,
+          "median": 34999,
+          "min": 24200
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "blender"
+        ],
+        "title": "Ninja Kitchen System | All-in-One Food Processor & Blender for Smoothies | Includes Pitcher, (2) 16 oz. To-Go Cups & 8-Cup Bowl | Makes Salsa, Dough, Shakes, & Frozen Drinks | 1500W | Black | BL770"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 34198,
+          "median": 29499,
+          "min": 17499
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "blender"
+        ],
+        "title": "Ninja Kitchen System | All-in-One Food Processor & Blender for Smoothies | Includes Pitcher, Travel Cup, & 8-Cup Bowl | Makes Salsa, Dough, Shakes, & Frozen Drinks | 120 Volts | Black | BL770AMZ"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 47518,
+          "median": 43998,
+          "min": 35299
+        },
+        "seller_count": 5,
+        "source_queries": [
+          "blender"
+        ],
+        "title": "Ninja Kitchen System | All-in-One for Smoothies, Frozen Drinks, Veggie Chopper & More | With Full-Size Pitcher, 8 Cup Food Processor Bowl, (2) 18 oz. Cups, | 1200 Watt | Dark Grey | BR601AMZ"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 30599,
+          "median": 26398,
+          "min": 25598
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "blender"
+        ],
+        "title": "Ninja Mega Kitchen System, 1500W, 72 oz. Full-Size Blender & 8-Cup Food Processor with (2) 16 oz. To-Go Cups, Total Crushing Technology - Smoothies, Ice Crushing, Purees, Dough & More, Black, BL770"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 13510,
+          "median": 7930,
+          "min": 7930
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "portable ssd"
+        ],
+        "title": "ORICO Portable SSD 512 GB with 2 in 1 USB C Cable, External Solid State Drives, Up to 460MB/s, Status Indicator, Reliable Storage for USB-C Smartphone, Tablet, PC - B5PLUS"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 31200,
+          "median": 26764,
+          "min": 23799
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "portable ssd"
+        ],
+        "title": "SanDisk 1TB Extreme PRO Portable SSD - Up to 2000MB/s - USB-C, USB 3.2 Gen 2x2, IP65 Water and Dust Resistance, Updated Firmware - External Solid State Drive - SDSSDE81-1T00-G25"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 39000,
+          "median": 34125.0,
+          "min": 14998
+        },
+        "seller_count": 4,
+        "source_queries": [
+          "adjustable dumbbells"
+        ],
+        "title": "SKOK 25/55 lbs Pair Adjustable Dumbbells Set, Adjustable Weights Dumbbells Set for Men and Women with Anti-Slip Fast Adjust Weight by Turning Handle,Black Dumbbell with Tray"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 21699,
+          "median": 21699,
+          "min": 21699
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "over ear headphones"
+        ],
+        "title": "Skullcandy Hesh ANC Wireless Over-Ear Bluetooth Headphones with Extra USB-C Charging Cable, Active Noise Canceling, 22 Hrs Battery, Foldable Lightweight Design, Microphone iPhone Android - True Black"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 215000,
+          "median": 176800.0,
+          "min": 94500
+        },
+        "seller_count": 4,
+        "source_queries": [
+          "adjustable dumbbells"
+        ],
+        "title": "SNODE AD80 Drop Proof 80 lbs Adjustable Dumbbell Set -Adjustable Weights with Cast Iron Plates and Cradle, Knurled Handle, Fast Adjust, Compact Home Gym Equipment for Bench & Press"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 19584,
+          "median": 19584,
+          "min": 19584
+        },
+        "seller_count": 3,
+        "source_queries": [
+          "portable ssd"
+        ],
+        "title": "Transcend 250GB ESD270C Portable SSD Up to 520MB/s Credit Card Size Type-C"
+      },
+      {
+        "price_minor": {
+          "currency": "USD",
+          "max": 25870,
+          "median": 13049,
+          "min": 12395
+        },
+        "seller_count": 5,
+        "source_queries": [
+          "adjustable dumbbells"
+        ],
+        "title": "Yaheetech Adjustable Dumbbell Set 28/40/52.5/90LBS Adjustable Dumbbells Fast Adjust Dumbbell Weight Set with Anti-Slip Handle and Tray for Men/Women Home Gym Strength Training Equipment Single/Pair"
+      }
+    ],
+    "eligible_rows": 16923,
+    "exclusion_counts": {
+      "insufficient_independent_sellers": 16724,
+      "non_target_currency": 1629,
+      "unavailable": 20
+    },
+    "input_rows": 18572,
+    "product_deck_count": 40,
+    "product_identity": {
+      "excluded_title_phrases": [
+        "multiple weight ranges"
+      ],
+      "generic_titles_fall_back_to_catalog_product_option": true,
+      "minimum_informative_title_tokens": 3,
+      "require_digit_bearing_title_token": true,
+      "strategy": "exact_normalized_model_title_or_catalog_product_option"
+    },
+    "seller_card_count": 172,
+    "seller_count_distribution": {
+      "10": 1,
+      "11": 1,
+      "3": 21,
+      "4": 7,
+      "5": 5,
+      "6": 2,
+      "7": 2,
+      "9": 1
+    }
+  },
+  "schema_version": 1,
+  "study": {
+    "calibration_product_count": 24,
+    "calibration_replay_deck_count": 24,
+    "cost_results": [
+      {
+        "adaptive_continue_state_count": 106,
+        "adaptive_vs_search_all": {
+          "bootstrap_replicates": 2000,
+          "ci_lower": -0.012504703174089154,
+          "ci_upper": 0.025862718704444353,
+          "favors_treatment": false,
+          "mean_difference": 0.004354664495917056,
+          "permutations_are_independent": false,
+          "product_clusters": 16
+        },
+        "arms": {
+          "adaptive_dynamic": {
+            "mean_normalized_item_price": 0.9256282978247526,
+            "mean_normalized_total_cost": 0.9953602559413993,
+            "mean_price_regret_minor": 421.6484375,
+            "mean_reveals": 2.943359375,
+            "oracle_hit_rate": 0.833984375,
+            "product_clusters": 16,
+            "replay_rows": 512
+          },
+          "search_all": {
+            "mean_normalized_item_price": 0.8947281648926266,
+            "mean_normalized_total_cost": 0.9910055914454823,
+            "mean_price_regret_minor": 0.0,
+            "mean_reveals": 4.1875,
+            "oracle_hit_rate": 1.0,
+            "product_clusters": 16,
+            "replay_rows": 512
+          }
+        },
+        "cost_components_minor": {
+          "input_tokens": 0.6,
+          "output_tokens": 0.675,
+          "shopping_api": 1.0,
+          "time": 250.0
+        },
+        "cost_scenario": "catalog_expansion",
+        "inspection_cost_minor": 252.275,
+        "inspection_cost_usd": 2.52275
+      },
+      {
+        "adaptive_continue_state_count": 83,
+        "adaptive_vs_search_all": {
+          "bootstrap_replicates": 2000,
+          "ci_lower": -0.22336631471618143,
+          "ci_upper": 0.08965156741900134,
+          "favors_treatment": false,
+          "mean_difference": -0.0695145159639868,
+          "permutations_are_independent": false,
+          "product_clusters": 16
+        },
+        "arms": {
+          "adaptive_dynamic": {
+            "mean_normalized_item_price": 1.0487965580076408,
+            "mean_normalized_total_cost": 1.2148648331936904,
+            "mean_price_regret_minor": 2449.55859375,
+            "mean_reveals": 1.62890625,
+            "oracle_hit_rate": 0.533203125,
+            "product_clusters": 16,
+            "replay_rows": 512
+          },
+          "search_all": {
+            "mean_normalized_item_price": 0.8947281648926266,
+            "mean_normalized_total_cost": 1.2843793491576772,
+            "mean_price_regret_minor": 0.0,
+            "mean_reveals": 4.1875,
+            "oracle_hit_rate": 1.0,
+            "product_clusters": 16,
+            "replay_rows": 512
+          }
+        },
+        "cost_components_minor": {
+          "input_tokens": 10.0,
+          "output_tokens": 10.0,
+          "shopping_api": 1.0,
+          "time": 1000.0
+        },
+        "cost_scenario": "agentic_review_2m",
+        "inspection_cost_minor": 1021.0,
+        "inspection_cost_usd": 10.21
+      },
+      {
+        "adaptive_continue_state_count": 31,
+        "adaptive_vs_search_all": {
+          "bootstrap_replicates": 2000,
+          "ci_lower": -0.9130029520835702,
+          "ci_upper": -0.23727708381869858,
+          "favors_treatment": true,
+          "mean_difference": -0.5528032777560138,
+          "permutations_are_independent": false,
+          "product_clusters": 16
+        },
+        "arms": {
+          "adaptive_dynamic": {
+            "mean_normalized_item_price": 1.062044539323296,
+            "mean_normalized_total_cost": 1.317197758232927,
+            "mean_price_regret_minor": 2621.0234375,
+            "mean_reveals": 1.1484375,
+            "oracle_hit_rate": 0.484375,
+            "product_clusters": 16,
+            "replay_rows": 512
+          },
+          "search_all": {
+            "mean_normalized_item_price": 0.8947281648926266,
+            "mean_normalized_total_cost": 1.870001035988941,
+            "mean_price_regret_minor": 0.0,
+            "mean_reveals": 4.1875,
+            "oracle_hit_rate": 1.0,
+            "product_clusters": 16,
+            "replay_rows": 512
+          }
+        },
+        "cost_components_minor": {
+          "input_tokens": 30.0,
+          "output_tokens": 18.0,
+          "shopping_api": 7.5,
+          "time": 2500.0
+        },
+        "cost_scenario": "long_horizon_research_5m",
+        "inspection_cost_minor": 2555.5,
+        "inspection_cost_usd": 25.555
+      }
+    ],
+    "held_out_product_count": 16,
+    "held_out_replay_deck_count": 16,
+    "independent_unit": "exact_normalized_model_title",
+    "permutations_are_independent": false,
+    "permutations_per_product": 32,
+    "random_seed": 20260723,
+    "schema_version": 1
+  }
+}

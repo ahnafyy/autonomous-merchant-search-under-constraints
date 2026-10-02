@@ -1,7 +1,8 @@
 {
   "name": "autonomous-shopping-optimizer",
   "version": "0.1.0",
-  "description": "Hard-budget optimizer middleware for autonomous shopping",
+  "description": "Recalled-search hooks and hard-budget shopping optimizer middleware",
+  "keywords": ["ai-agents", "anthropic", "chatgpt", "llm-tools", "shopping", "stopping-rule"],
   "type": "module",
   "exports": {
     ".": {
@@ -18,6 +19,9 @@
     "node": ">=22.12.0"
   },
   "license": "MIT",
+  "homepage": "https://ahnafyy.github.io/autonomous-merchant-search-under-constraints/",
+  "bugs": "https://github.com/ahnafyy/autonomous-merchant-search-under-constraints/issues",
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ahnafyy/autonomous-merchant-search-under-constraints.git"

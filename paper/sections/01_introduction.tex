@@ -1,64 +1,43 @@
 \section{Introduction}
 \label{sec:introduction}
 
-An agent that shops on someone's behalf faces the same question after every merchant
-it queries: buy this, or keep looking? Looking again might find a better price. It
-also spends wall-clock time, model tokens, API calls, and money, and the offer in
-hand may not survive the detour.
+A shopping agent faces a simple operational question after every useful result: buy
+now, or pay to search once more? Another merchant inspection can lower the eventual
+price, but it consumes time, calls, money, and user attention. The paper is about
+whether that next search action is worth its cost.
 
-In practice this question is answered by a constant. Query three merchants. Spend at
-most thirty seconds. Accept anything under a threshold. These rules are easy to ship
-and impossible to defend, because nobody has measured when they are good enough.
-Rather than argue the point from theory, we measure it.
+We answer that question with a mathematical decision rule and two complementary
+datasets. Contemporaneous seller decks from a frozen Shopify Global Catalog collection
+provide competing offers inside an observed product graph, allowing a held-out
+comparison of adaptive stopping and costed search-all. A UCP direct-merchant panel series
+measures the broader catalog surface an agent may choose to search beyond that graph.
+The implementation retains the best observed seller card; this state detail isolates
+the marginal value of another inspection. Together, the sources turn ``keep looking''
+from a heuristic into a measurable economic action. They are analyzed separately
+because they answer different parts of the same decision.
 
-\paragraph{What we do.}
-We collect two dated snapshots of a large set of merchants that publish
-machine-readable catalogs, turn them into replayable search episodes, and run eight
-stopping policies against the same frozen panels. The policies range from accepting
-the first available offer to an exact reservation-price rule, and include an offline
-oracle and a deliberately broken control.
+\paragraph{What this release establishes.}
+The Shopify collection yields replayable single-currency seller decks; this is a
+descriptive numerical claim, not an estimate of all retail sellers.
+% Claim SHOPIFY-SELLER-DECK-STUDY-001.
+The UCP quality analysis records and excludes common-mode retrieval discontinuities
+instead of reclassifying them as offer disappearance.
+% Claim UCP-OBSERVATION-QUALITY-001.
+The UCP panel favors adaptive stopping over costed search-all in every registered
+real-dollar scenario; the smaller Shopify replay favors it at the long-horizon cost
+and is inconclusive at the two lower costs.
+% Claim PANDORA-ADVANTAGE-001.
 
-\paragraph{What we find.}
-Three results, in increasing order of practical usefulness.
-
-\begin{enumerate}
-  \item \textbf{Offers really are ephemeral.} Between the two snapshots,
-    \ResultDelistingRate{} of tracked listings disappeared and
-    \ResultPriceChangeRate{} of the survivors changed price. Repeating a scan minutes
-    apart reproduces it exactly, so this is drift in the world and not noise in the
-    instrument. Stopping is therefore a real decision. (Claim
-    \texttt{OFFER-EPHEMERALITY-001}.)
-  \item \textbf{Adaptive stopping wins, but barely.} On
-    \ResultHeldOutEpisodeCount{} held-out episodes the adaptive rule beats the
-    strongest tuned fixed rule, with the entire bootstrap interval below zero and
-    \ResultHardBudgetViolations{} budget violations. The effect is a fraction of a
-    percent of purchase cost. We report the small size as prominently as the
-    significance. (Claim \texttt{STOPPING-ADVANTAGE-001}.)
-  \item \textbf{The reason it is small is the useful part.} In this corpus the median
-    product is carried by \ResultMedianMerchantCount{} merchants at a price ratio of
-    \ResultMedianPriceDispersionRatio{}. When merchants charge the same price, no
-    stopping rule can help. A sweep calibrated to the measured churn and dispersion
-    shows adaptive stopping helping only once prices genuinely differ and the budget
-    allows acting on what a query reveals, and \emph{hurting} when the budget is too
-    tight to use the information. (Claim \texttt{NO-ADVANTAGE-REGION-001}.)
-\end{enumerate}
-
-\paragraph{What to take away.}
-The deliverable is not merely the dynamic program; that is standard backward
-induction, deferred to Appendix~\ref{app:proofs}. The deliverable is the decision
-framework and Table~\ref{tab:decision}: given the price spread, merchant count, and
-budget observed up front, it determines when adaptive stopping provides a genuine
-economic advantage and when simpler search heuristics suffice.
+\paragraph{Why two sources matter.}
+The sources expose the two levers an agent must price. Shopify shows the value of
+looking among competing sellers already visible for a product. UCP shows that reaching
+outside an observed graph is itself an inspection problem, with collection and
+validation cost. The same mathematics governs both: continue only when the expected
+improvement exceeds the next search cost. This makes the rule useful to an agent that
+searches inside an aggregator, expands beyond it, or does both in sequence.
 
 \paragraph{Scope.}
-Every number in this paper is regenerated from the collected data by the build; none
-are typed by hand. Claims are registered with an executable evaluator before being
-reported, and results derived from simulation are labelled as such wherever they
-appear.
-
-\paragraph{Ongoing collection.}
-The two-snapshot analysis reported here is the current evidence release. We are
-continuing daily re-observation of the same SKU--merchant panel and weekly discovery
-of new multi-merchant episodes. Those observations will support a future analysis of
-catalog-offer survival and repricing across minutes, hours, and days; they are not
-used for any result reported in this version.
+Every numerical value is generated from collected data and configured analysis.
+The study asks whether adaptive stopping earns its complexity by avoiding inspections
+that cost more than their expected saving. Section~\ref{sec:limitations} states the
+boundaries of that conclusion.

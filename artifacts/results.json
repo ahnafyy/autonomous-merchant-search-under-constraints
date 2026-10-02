@@ -1,2007 +1,1527 @@
 {
-  "adaptive_beats_fixed_on_live_panels": true,
-  "adaptive_vs_fixed_ci_lower_minor": -48.763158,
-  "adaptive_vs_fixed_ci_upper_minor": -8.559211,
-  "adaptive_vs_fixed_difference_minor": -26.315789,
-  "advantage_max_relative_improvement": 0.0625,
-  "advantage_min_dispersion_ratio": 1.1,
-  "algorithm": "finite_horizon_bellman_reservation_policy",
-  "best_fixed_arm": "fixed_threshold",
-  "calibration_date": "2026-08-02",
-  "catalog_rows": 290273,
-  "closed_form_matches_solver": true,
-  "closed_form_max_relative_error": 0.00024715,
-  "closed_form_max_relative_error_percent": 0.025,
-  "closed_form_savings_captured": 0.815,
-  "closed_form_savings_captured_percent": 81.5,
-  "closed_form_verification": {
-    "case_count": 8,
-    "cases": [
+  "empirical_claims_ready": false,
+  "pandora": {
+    "candidate_price_samples_minor": [
+      8500,
+      9500,
+      10000,
+      11000
+    ],
+    "cost_rate_card": "research/cost-rate-card-2026-09.json",
+    "currency": "USD",
+    "current_best_minor": 10000,
+    "decision_rule": "SEARCH iff feasible and E[max(b - P, 0)] > cost",
+    "minor_units_per_currency_unit": 100,
+    "model": "empirical_pandora_free_recall",
+    "reservation_equation": "E[max(z - P, 0)] = scalarized_inspection_cost",
+    "rows": [
       {
-        "acceptance_fraction": 0.5,
-        "affordable_queries": 1,
-        "closed_form_reservation_price": 10000.0,
-        "relative_error": 4.988e-05,
-        "solver_reservation_price": 9999.5012
+        "action": "SEARCH",
+        "cost_components_minor": {
+          "api_calls": 0.0,
+          "api_spend": 2.275,
+          "time": 250.0,
+          "tokens": 0.0
+        },
+        "current_best_minor": 10000,
+        "expected_saving_minor": 500.0,
+        "feasible": true,
+        "inspection_cost_minor": 252.275,
+        "net_value_minor": 247.725,
+        "remaining_budget": {
+          "api_calls": 12.0,
+          "api_cost_minor": 1000.0,
+          "time_ms": 300000.0,
+          "tokens": 30000.0
+        },
+        "reservation_price_minor": 9504.55,
+        "resources": {
+          "api_calls": 0.0,
+          "api_cost_minor": 2.275,
+          "time_ms": 30000.0,
+          "tokens": 0.0
+        },
+        "scenario": "catalog_expansion_openai_gpt_5_4_mini",
+        "shadow_prices": {
+          "api_calls": 0.0,
+          "api_cost_minor": 0.0,
+          "time_ms": 8.333333333333334,
+          "tokens": 0.0
+        }
       },
       {
-        "acceptance_fraction": 0.375,
-        "affordable_queries": 2,
-        "closed_form_reservation_price": 9500.0,
-        "relative_error": 0.00011574,
-        "solver_reservation_price": 9498.9006
+        "action": "STOP",
+        "cost_components_minor": {
+          "api_calls": 0.0,
+          "api_spend": 21.0,
+          "time": 1000.0,
+          "tokens": 0.0
+        },
+        "current_best_minor": 10000,
+        "expected_saving_minor": 500.0,
+        "feasible": true,
+        "inspection_cost_minor": 1021.0,
+        "net_value_minor": -521.0,
+        "remaining_budget": {
+          "api_calls": 12.0,
+          "api_cost_minor": 1000.0,
+          "time_ms": 300000.0,
+          "tokens": 30000.0
+        },
+        "reservation_price_minor": 10694.666666666666,
+        "resources": {
+          "api_calls": 0.0,
+          "api_cost_minor": 21.0,
+          "time_ms": 120000.0,
+          "tokens": 0.0
+        },
+        "scenario": "agentic_review_2m_anthropic_claude_sonnet_5",
+        "shadow_prices": {
+          "api_calls": 0.0,
+          "api_cost_minor": 0.0,
+          "time_ms": 8.333333333333334,
+          "tokens": 0.0
+        }
       },
       {
-        "acceptance_fraction": 0.304688,
-        "affordable_queries": 3,
-        "closed_form_reservation_price": 9218.75,
-        "relative_error": 0.00015727,
-        "solver_reservation_price": 9217.3004
+        "action": "STOP",
+        "cost_components_minor": {
+          "api_calls": 0.0,
+          "api_spend": 55.5,
+          "time": 2500.0,
+          "tokens": 0.0
+        },
+        "current_best_minor": 10000,
+        "expected_saving_minor": 500.0,
+        "feasible": true,
+        "inspection_cost_minor": 2555.5,
+        "net_value_minor": -2055.5,
+        "remaining_budget": {
+          "api_calls": 12.0,
+          "api_cost_minor": 1000.0,
+          "time_ms": 300000.0,
+          "tokens": 30000.0
+        },
+        "reservation_price_minor": 12305.5,
+        "resources": {
+          "api_calls": 0.0,
+          "api_cost_minor": 55.5,
+          "time_ms": 300000.0,
+          "tokens": 0.0
+        },
+        "scenario": "long_horizon_research_5m_xai_grok_4_7",
+        "shadow_prices": {
+          "api_calls": 0.0,
+          "api_cost_minor": 0.0,
+          "time_ms": 8.333333333333334,
+          "tokens": 0.0
+        }
       },
       {
-        "acceptance_fraction": 0.25827,
-        "affordable_queries": 4,
-        "closed_form_reservation_price": 9033.0811,
-        "relative_error": 0.00018433,
-        "solver_reservation_price": 9031.4163
-      },
-      {
-        "acceptance_fraction": 0.224918,
-        "affordable_queries": 5,
-        "closed_form_reservation_price": 8899.674,
-        "relative_error": 0.00020473,
-        "solver_reservation_price": 8897.8523
-      },
-      {
-        "acceptance_fraction": 0.199624,
-        "affordable_queries": 6,
-        "closed_form_reservation_price": 8798.4973,
-        "relative_error": 0.0002216,
-        "solver_reservation_price": 8796.548
-      },
-      {
-        "acceptance_fraction": 0.179699,
-        "affordable_queries": 7,
-        "closed_form_reservation_price": 8718.7976,
-        "relative_error": 0.00023623,
-        "solver_reservation_price": 8716.7384
-      },
-      {
-        "acceptance_fraction": 0.163553,
-        "affordable_queries": 8,
-        "closed_form_reservation_price": 8654.2138,
-        "relative_error": 0.00024715,
-        "solver_reservation_price": 8652.0755
+        "action": "STOP",
+        "cost_components_minor": {
+          "api_calls": 0.0,
+          "api_spend": 21.0,
+          "time": 1000.0,
+          "tokens": 0.0
+        },
+        "current_best_minor": 10000,
+        "expected_saving_minor": 500.0,
+        "feasible": false,
+        "inspection_cost_minor": 1021.0,
+        "net_value_minor": -521.0,
+        "remaining_budget": {
+          "api_calls": 12.0,
+          "api_cost_minor": 1000.0,
+          "time_ms": 60000.0,
+          "tokens": 30000.0
+        },
+        "reservation_price_minor": 10694.666666666666,
+        "resources": {
+          "api_calls": 0.0,
+          "api_cost_minor": 21.0,
+          "time_ms": 120000.0,
+          "tokens": 0.0
+        },
+        "scenario": "hard_time_cap",
+        "shadow_prices": {
+          "api_calls": 0.0,
+          "api_cost_minor": 0.0,
+          "time_ms": 8.333333333333334,
+          "tokens": 0.0
+        }
       }
     ],
-    "max_relative_error": 0.00024715,
-    "support_points": 800,
-    "tolerance": 0.001,
-    "within_tolerance": true
+    "scenario_assumptions": "Declared workload assumptions, not execution telemetry.",
+    "time_value_minor_per_minute": 500
   },
-  "corpus": {
-    "catalog_rows": 290273,
-    "cross_merchant_skus": 4741,
-    "isbn_cross_merchant_skus": 135,
-    "merchants_fully_paginated": 88,
-    "merchants_targeted": 246,
-    "unique_skus": 269875
-  },
-  "criteria": {
-    "advantage_rule": {
-      "max_relative_improvement": 0.0625,
-      "median_relative_improvement": 0.0272,
-      "min_budget_fraction": 0.5,
-      "min_dispersion_ratio": 1.1
-    },
-    "cells_evaluated": 32,
-    "cells_favoring_adaptive": 8,
-    "cells_favoring_fixed": 2,
-    "cells_indistinguishable": 22,
-    "decision_table": [
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": 0.0,
-        "ci_upper_minor": 0.0,
-        "dispersion_ratio": 1.01,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 0.0,
-        "merchant_count": 2,
-        "relative_improvement": -0.0,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": 0.0,
-        "ci_upper_minor": 0.0,
-        "dispersion_ratio": 1.01,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 0.0,
-        "merchant_count": 2,
-        "relative_improvement": -0.0,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": 0.0,
-        "ci_upper_minor": 0.0,
-        "dispersion_ratio": 1.1,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 0.0,
-        "merchant_count": 2,
-        "relative_improvement": -0.0,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": -16.897436,
-        "ci_upper_minor": 171.630769,
-        "dispersion_ratio": 1.1,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 53.102564,
-        "merchant_count": 2,
-        "relative_improvement": -0.0054,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": 0.0,
-        "ci_upper_minor": 0.0,
-        "dispersion_ratio": 1.3,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 0.0,
-        "merchant_count": 2,
-        "relative_improvement": -0.0,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": -73.65641,
-        "ci_upper_minor": 33.964103,
-        "dispersion_ratio": 1.3,
-        "held_out_episodes": 195,
-        "mean_difference_minor": -15.420513,
-        "merchant_count": 2,
-        "relative_improvement": 0.0015,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": 0.0,
-        "ci_upper_minor": 0.0,
-        "dispersion_ratio": 2.0,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 0.0,
-        "merchant_count": 2,
-        "relative_improvement": -0.0,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": -678.34359,
-        "ci_upper_minor": -102.54359,
-        "dispersion_ratio": 2.0,
-        "held_out_episodes": 195,
-        "mean_difference_minor": -389.276923,
-        "merchant_count": 2,
-        "relative_improvement": 0.0283,
-        "verdict": "use_adaptive"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": 0.0,
-        "ci_upper_minor": 0.0,
-        "dispersion_ratio": 1.01,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 0.0,
-        "merchant_count": 3,
-        "relative_improvement": -0.0,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": 0.0,
-        "ci_upper_minor": 18.461538,
-        "dispersion_ratio": 1.01,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 6.153846,
-        "merchant_count": 3,
-        "relative_improvement": -0.0007,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": 0.0,
-        "ci_upper_minor": 0.0,
-        "dispersion_ratio": 1.1,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 0.0,
-        "merchant_count": 3,
-        "relative_improvement": -0.0,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": -66.666667,
-        "ci_upper_minor": 37.610256,
-        "dispersion_ratio": 1.1,
-        "held_out_episodes": 195,
-        "mean_difference_minor": -12.266667,
-        "merchant_count": 3,
-        "relative_improvement": 0.0013,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": 0.0,
-        "ci_upper_minor": 0.0,
-        "dispersion_ratio": 1.3,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 0.0,
-        "merchant_count": 3,
-        "relative_improvement": -0.0,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": -109.984615,
-        "ci_upper_minor": 126.584615,
-        "dispersion_ratio": 1.3,
-        "held_out_episodes": 195,
-        "mean_difference_minor": -11.620513,
-        "merchant_count": 3,
-        "relative_improvement": 0.0011,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": 0.0,
-        "ci_upper_minor": 0.0,
-        "dispersion_ratio": 2.0,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 0.0,
-        "merchant_count": 3,
-        "relative_improvement": -0.0,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": -596.615385,
-        "ci_upper_minor": -26.502564,
-        "dispersion_ratio": 2.0,
-        "held_out_episodes": 195,
-        "mean_difference_minor": -309.374359,
-        "merchant_count": 3,
-        "relative_improvement": 0.0242,
-        "verdict": "use_adaptive"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": 0.0,
-        "ci_upper_minor": 0.0,
-        "dispersion_ratio": 1.01,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 0.0,
-        "merchant_count": 5,
-        "relative_improvement": -0.0,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": 0.0,
-        "ci_upper_minor": 0.0,
-        "dispersion_ratio": 1.01,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 0.0,
-        "merchant_count": 5,
-        "relative_improvement": -0.0,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": 32.205128,
-        "ci_upper_minor": 430.061538,
-        "dispersion_ratio": 1.1,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 207.476923,
-        "merchant_count": 5,
-        "relative_improvement": -0.0207,
-        "verdict": "use_fixed"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": -90.087179,
-        "ci_upper_minor": -13.692308,
-        "dispersion_ratio": 1.1,
-        "held_out_episodes": 195,
-        "mean_difference_minor": -47.8,
-        "merchant_count": 5,
-        "relative_improvement": 0.0052,
-        "verdict": "use_adaptive"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": -166.994872,
-        "ci_upper_minor": 98.271795,
-        "dispersion_ratio": 1.3,
-        "held_out_episodes": 195,
-        "mean_difference_minor": -42.425641,
-        "merchant_count": 5,
-        "relative_improvement": 0.0039,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": -332.594872,
-        "ci_upper_minor": -24.492308,
-        "dispersion_ratio": 1.3,
-        "held_out_episodes": 195,
-        "mean_difference_minor": -164.271795,
-        "merchant_count": 5,
-        "relative_improvement": 0.0168,
-        "verdict": "use_adaptive"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": -371.620513,
-        "ci_upper_minor": 109.010256,
-        "dispersion_ratio": 2.0,
-        "held_out_episodes": 195,
-        "mean_difference_minor": -137.948718,
-        "merchant_count": 5,
-        "relative_improvement": 0.0099,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": -772.825641,
-        "ci_upper_minor": -209.815385,
-        "dispersion_ratio": 2.0,
-        "held_out_episodes": 195,
-        "mean_difference_minor": -489.169231,
-        "merchant_count": 5,
-        "relative_improvement": 0.0412,
-        "verdict": "use_adaptive"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": 0.0,
-        "ci_upper_minor": 0.0,
-        "dispersion_ratio": 1.01,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 0.0,
-        "merchant_count": 8,
-        "relative_improvement": -0.0,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": 0.0,
-        "ci_upper_minor": 0.0,
-        "dispersion_ratio": 1.01,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 0.0,
-        "merchant_count": 8,
-        "relative_improvement": -0.0,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": -35.235897,
-        "ci_upper_minor": 59.876923,
-        "dispersion_ratio": 1.1,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 12.748718,
-        "merchant_count": 8,
-        "relative_improvement": -0.0014,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": 10.953846,
-        "ci_upper_minor": 98.933333,
-        "dispersion_ratio": 1.1,
-        "held_out_episodes": 195,
-        "mean_difference_minor": 50.066667,
-        "merchant_count": 8,
-        "relative_improvement": -0.0057,
-        "verdict": "use_fixed"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": -299.184615,
-        "ci_upper_minor": -1.461538,
-        "dispersion_ratio": 1.3,
-        "held_out_episodes": 195,
-        "mean_difference_minor": -128.128205,
-        "merchant_count": 8,
-        "relative_improvement": 0.0128,
-        "verdict": "use_adaptive"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": -141.630769,
-        "ci_upper_minor": 108.087179,
-        "dispersion_ratio": 1.3,
-        "held_out_episodes": 195,
-        "mean_difference_minor": -6.974359,
-        "merchant_count": 8,
-        "relative_improvement": 0.0008,
-        "verdict": "no_difference"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 0.5,
-        "ci_lower_minor": -551.820513,
-        "ci_upper_minor": -125.666667,
-        "dispersion_ratio": 2.0,
-        "held_out_episodes": 195,
-        "mean_difference_minor": -327.574359,
-        "merchant_count": 8,
-        "relative_improvement": 0.0272,
-        "verdict": "use_adaptive"
-      },
-      {
-        "bootstrap_replicates": 2000,
-        "budget_fraction": 1.0,
-        "ci_lower_minor": -1082.507692,
-        "ci_upper_minor": -383.323077,
-        "dispersion_ratio": 2.0,
-        "held_out_episodes": 195,
-        "mean_difference_minor": -714.466667,
-        "merchant_count": 8,
-        "relative_improvement": 0.0625,
-        "verdict": "use_adaptive"
-      }
-    ],
-    "no_advantage_rule": {
-      "dispersion_ratio_at_or_below": 1.01,
-      "harm_cells": [
-        {
-          "budget_fraction": 0.5,
-          "dispersion_ratio": 1.1,
-          "merchant_count": 5,
-          "relative_improvement": -0.0207
-        },
-        {
-          "budget_fraction": 1.0,
-          "dispersion_ratio": 1.1,
-          "merchant_count": 8,
-          "relative_improvement": -0.0057
-        }
-      ],
-      "worst_relative_change": -0.0207
-    },
-    "win_rate_by_budget_fraction": {
-      "0.5": 0.125,
-      "1.0": 0.375
-    },
-    "win_rate_by_dispersion": {
-      "1.01": 0.0,
-      "1.1": 0.125,
-      "1.3": 0.25,
-      "2.0": 0.625
-    }
-  },
-  "cross_merchant_skus": 4741,
-  "decision_rule": {
-    "buy_when": "observed_price <= reservation_price",
-    "continue_when": "observed_price > reservation_price",
-    "interpretation": "Continue only when the current offer is worse than the expected purchase loss from feasible future search."
-  },
-  "delisting_rate": 0.051388,
-  "ephemerality": {
-    "calibration_date": "2026-08-02",
-    "delisted_listings": 1525,
-    "delisting_rate": 0.051388,
-    "evaluation_date": "2026-09-02",
-    "fully_paginated_domains": 88,
-    "median_relative_price_change": 0.292237,
-    "price_change_rate": 0.07577,
-    "price_changed_listings": 2133,
-    "surviving_listings": 28151,
-    "tracked_listings": 29676
-  },
-  "episode_count": 294,
-  "equal_depth_routing_control": {
-    "remaining_query_depth": 1,
-    "signature": "time-tight:merchant-3|token-tight:merchant-2",
-    "time_tight_next_merchant_index": 2,
-    "token_tight_next_merchant_index": 1
-  },
-  "equal_depth_routing_signature": "time-tight:merchant-3|token-tight:merchant-2",
-  "evaluation_date": "2026-09-02",
-  "failure_penalty": 220,
-  "hard_budget_violations": 0,
-  "hard_constraint_action_signature": "relaxed:continue|time-tight:buy|token-tight:buy|api-tight:buy|api-spend-tight:buy|combined:buy|price-capped:continue",
-  "hard_constraint_action_switch": true,
-  "hard_constraint_actions": {
-    "api-spend-tight": "buy",
-    "api-tight": "buy",
-    "combined": "buy",
-    "price-capped": "continue",
-    "relaxed": "continue",
-    "time-tight": "buy",
-    "token-tight": "buy"
-  },
-  "hard_constraint_buy_count": 5,
-  "hard_constraint_continue_count": 2,
-  "hard_constraint_scenario_count": 7,
-  "hard_constraint_surface": [
-    {
-      "action": "continue",
-      "budget": {
-        "api_calls": 8,
-        "api_cost": 20,
-        "time": 31,
-        "tokens": 10000
-      },
-      "continuation_value": {
-        "denominator": 319440,
-        "numerator": 23559997,
-        "value": 73.75406023040321
-      },
-      "expected_purchase_loss": {
-        "denominator": 1597200,
-        "numerator": 115749929,
-        "value": 72.47052905083896
-      },
-      "feasible_next_merchant_count": 7,
-      "feasible_next_merchants": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
-      ],
-      "id": "relaxed",
-      "label": "All budgets relaxed",
-      "max_purchase_price": 140,
-      "next_merchant_index": 7,
-      "observed_price": 110,
-      "remaining_after_observation": {
-        "api_calls": 7,
-        "api_cost": 18,
-        "time": 28,
-        "tokens": 9100
-      },
-      "reservation_price": {
-        "denominator": 319440,
-        "numerator": 23559997,
-        "value": 73.75406023040321
-      }
-    },
-    {
-      "action": "buy",
-      "budget": {
-        "api_calls": 8,
-        "api_cost": 20,
-        "time": 6,
-        "tokens": 10000
-      },
-      "continuation_value": {
-        "denominator": 11,
-        "numerator": 1423,
-        "value": 129.36363636363637
-      },
-      "expected_purchase_loss": {
-        "denominator": 30,
-        "numerator": 3029,
-        "value": 100.96666666666667
-      },
-      "feasible_next_merchant_count": 2,
-      "feasible_next_merchants": [
-        3,
-        6
-      ],
-      "id": "time-tight",
-      "label": "Tight deadline",
-      "max_purchase_price": 140,
-      "next_merchant_index": 3,
-      "observed_price": 110,
-      "remaining_after_observation": {
-        "api_calls": 7,
-        "api_cost": 18,
-        "time": 3,
-        "tokens": 9100
-      },
-      "reservation_price": {
-        "denominator": 11,
-        "numerator": 1423,
-        "value": 129.36363636363637
-      }
-    },
-    {
-      "action": "buy",
-      "budget": {
-        "api_calls": 8,
-        "api_cost": 20,
-        "time": 31,
-        "tokens": 1900
-      },
-      "continuation_value": {
-        "denominator": 10,
-        "numerator": 1219,
-        "value": 121.9
-      },
-      "expected_purchase_loss": {
-        "denominator": 50,
-        "numerator": 5131,
-        "value": 102.62
-      },
-      "feasible_next_merchant_count": 1,
-      "feasible_next_merchants": [
-        1
-      ],
-      "id": "token-tight",
-      "label": "Tight token budget",
-      "max_purchase_price": 140,
-      "next_merchant_index": 1,
-      "observed_price": 110,
-      "remaining_after_observation": {
-        "api_calls": 7,
-        "api_cost": 18,
-        "time": 28,
-        "tokens": 1000
-      },
-      "reservation_price": {
-        "denominator": 10,
-        "numerator": 1219,
-        "value": 121.9
-      }
-    },
-    {
-      "action": "buy",
-      "budget": {
-        "api_calls": 2,
-        "api_cost": 20,
-        "time": 31,
-        "tokens": 10000
-      },
-      "continuation_value": {
-        "denominator": 5,
-        "numerator": 606,
-        "value": 121.2
-      },
-      "expected_purchase_loss": {
-        "denominator": 60,
-        "numerator": 5921,
-        "value": 98.68333333333334
-      },
-      "feasible_next_merchant_count": 7,
-      "feasible_next_merchants": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
-      ],
-      "id": "api-tight",
-      "label": "Two API calls available",
-      "max_purchase_price": 140,
-      "next_merchant_index": 2,
-      "observed_price": 110,
-      "remaining_after_observation": {
-        "api_calls": 1,
-        "api_cost": 18,
-        "time": 28,
-        "tokens": 9100
-      },
-      "reservation_price": {
-        "denominator": 5,
-        "numerator": 606,
-        "value": 121.2
-      }
-    },
-    {
-      "action": "buy",
-      "budget": {
-        "api_calls": 8,
-        "api_cost": 4,
-        "time": 31,
-        "tokens": 10000
-      },
-      "continuation_value": {
-        "denominator": 5,
-        "numerator": 606,
-        "value": 121.2
-      },
-      "expected_purchase_loss": {
-        "denominator": 30,
-        "numerator": 2993,
-        "value": 99.76666666666667
-      },
-      "feasible_next_merchant_count": 3,
-      "feasible_next_merchants": [
-        2,
-        4,
-        6
-      ],
-      "id": "api-spend-tight",
-      "label": "Tight API spending cap",
-      "max_purchase_price": 140,
-      "next_merchant_index": 2,
-      "observed_price": 110,
-      "remaining_after_observation": {
-        "api_calls": 7,
-        "api_cost": 2,
-        "time": 28,
-        "tokens": 9100
-      },
-      "reservation_price": {
-        "denominator": 5,
-        "numerator": 606,
-        "value": 121.2
-      }
-    },
-    {
-      "action": "buy",
-      "budget": {
-        "api_calls": 3,
-        "api_cost": 7,
-        "time": 10,
-        "tokens": 3000
-      },
-      "continuation_value": {
-        "denominator": 5,
-        "numerator": 606,
-        "value": 121.2
-      },
-      "expected_purchase_loss": {
-        "denominator": 60,
-        "numerator": 5921,
-        "value": 98.68333333333334
-      },
-      "feasible_next_merchant_count": 7,
-      "feasible_next_merchants": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
-      ],
-      "id": "combined",
-      "label": "Combined operating limits",
-      "max_purchase_price": 140,
-      "next_merchant_index": 2,
-      "observed_price": 110,
-      "remaining_after_observation": {
-        "api_calls": 2,
-        "api_cost": 5,
-        "time": 7,
-        "tokens": 2100
-      },
-      "reservation_price": {
-        "denominator": 5,
-        "numerator": 606,
-        "value": 121.2
-      }
-    },
-    {
-      "action": "continue",
-      "budget": {
-        "api_calls": 8,
-        "api_cost": 20,
-        "time": 31,
-        "tokens": 10000
-      },
-      "continuation_value": {
-        "denominator": 29040,
-        "numerator": 2189063,
-        "value": 75.38095730027548
-      },
-      "expected_purchase_loss": {
-        "denominator": 29040,
-        "numerator": 2158067,
-        "value": 74.31360192837465
-      },
-      "feasible_next_merchant_count": 7,
-      "feasible_next_merchants": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
-      ],
-      "id": "price-capped",
-      "label": "Hard purchase-price cap",
-      "max_purchase_price": 100,
-      "next_merchant_index": 7,
-      "observed_price": 110,
-      "remaining_after_observation": {
-        "api_calls": 7,
-        "api_cost": 18,
-        "time": 28,
-        "tokens": 9100
-      },
-      "reservation_price": {
-        "denominator": 29040,
-        "numerator": 2189063,
-        "value": 75.38095730027548
-      }
-    }
-  ],
-  "held_out_episode_count": 152,
-  "median_merchant_count": 2,
-  "median_price_dispersion_ratio": 1.001653,
-  "median_relative_price_change": 0.292237,
-  "merchant_count": 8,
-  "merchant_forecasts": [
-    {
-      "api_calls": 1,
-      "api_cost": 2,
-      "price_weights": [
-        {
-          "price": 72,
-          "weight": 1
-        },
-        {
-          "price": 88,
-          "weight": 2
-        },
-        {
-          "price": 104,
-          "weight": 3
-        },
-        {
-          "price": 118,
-          "weight": 2
-        },
-        {
-          "price": 145,
-          "weight": 1
-        }
-      ],
-      "time": 3,
-      "tokens": 900,
-      "unavailable_weight": 1
-    },
-    {
-      "api_calls": 1,
-      "api_cost": 3,
-      "price_weights": [
-        {
-          "price": 66,
-          "weight": 1
-        },
-        {
-          "price": 84,
-          "weight": 2
-        },
-        {
-          "price": 101,
-          "weight": 3
-        },
-        {
-          "price": 121,
-          "weight": 2
-        },
-        {
-          "price": 150,
-          "weight": 1
-        }
-      ],
-      "time": 4,
-      "tokens": 1000,
-      "unavailable_weight": 1
-    },
-    {
-      "api_calls": 1,
-      "api_cost": 2,
-      "price_weights": [
-        {
-          "price": 61,
-          "weight": 1
-        },
-        {
-          "price": 82,
-          "weight": 2
-        },
-        {
-          "price": 99,
-          "weight": 3
-        },
-        {
-          "price": 125,
-          "weight": 2
-        },
-        {
-          "price": 154,
-          "weight": 1
-        }
-      ],
-      "time": 5,
-      "tokens": 1100,
-      "unavailable_weight": 1
-    },
-    {
-      "api_calls": 1,
-      "api_cost": 3,
-      "price_weights": [
-        {
-          "price": 58,
-          "weight": 1
-        },
-        {
-          "price": 80,
-          "weight": 2
-        },
-        {
-          "price": 97,
-          "weight": 3
-        },
-        {
-          "price": 127,
-          "weight": 2
-        },
-        {
-          "price": 158,
-          "weight": 1
-        }
-      ],
-      "time": 3,
-      "tokens": 1200,
-      "unavailable_weight": 2
-    },
-    {
-      "api_calls": 1,
-      "api_cost": 2,
-      "price_weights": [
-        {
-          "price": 55,
-          "weight": 1
-        },
-        {
-          "price": 78,
-          "weight": 2
-        },
-        {
-          "price": 95,
-          "weight": 3
-        },
-        {
-          "price": 130,
-          "weight": 2
-        },
-        {
-          "price": 163,
-          "weight": 1
-        }
-      ],
-      "time": 4,
-      "tokens": 1300,
-      "unavailable_weight": 2
-    },
-    {
-      "api_calls": 1,
-      "api_cost": 3,
-      "price_weights": [
-        {
-          "price": 52,
-          "weight": 1
-        },
-        {
-          "price": 76,
-          "weight": 2
-        },
-        {
-          "price": 93,
-          "weight": 3
-        },
-        {
-          "price": 134,
-          "weight": 2
-        },
-        {
-          "price": 168,
-          "weight": 1
-        }
-      ],
-      "time": 5,
-      "tokens": 1400,
-      "unavailable_weight": 2
-    },
-    {
-      "api_calls": 1,
-      "api_cost": 2,
-      "price_weights": [
-        {
-          "price": 49,
-          "weight": 1
-        },
-        {
-          "price": 74,
-          "weight": 2
-        },
-        {
-          "price": 91,
-          "weight": 3
-        },
-        {
-          "price": 138,
-          "weight": 2
-        },
-        {
-          "price": 174,
-          "weight": 1
-        }
-      ],
-      "time": 3,
-      "tokens": 1500,
-      "unavailable_weight": 3
-    },
-    {
-      "api_calls": 1,
-      "api_cost": 3,
-      "price_weights": [
-        {
-          "price": 46,
-          "weight": 1
-        },
-        {
-          "price": 72,
-          "weight": 2
-        },
-        {
-          "price": 89,
-          "weight": 3
-        },
-        {
-          "price": 142,
-          "weight": 2
-        },
-        {
-          "price": 180,
-          "weight": 1
-        }
-      ],
-      "time": 4,
-      "tokens": 1600,
-      "unavailable_weight": 3
-    }
-  ],
-  "merchants_fully_paginated": 88,
-  "merchants_targeted": 246,
-  "no_advantage_dispersion_at_or_below": 1.01,
-  "observed_price": 110,
-  "overlap_cross_merchant_products": 55219,
-  "overlap_episode_eligible_products": 37750,
-  "overlap_merchants_scanned": 2785,
-  "overlap_products_five_or_more": 325,
-  "overlap_products_three_or_more": 4452,
-  "overlap_snapshot": "2026-09-02-expanded",
-  "overlap_widest_merchant_count": 14,
-  "price_capped_limit": 100,
-  "price_change_rate": 0.07577,
   "random_seed": 20260723,
-  "real_study": {
-    "adaptive_vs_best_fixed": {
-      "ci_lower_minor": -48.763158,
-      "ci_upper_minor": -8.559211,
-      "favors_treatment": true,
-      "mean_difference_minor": -26.315789,
-      "pairs": 152,
-      "replicates": 2000,
-      "significant": true
-    },
-    "arms": [
+  "shopify_global_catalog": {
+    "calibration_product_count": 24,
+    "collection_status": "recovered_complete_query_prefix",
+    "completed_query_count": 39,
+    "cost_results": [
       {
-        "arm": "accept_first",
-        "episodes": 152,
-        "failure_rate": 0.0,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 1387.368421,
-        "mean_purchase_loss_minor": 31865.427632,
-        "mean_query_count": 1.013158,
-        "purchase_success_rate": 1.0
+        "adaptive_continue_state_count": 106,
+        "adaptive_vs_search_all": {
+          "bootstrap_replicates": 2000,
+          "ci_lower": -0.012504703174089154,
+          "ci_upper": 0.025862718704444353,
+          "favors_treatment": false,
+          "mean_difference": 0.004354664495917056,
+          "permutations_are_independent": false,
+          "product_clusters": 16
+        },
+        "arms": {
+          "adaptive_dynamic": {
+            "mean_normalized_item_price": 0.9256282978247526,
+            "mean_normalized_total_cost": 0.9953602559413993,
+            "mean_price_regret_minor": 421.6484375,
+            "mean_reveals": 2.943359375,
+            "oracle_hit_rate": 0.833984375,
+            "product_clusters": 16,
+            "replay_rows": 512
+          },
+          "search_all": {
+            "mean_normalized_item_price": 0.8947281648926266,
+            "mean_normalized_total_cost": 0.9910055914454823,
+            "mean_price_regret_minor": 0.0,
+            "mean_reveals": 4.1875,
+            "oracle_hit_rate": 1.0,
+            "product_clusters": 16,
+            "replay_rows": 512
+          }
+        },
+        "cost_components_minor": {
+          "input_tokens": 0.6,
+          "output_tokens": 0.675,
+          "shopping_api": 1.0,
+          "time": 250.0
+        },
+        "cost_scenario": "catalog_expansion",
+        "inspection_cost_minor": 252.275,
+        "inspection_cost_usd": 2.52275
       },
       {
-        "arm": "fixed_depth",
-        "episodes": 152,
-        "failure_rate": 0.013158,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 1616.253333,
-        "mean_purchase_loss_minor": 32114.480263,
-        "mean_query_count": 2.0,
-        "purchase_success_rate": 0.986842
+        "adaptive_continue_state_count": 83,
+        "adaptive_vs_search_all": {
+          "bootstrap_replicates": 2000,
+          "ci_lower": -0.22336631471618143,
+          "ci_upper": 0.08965156741900134,
+          "favors_treatment": false,
+          "mean_difference": -0.0695145159639868,
+          "permutations_are_independent": false,
+          "product_clusters": 16
+        },
+        "arms": {
+          "adaptive_dynamic": {
+            "mean_normalized_item_price": 1.0487965580076408,
+            "mean_normalized_total_cost": 1.2148648331936904,
+            "mean_price_regret_minor": 2449.55859375,
+            "mean_reveals": 1.62890625,
+            "oracle_hit_rate": 0.533203125,
+            "product_clusters": 16,
+            "replay_rows": 512
+          },
+          "search_all": {
+            "mean_normalized_item_price": 0.8947281648926266,
+            "mean_normalized_total_cost": 1.2843793491576772,
+            "mean_price_regret_minor": 0.0,
+            "mean_reveals": 4.1875,
+            "oracle_hit_rate": 1.0,
+            "product_clusters": 16,
+            "replay_rows": 512
+          }
+        },
+        "cost_components_minor": {
+          "input_tokens": 10.0,
+          "output_tokens": 10.0,
+          "shopping_api": 1.0,
+          "time": 1000.0
+        },
+        "cost_scenario": "agentic_review_2m",
+        "inspection_cost_minor": 1021.0,
+        "inspection_cost_usd": 10.21
       },
       {
-        "arm": "fixed_threshold",
-        "episodes": 152,
-        "failure_rate": 0.013158,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 1161.106667,
-        "mean_purchase_loss_minor": 31665.322368,
-        "mean_query_count": 1.302632,
-        "purchase_success_rate": 0.986842
-      },
-      {
-        "arm": "equal_split",
-        "episodes": 152,
-        "failure_rate": 0.0,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 1387.368421,
-        "mean_purchase_loss_minor": 31865.427632,
-        "mean_query_count": 1.013158,
-        "purchase_success_rate": 1.0
-      },
-      {
-        "arm": "myopic_voi",
-        "episodes": 152,
-        "failure_rate": 0.013158,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 1134.44,
-        "mean_purchase_loss_minor": 31639.006579,
-        "mean_query_count": 1.256579,
-        "purchase_success_rate": 0.986842
-      },
-      {
-        "arm": "secretary_37",
-        "episodes": 152,
-        "failure_rate": 0.013158,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 1616.253333,
-        "mean_purchase_loss_minor": 32114.480263,
-        "mean_query_count": 2.0,
-        "purchase_success_rate": 0.986842
-      },
-      {
-        "arm": "closed_form",
-        "episodes": 152,
-        "failure_rate": 0.013158,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 1134.44,
-        "mean_purchase_loss_minor": 31639.006579,
-        "mean_query_count": 1.256579,
-        "purchase_success_rate": 0.986842
-      },
-      {
-        "arm": "adaptive_stopping",
-        "episodes": 152,
-        "failure_rate": 0.013158,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 1134.44,
-        "mean_purchase_loss_minor": 31639.006579,
-        "mean_query_count": 1.256579,
-        "purchase_success_rate": 0.986842
-      },
-      {
-        "arm": "exhaustive_oracle",
-        "episodes": 152,
-        "failure_rate": 0.0,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 0.0,
-        "mean_purchase_loss_minor": 30478.059211,
-        "mean_query_count": 2.013158,
-        "purchase_success_rate": 1.0
-      },
-      {
-        "arm": "never_accept",
-        "episodes": 152,
-        "failure_rate": 1.0,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 0.0,
-        "mean_purchase_loss_minor": 65901.960526,
-        "mean_query_count": 0.0,
-        "purchase_success_rate": 0.0
+        "adaptive_continue_state_count": 31,
+        "adaptive_vs_search_all": {
+          "bootstrap_replicates": 2000,
+          "ci_lower": -0.9130029520835702,
+          "ci_upper": -0.23727708381869858,
+          "favors_treatment": true,
+          "mean_difference": -0.5528032777560138,
+          "permutations_are_independent": false,
+          "product_clusters": 16
+        },
+        "arms": {
+          "adaptive_dynamic": {
+            "mean_normalized_item_price": 1.062044539323296,
+            "mean_normalized_total_cost": 1.317197758232927,
+            "mean_price_regret_minor": 2621.0234375,
+            "mean_reveals": 1.1484375,
+            "oracle_hit_rate": 0.484375,
+            "product_clusters": 16,
+            "replay_rows": 512
+          },
+          "search_all": {
+            "mean_normalized_item_price": 0.8947281648926266,
+            "mean_normalized_total_cost": 1.870001035988941,
+            "mean_price_regret_minor": 0.0,
+            "mean_reveals": 4.1875,
+            "oracle_hit_rate": 1.0,
+            "product_clusters": 16,
+            "replay_rows": 512
+          }
+        },
+        "cost_components_minor": {
+          "input_tokens": 30.0,
+          "output_tokens": 18.0,
+          "shopping_api": 7.5,
+          "time": 2500.0
+        },
+        "cost_scenario": "long_horizon_research_5m",
+        "inspection_cost_minor": 2555.5,
+        "inspection_cost_usd": 25.555
       }
     ],
-    "best_fixed_arm": "fixed_threshold",
-    "episode_count": 294,
-    "episode_features": {
-      "currency_distribution": {
-        "AUD": 39,
-        "USD": 113
+    "held_out_product_count": 16,
+    "independent_unit": "exact_normalized_model_title",
+    "permutations_per_product": 32,
+    "planned_query_count": 48,
+    "product_deck_count": 40,
+    "report": {
+      "analysis": {
+        "cost_rate_card": {
+          "as_of": "2026-09-28",
+          "path": "research/cost-rate-card-2026-09.json",
+          "sha256": "49950de9190bcbe6347c65469a3b5e5cfccdb20ad98ae0e503f0b5b035648ad2"
+        },
+        "minimum_required_product_decks": 4,
+        "random_seed": 20260723,
+        "status": "analyzed"
       },
-      "episodes_with_meaningful_dispersion": 65,
-      "max_merchant_count": 3,
-      "max_price_dispersion_ratio": 5.829932,
-      "median_merchant_count": 2,
-      "median_price_dispersion_ratio": 1.001653,
-      "merchant_count_distribution": {
-        "2": 150,
-        "3": 2
+      "collection": {
+        "collection_id": "shopify-global-catalog-2026-09-18-deep",
+        "collection_manifest_sha256": "27d776f16f03bf722f037f44e32715aa2c76cab7dd15c716eae927b2f2e85bd2",
+        "collection_status": "recovered_complete_query_prefix",
+        "completed_query_count": 39,
+        "eligible_offer_row_count": 18552,
+        "offer_row_count": 18572,
+        "offers_sha256": "e24513cfd6d24bb71ac84cef17dc1976165987898f5fbe2061410c3384378ba2",
+        "planned_query_count": 48
       },
-      "price_dispersion_distribution": {
-        "above_1_01_to_1_10": 27,
-        "above_1_10_to_1_30": 14,
-        "above_1_30": 31,
-        "at_or_below_1_01": 80
+      "cost_rate_card": {
+        "as_of": "2026-09-28",
+        "path": "research/cost-rate-card-2026-09.json",
+        "sha256": "49950de9190bcbe6347c65469a3b5e5cfccdb20ad98ae0e503f0b5b035648ad2"
+      },
+      "deck_build": {
+        "deck_audit": [
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 33150,
+              "median": 33150,
+              "min": 25350
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "adjustable dumbbells"
+            ],
+            "title": "Adjustable Dumbbells Set 12.5LB/22.5LB Pair, 1-Sec Fast Adjustable 5 Weights by Turning Handle, Premium Comfort Non-slip Metal Dumbbells with Tray, Compact Size for Full Body Home Workout"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 24900,
+              "median": 24900,
+              "min": 24900
+            },
+            "seller_count": 7,
+            "source_queries": [
+              "wireless earbuds"
+            ],
+            "title": "AIRPODS PRO 3 EARBUDS"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 19999,
+              "median": 19999.0,
+              "min": 19999
+            },
+            "seller_count": 4,
+            "source_queries": [
+              "usb c charger"
+            ],
+            "title": "Anker Laptop Charger, 140W MAX USB C Charger, 4-Port Multi-Device Fast Charging, Advanced GaN Power Adapter, Intuitive Touch Controls, for MacBook, iPhone 16 Series, Samsung Galaxy, Pixel, and More"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 12900,
+              "median": 12900.0,
+              "min": 8999
+            },
+            "seller_count": 4,
+            "source_queries": [
+              "wireless earbuds"
+            ],
+            "title": "Apple AirPods 4 Wireless Earbuds"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 10010,
+              "median": 8491,
+              "min": 7999
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "electric toothbrush"
+            ],
+            "title": "Burst Original Sonic Electric Toothbrush for Adults (Black) | Soft Bristle Deep Clean Stain & Plaque Removal | 3 Modes: Teeth Whitening, Sensitive & Massage"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 12168,
+              "median": 8560.0,
+              "min": 7263
+            },
+            "seller_count": 10,
+            "source_queries": [
+              "electric toothbrush"
+            ],
+            "title": "Burst Original Sonic Electric Toothbrush for Adults (White) | Soft Bristles | Deep Clean Stain & Plaque Removal | 3 Modes: Teeth Whitening, Sensitive & Massage"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 59999,
+              "median": 59998.5,
+              "min": 59998
+            },
+            "seller_count": 6,
+            "source_queries": [
+              "adjustable dumbbells"
+            ],
+            "title": "CAP ADJUSTABELL\u00ae 55 lb Pair of Adjustable Dumbbells with Contoured Full Rotation Handle, Honeycomb Chrome and Black Handle"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 64798,
+              "median": 59998,
+              "min": 29999
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "adjustable dumbbells"
+            ],
+            "title": "CAP Barbell 55 lb Pair of Adjustable Dumbbells with Full Rotation Black Handle"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 21598,
+              "median": 14998,
+              "min": 14998
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "air fryer"
+            ],
+            "title": "DASH Deluxe Electric Air Fryer + Oven Cooker with Temperature Control, Non-stick Fry Basket, Recipe Guide + Auto Shut Off Feature, 1700-Watt, 6 Quart - Aqua"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 2799,
+              "median": 2519,
+              "min": 2519
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "electric toothbrush"
+            ],
+            "title": "DY156 Essential Sonic Toothbrush"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 5282,
+              "median": 5282,
+              "min": 5282
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "fitness tracker"
+            ],
+            "title": "Fitbit Charge 3 Fitness Tracker - Black/Graphite - FB409GMBK"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 25499,
+              "median": 25499,
+              "min": 18300
+            },
+            "seller_count": 5,
+            "source_queries": [
+              "fitness tracker"
+            ],
+            "title": "Fitbit Charge 6 Fitness Tracker with Google Apps - Heart Rate on Exercise Equipment - 3-Month Google Health Premium Membership Included - Health Tools - Obsidian/Black - Small&Large Bands Included"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 29999,
+              "median": 29999,
+              "min": 20392
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "fitness tracker"
+            ],
+            "title": "Fitbit Charge 6 Fitness Tracker with Google apps, Heart Rate on Exercise Equipment, 6-Months Premium Membership Included, GPS, Health Tools and More, Gold/Coral, One Size (S & L Bands Included)"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 34549,
+              "median": 18472.0,
+              "min": 16999
+            },
+            "seller_count": 6,
+            "source_queries": [
+              "fitness tracker"
+            ],
+            "title": "Fitbit Charge 6 Fitness Tracker with Google apps, Heart Rate on Exercise Equipment, 6-Months Premium Membership Included, GPS, Health Tools and More, Obsidian/Black, One Size (S & L Bands Included)"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 31990,
+              "median": 23899,
+              "min": 15795
+            },
+            "seller_count": 5,
+            "source_queries": [
+              "fitness tracker"
+            ],
+            "title": "Fitbit Charge 6 Fitness Tracker with Google apps, Heart Rate on Exercise Equipment, 6-Months Premium Membership Included, GPS, Health Tools and More, Porcelain/Silver, One Size (S & L Bands Included)"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 5282,
+              "median": 5282,
+              "min": 5282
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "fitness tracker"
+            ],
+            "title": "Fitbit - Inspire 2 Fitness Tracker - Black - FB418BKBK"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 5282,
+              "median": 5282.0,
+              "min": 5282
+            },
+            "seller_count": 4,
+            "source_queries": [
+              "fitness tracker"
+            ],
+            "title": "Fitbit Inspire 2 Fitness Tracker Lunar White - FB418BKWT"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 15999,
+              "median": 15999,
+              "min": 7895
+            },
+            "seller_count": 11,
+            "source_queries": [
+              "fitness tracker"
+            ],
+            "title": "Fitbit Inspire 2 Health & Fitness Tracker with a Free 1-Year Fitbit Premium Trial, 24/7 Heart Rate, Black/Black, One Size (S & L Bands Included)"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 31299,
+              "median": 9499,
+              "min": 8995
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "fitness tracker"
+            ],
+            "title": "Fitbit Inspire 3 Fitness Tracker"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 21249,
+              "median": 17895,
+              "min": 14100
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "fitness tracker"
+            ],
+            "title": "Fitbit Inspire 3 Health & Fitness Activity Tracker (Black) with Workout Intensity, Sleep Tracking, Heart Rate, S & L Bands, 3.3foot Charging Cable, Wall Adapter, Screen Protectors & PremGear Cloth"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 16999,
+              "median": 16999,
+              "min": 11825
+            },
+            "seller_count": 9,
+            "source_queries": [
+              "fitness tracker"
+            ],
+            "title": "Fitbit Inspire 3 Health & Fitness Tracker with Stress Management, Workout Intensity, Sleep Tracking, 24/7 Heart Rate - 3-Month Google Health Premium Membership Included - Midnight Zen/Black"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 4299,
+              "median": 3599.0,
+              "min": 2999
+            },
+            "seller_count": 4,
+            "source_queries": [
+              "portable ssd"
+            ],
+            "title": "\ud83c\udfc6Flash Sale\u26a1 50K+ SOLD! Almost Gone-\ud83d\udd2516TB Large-Capacity Type-C Portable Mini SSD"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 5282,
+              "median": 5282.0,
+              "min": 5282
+            },
+            "seller_count": 4,
+            "source_queries": [
+              "fitness tracker"
+            ],
+            "title": "Garmin v\u00a1vosmart 4, Activity and Fitness Tracker Midnight w/Black Band, Large - 010-01995-13"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 9047,
+              "median": 8995,
+              "min": 7995
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "over ear headphones"
+            ],
+            "title": "JBL Tune 720BT Wireless Over-Ear Headphones"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 68250,
+              "median": 36974,
+              "min": 13049
+            },
+            "seller_count": 5,
+            "source_queries": [
+              "adjustable dumbbells"
+            ],
+            "title": "Keppi Adjustable Dumbbells Set-25lb/40lb/55lb/60lb, Anti-Slip Metal Fast Adjust Weight Handle, Exercise & Fitness for Full Body Workout - Adjustable Dumbbell Series"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 3199,
+              "median": 3119,
+              "min": 2878
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "wireless mouse"
+            ],
+            "title": "Lenovo 530 Wireless Mouse \u2013 Full Size Computer Mouse for PC, Laptop, Windows Computer - 2.4 GHz Nano USB Receiver - Ambidextrous Design - 12 Months Battery Life \u2013 Cordless"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 23920,
+              "median": 23920,
+              "min": 18400
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "portable ssd"
+            ],
+            "title": "Lexar 1TB Professional Go Portable SSD, Supports Apple 4K 60fps ProRes, Up to 1050MB/s, USB 3.2 Gen 2, Rugged, IP65, Ultracompact, Compatible w/iPhone 15/16, External SSD (LSL400X001T-RNSNU)"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 39999,
+              "median": 35998,
+              "min": 35998
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "portable ssd"
+            ],
+            "title": "Lexar 1TB Professional Go Portable SSD w/Hub, Supports Apple 4K 60fps ProRes, Up to 1050MB/s, USB 3.2, Rugged, IP65, Ultracompact, Compatible w/iPhone 15/16 (Not 17), External SSD (LSL400S001T-RNSNU)"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 43998,
+              "median": 20850,
+              "min": 18148
+            },
+            "seller_count": 7,
+            "source_queries": [
+              "blender"
+            ],
+            "title": "Ninja BL660 Professional Compact Smoothie & Food Processing Blender, 1100-Watts, 3 Functions -for Frozen Drinks, Smoothies, Sauces, & More, 72-oz.* Pitcher, (2) 16-oz. To-Go Cups & Spout Lids, Gray"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 44999,
+              "median": 34999,
+              "min": 24200
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "blender"
+            ],
+            "title": "Ninja Kitchen System | All-in-One Food Processor & Blender for Smoothies | Includes Pitcher, (2) 16 oz. To-Go Cups & 8-Cup Bowl | Makes Salsa, Dough, Shakes, & Frozen Drinks | 1500W | Black | BL770"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 34198,
+              "median": 29499,
+              "min": 17499
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "blender"
+            ],
+            "title": "Ninja Kitchen System | All-in-One Food Processor & Blender for Smoothies | Includes Pitcher, Travel Cup, & 8-Cup Bowl | Makes Salsa, Dough, Shakes, & Frozen Drinks | 120 Volts | Black | BL770AMZ"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 47518,
+              "median": 43998,
+              "min": 35299
+            },
+            "seller_count": 5,
+            "source_queries": [
+              "blender"
+            ],
+            "title": "Ninja Kitchen System | All-in-One for Smoothies, Frozen Drinks, Veggie Chopper & More | With Full-Size Pitcher, 8 Cup Food Processor Bowl, (2) 18 oz. Cups, | 1200 Watt | Dark Grey | BR601AMZ"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 30599,
+              "median": 26398,
+              "min": 25598
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "blender"
+            ],
+            "title": "Ninja Mega Kitchen System, 1500W, 72 oz. Full-Size Blender & 8-Cup Food Processor with (2) 16 oz. To-Go Cups, Total Crushing Technology - Smoothies, Ice Crushing, Purees, Dough & More, Black, BL770"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 13510,
+              "median": 7930,
+              "min": 7930
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "portable ssd"
+            ],
+            "title": "ORICO Portable SSD 512 GB with 2 in 1 USB C Cable, External Solid State Drives, Up to 460MB/s, Status Indicator, Reliable Storage for USB-C Smartphone, Tablet, PC - B5PLUS"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 31200,
+              "median": 26764,
+              "min": 23799
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "portable ssd"
+            ],
+            "title": "SanDisk 1TB Extreme PRO Portable SSD - Up to 2000MB/s - USB-C, USB 3.2 Gen 2x2, IP65 Water and Dust Resistance, Updated Firmware - External Solid State Drive - SDSSDE81-1T00-G25"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 39000,
+              "median": 34125.0,
+              "min": 14998
+            },
+            "seller_count": 4,
+            "source_queries": [
+              "adjustable dumbbells"
+            ],
+            "title": "SKOK 25/55 lbs Pair Adjustable Dumbbells Set, Adjustable Weights Dumbbells Set for Men and Women with Anti-Slip Fast Adjust Weight by Turning Handle,Black Dumbbell with Tray"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 21699,
+              "median": 21699,
+              "min": 21699
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "over ear headphones"
+            ],
+            "title": "Skullcandy Hesh ANC Wireless Over-Ear Bluetooth Headphones with Extra USB-C Charging Cable, Active Noise Canceling, 22 Hrs Battery, Foldable Lightweight Design, Microphone iPhone Android - True Black"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 215000,
+              "median": 176800.0,
+              "min": 94500
+            },
+            "seller_count": 4,
+            "source_queries": [
+              "adjustable dumbbells"
+            ],
+            "title": "SNODE AD80 Drop Proof 80 lbs Adjustable Dumbbell Set -Adjustable Weights with Cast Iron Plates and Cradle, Knurled Handle, Fast Adjust, Compact Home Gym Equipment for Bench & Press"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 19584,
+              "median": 19584,
+              "min": 19584
+            },
+            "seller_count": 3,
+            "source_queries": [
+              "portable ssd"
+            ],
+            "title": "Transcend 250GB ESD270C Portable SSD Up to 520MB/s Credit Card Size Type-C"
+          },
+          {
+            "price_minor": {
+              "currency": "USD",
+              "max": 25870,
+              "median": 13049,
+              "min": 12395
+            },
+            "seller_count": 5,
+            "source_queries": [
+              "adjustable dumbbells"
+            ],
+            "title": "Yaheetech Adjustable Dumbbell Set 28/40/52.5/90LBS Adjustable Dumbbells Fast Adjust Dumbbell Weight Set with Anti-Slip Handle and Tray for Men/Women Home Gym Strength Training Equipment Single/Pair"
+          }
+        ],
+        "eligible_rows": 16923,
+        "exclusion_counts": {
+          "insufficient_independent_sellers": 16724,
+          "non_target_currency": 1629,
+          "unavailable": 20
+        },
+        "input_rows": 18572,
+        "product_deck_count": 40,
+        "product_identity": {
+          "excluded_title_phrases": [
+            "multiple weight ranges"
+          ],
+          "generic_titles_fall_back_to_catalog_product_option": true,
+          "minimum_informative_title_tokens": 3,
+          "require_digit_bearing_title_token": true,
+          "strategy": "exact_normalized_model_title_or_catalog_product_option"
+        },
+        "seller_card_count": 172,
+        "seller_count_distribution": {
+          "10": 1,
+          "11": 1,
+          "3": 21,
+          "4": 7,
+          "5": 5,
+          "6": 2,
+          "7": 2,
+          "9": 1
+        }
+      },
+      "schema_version": 1,
+      "study": {
+        "calibration_product_count": 24,
+        "calibration_replay_deck_count": 24,
+        "cost_results": [
+          {
+            "adaptive_continue_state_count": 106,
+            "adaptive_vs_search_all": {
+              "bootstrap_replicates": 2000,
+              "ci_lower": -0.012504703174089154,
+              "ci_upper": 0.025862718704444353,
+              "favors_treatment": false,
+              "mean_difference": 0.004354664495917056,
+              "permutations_are_independent": false,
+              "product_clusters": 16
+            },
+            "arms": {
+              "adaptive_dynamic": {
+                "mean_normalized_item_price": 0.9256282978247526,
+                "mean_normalized_total_cost": 0.9953602559413993,
+                "mean_price_regret_minor": 421.6484375,
+                "mean_reveals": 2.943359375,
+                "oracle_hit_rate": 0.833984375,
+                "product_clusters": 16,
+                "replay_rows": 512
+              },
+              "search_all": {
+                "mean_normalized_item_price": 0.8947281648926266,
+                "mean_normalized_total_cost": 0.9910055914454823,
+                "mean_price_regret_minor": 0.0,
+                "mean_reveals": 4.1875,
+                "oracle_hit_rate": 1.0,
+                "product_clusters": 16,
+                "replay_rows": 512
+              }
+            },
+            "cost_components_minor": {
+              "input_tokens": 0.6,
+              "output_tokens": 0.675,
+              "shopping_api": 1.0,
+              "time": 250.0
+            },
+            "cost_scenario": "catalog_expansion",
+            "inspection_cost_minor": 252.275,
+            "inspection_cost_usd": 2.52275
+          },
+          {
+            "adaptive_continue_state_count": 83,
+            "adaptive_vs_search_all": {
+              "bootstrap_replicates": 2000,
+              "ci_lower": -0.22336631471618143,
+              "ci_upper": 0.08965156741900134,
+              "favors_treatment": false,
+              "mean_difference": -0.0695145159639868,
+              "permutations_are_independent": false,
+              "product_clusters": 16
+            },
+            "arms": {
+              "adaptive_dynamic": {
+                "mean_normalized_item_price": 1.0487965580076408,
+                "mean_normalized_total_cost": 1.2148648331936904,
+                "mean_price_regret_minor": 2449.55859375,
+                "mean_reveals": 1.62890625,
+                "oracle_hit_rate": 0.533203125,
+                "product_clusters": 16,
+                "replay_rows": 512
+              },
+              "search_all": {
+                "mean_normalized_item_price": 0.8947281648926266,
+                "mean_normalized_total_cost": 1.2843793491576772,
+                "mean_price_regret_minor": 0.0,
+                "mean_reveals": 4.1875,
+                "oracle_hit_rate": 1.0,
+                "product_clusters": 16,
+                "replay_rows": 512
+              }
+            },
+            "cost_components_minor": {
+              "input_tokens": 10.0,
+              "output_tokens": 10.0,
+              "shopping_api": 1.0,
+              "time": 1000.0
+            },
+            "cost_scenario": "agentic_review_2m",
+            "inspection_cost_minor": 1021.0,
+            "inspection_cost_usd": 10.21
+          },
+          {
+            "adaptive_continue_state_count": 31,
+            "adaptive_vs_search_all": {
+              "bootstrap_replicates": 2000,
+              "ci_lower": -0.9130029520835702,
+              "ci_upper": -0.23727708381869858,
+              "favors_treatment": true,
+              "mean_difference": -0.5528032777560138,
+              "permutations_are_independent": false,
+              "product_clusters": 16
+            },
+            "arms": {
+              "adaptive_dynamic": {
+                "mean_normalized_item_price": 1.062044539323296,
+                "mean_normalized_total_cost": 1.317197758232927,
+                "mean_price_regret_minor": 2621.0234375,
+                "mean_reveals": 1.1484375,
+                "oracle_hit_rate": 0.484375,
+                "product_clusters": 16,
+                "replay_rows": 512
+              },
+              "search_all": {
+                "mean_normalized_item_price": 0.8947281648926266,
+                "mean_normalized_total_cost": 1.870001035988941,
+                "mean_price_regret_minor": 0.0,
+                "mean_reveals": 4.1875,
+                "oracle_hit_rate": 1.0,
+                "product_clusters": 16,
+                "replay_rows": 512
+              }
+            },
+            "cost_components_minor": {
+              "input_tokens": 30.0,
+              "output_tokens": 18.0,
+              "shopping_api": 7.5,
+              "time": 2500.0
+            },
+            "cost_scenario": "long_horizon_research_5m",
+            "inspection_cost_minor": 2555.5,
+            "inspection_cost_usd": 25.555
+          }
+        ],
+        "held_out_product_count": 16,
+        "held_out_replay_deck_count": 16,
+        "independent_unit": "exact_normalized_model_title",
+        "permutations_are_independent": false,
+        "permutations_per_product": 32,
+        "random_seed": 20260723,
+        "schema_version": 1
       }
     },
-    "held_out_episode_count": 152,
-    "max_queries": 2,
-    "measured_stockout_rate": 0.008475,
-    "total_hard_budget_violations": 0,
-    "tuned_fixed_depth": 1,
-    "tuned_threshold_quantile": 0.0,
-    "tuning_episode_count": 142
+    "seller_card_count": 172,
+    "status": "exploratory_recovered_deep_query_prefix"
   },
-  "rule_comparison": {
-    "arms": [
+  "study_design": "source_stratified_recalled_pandora_search",
+  "ucp_cost_sensitivity": {
+    "base_scenario_id": "catalog_expansion",
+    "calibration_product_count": 2072,
+    "calibration_replay_deck_count": 4016,
+    "cost_results": [
       {
-        "arm": "accept_first",
-        "episodes": 297,
-        "failure_rate": 0.0,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 5210.723906,
-        "mean_purchase_loss_minor": 15038.255892,
-        "mean_query_count": 1.03367,
-        "purchase_success_rate": 1.0
+        "adaptive_continue_state_count": 599,
+        "adaptive_vs_search_all": {
+          "bootstrap_replicates": 2000,
+          "ci_lower": 5.038205916449523e-05,
+          "ci_upper": 0.0007441089867613519,
+          "favors_treatment": false,
+          "mean_difference": 0.00032368028302019784,
+          "permutations_are_independent": false,
+          "product_clusters": 1381
+        },
+        "arms": {
+          "adaptive_dynamic": {
+            "mean_normalized_item_price": 0.6181270927712025,
+            "mean_normalized_total_cost": 0.6181270927712025,
+            "mean_price_regret_minor": 0.7038776493256262,
+            "mean_reveals": 3.3385838150289016,
+            "oracle_hit_rate": 0.9990245664739884,
+            "product_clusters": 1381,
+            "replay_rows": 83040
+          },
+          "search_all": {
+            "mean_normalized_item_price": 0.6176380482897312,
+            "mean_normalized_total_cost": 0.6176380482897312,
+            "mean_price_regret_minor": 0.0,
+            "mean_reveals": 3.388053949903661,
+            "oracle_hit_rate": 1.0,
+            "product_clusters": 1381,
+            "replay_rows": 83040
+          }
+        },
+        "cost_components_minor": {
+          "input_tokens": 0.0,
+          "output_tokens": 0.0,
+          "shopping_api": 0.0,
+          "time": 0.0
+        },
+        "cost_scenario": "catalog_expansion_x0",
+        "inspection_cost_minor": 0.0,
+        "inspection_cost_usd": 0.0
       },
       {
-        "arm": "fixed_depth",
-        "episodes": 297,
-        "failure_rate": 0.0,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 2163.93266,
-        "mean_purchase_loss_minor": 11991.464646,
-        "mean_query_count": 5.69697,
-        "purchase_success_rate": 1.0
+        "adaptive_continue_state_count": 571,
+        "adaptive_vs_search_all": {
+          "bootstrap_replicates": 2000,
+          "ci_lower": -0.0006183945709851043,
+          "ci_upper": 0.0006531504507410269,
+          "favors_treatment": false,
+          "mean_difference": -5.690505754496019e-06,
+          "permutations_are_independent": false,
+          "product_clusters": 1381
+        },
+        "arms": {
+          "adaptive_dynamic": {
+            "mean_normalized_item_price": 0.6182688121335859,
+            "mean_normalized_total_cost": 0.62552853518478,
+            "mean_price_regret_minor": 0.865606936416185,
+            "mean_reveals": 3.30604527938343,
+            "oracle_hit_rate": 0.9986873795761079,
+            "product_clusters": 1381,
+            "replay_rows": 83040
+          },
+          "search_all": {
+            "mean_normalized_item_price": 0.6176380482897312,
+            "mean_normalized_total_cost": 0.6270368717398984,
+            "mean_price_regret_minor": 0.0,
+            "mean_reveals": 3.388053949903661,
+            "oracle_hit_rate": 1.0,
+            "product_clusters": 1381,
+            "replay_rows": 83040
+          }
+        },
+        "cost_components_minor": {
+          "input_tokens": 0.006,
+          "output_tokens": 0.00675,
+          "shopping_api": 0.01,
+          "time": 2.5
+        },
+        "cost_scenario": "catalog_expansion_x0.01",
+        "inspection_cost_minor": 2.52275,
+        "inspection_cost_usd": 0.0252275
       },
       {
-        "arm": "fixed_threshold",
-        "episodes": 297,
-        "failure_rate": 0.0,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 1208.329966,
-        "mean_purchase_loss_minor": 11035.861953,
-        "mean_query_count": 2.959596,
-        "purchase_success_rate": 1.0
+        "adaptive_continue_state_count": 516,
+        "adaptive_vs_search_all": {
+          "bootstrap_replicates": 2000,
+          "ci_lower": -0.011876159546584537,
+          "ci_upper": 0.0011515700985025952,
+          "favors_treatment": false,
+          "mean_difference": -0.004250138982905247,
+          "permutations_are_independent": false,
+          "product_clusters": 1381
+        },
+        "arms": {
+          "adaptive_dynamic": {
+            "mean_normalized_item_price": 0.6202711792335389,
+            "mean_normalized_total_cost": 0.684345488668429,
+            "mean_price_regret_minor": 3.527420520231214,
+            "mean_reveals": 3.2610067437379575,
+            "oracle_hit_rate": 0.9963270712909441,
+            "product_clusters": 1381,
+            "replay_rows": 83040
+          },
+          "search_all": {
+            "mean_normalized_item_price": 0.6176380482897312,
+            "mean_normalized_total_cost": 0.7116262827914034,
+            "mean_price_regret_minor": 0.0,
+            "mean_reveals": 3.388053949903661,
+            "oracle_hit_rate": 1.0,
+            "product_clusters": 1381,
+            "replay_rows": 83040
+          }
+        },
+        "cost_components_minor": {
+          "input_tokens": 0.06,
+          "output_tokens": 0.0675,
+          "shopping_api": 0.1,
+          "time": 25.0
+        },
+        "cost_scenario": "catalog_expansion_x0.1",
+        "inspection_cost_minor": 25.2275,
+        "inspection_cost_usd": 0.252275
       },
       {
-        "arm": "equal_split",
-        "episodes": 297,
-        "failure_rate": 0.0,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 5332.242424,
-        "mean_purchase_loss_minor": 15159.774411,
-        "mean_query_count": 5.043771,
-        "purchase_success_rate": 1.0
+        "adaptive_continue_state_count": 261,
+        "adaptive_vs_search_all": {
+          "bootstrap_replicates": 2000,
+          "ci_lower": -0.1659881516533811,
+          "ci_upper": -0.016801129968507356,
+          "favors_treatment": true,
+          "mean_difference": -0.0847405754836319,
+          "permutations_are_independent": false,
+          "product_clusters": 1381
+        },
+        "arms": {
+          "adaptive_dynamic": {
+            "mean_normalized_item_price": 0.7227317982736742,
+            "mean_normalized_total_cost": 1.1700097001319345,
+            "mean_price_regret_minor": 706.8863921001927,
+            "mean_reveals": 2.3378131021194606,
+            "oracle_hit_rate": 0.7929552023121387,
+            "product_clusters": 1381,
+            "replay_rows": 83040
+          },
+          "search_all": {
+            "mean_normalized_item_price": 0.6176380482897312,
+            "mean_normalized_total_cost": 1.5575203933064532,
+            "mean_price_regret_minor": 0.0,
+            "mean_reveals": 3.388053949903661,
+            "oracle_hit_rate": 1.0,
+            "product_clusters": 1381,
+            "replay_rows": 83040
+          }
+        },
+        "cost_components_minor": {
+          "input_tokens": 0.6,
+          "output_tokens": 0.675,
+          "shopping_api": 1.0,
+          "time": 250.0
+        },
+        "cost_scenario": "catalog_expansion_x1",
+        "inspection_cost_minor": 252.275,
+        "inspection_cost_usd": 2.52275
       },
       {
-        "arm": "myopic_voi",
-        "episodes": 297,
-        "failure_rate": 0.003367,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 547.949324,
-        "mean_purchase_loss_minor": 10413.3367,
-        "mean_query_count": 4.740741,
-        "purchase_success_rate": 0.996633
-      },
-      {
-        "arm": "secretary_37",
-        "episodes": 297,
-        "failure_rate": 0.030303,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 2592.583333,
-        "mean_purchase_loss_minor": 12727.892256,
-        "mean_query_count": 8.006734,
-        "purchase_success_rate": 0.969697
-      },
-      {
-        "arm": "closed_form",
-        "episodes": 297,
-        "failure_rate": 0.0,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 964.131313,
-        "mean_purchase_loss_minor": 10791.6633,
-        "mean_query_count": 3.427609,
-        "purchase_success_rate": 1.0
-      },
-      {
-        "arm": "adaptive_stopping",
-        "episodes": 297,
-        "failure_rate": 0.0,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 531.794613,
-        "mean_purchase_loss_minor": 10359.326599,
-        "mean_query_count": 4.565657,
-        "purchase_success_rate": 1.0
-      },
-      {
-        "arm": "exhaustive_oracle",
-        "episodes": 297,
-        "failure_rate": 0.0,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 0.0,
-        "mean_purchase_loss_minor": 9827.531987,
-        "mean_query_count": 10.0,
-        "purchase_success_rate": 1.0
-      },
-      {
-        "arm": "never_accept",
-        "episodes": 297,
-        "failure_rate": 1.0,
-        "hard_budget_violations": 0,
-        "mean_price_regret_minor": 0.0,
-        "mean_purchase_loss_minor": 21869.063973,
-        "mean_query_count": 0.0,
-        "purchase_success_rate": 0.0
+        "adaptive_continue_state_count": 27,
+        "adaptive_vs_search_all": {
+          "bootstrap_replicates": 2000,
+          "ci_lower": -2.986466430780379,
+          "ci_upper": -1.4523449470735905,
+          "favors_treatment": true,
+          "mean_difference": -2.1584051043477914,
+          "permutations_are_independent": false,
+          "product_clusters": 1381
+        },
+        "arms": {
+          "adaptive_dynamic": {
+            "mean_normalized_item_price": 1.0148240925169538,
+            "mean_normalized_total_cost": 4.747229390753925,
+            "mean_price_regret_minor": 1968.2159079961464,
+            "mean_reveals": 1.8425578034682082,
+            "oracle_hit_rate": 0.6740125240847784,
+            "product_clusters": 1381,
+            "replay_rows": 83040
+          },
+          "search_all": {
+            "mean_normalized_item_price": 0.6176380482897312,
+            "mean_normalized_total_cost": 10.016461498456952,
+            "mean_price_regret_minor": 0.0,
+            "mean_reveals": 3.388053949903661,
+            "oracle_hit_rate": 1.0,
+            "product_clusters": 1381,
+            "replay_rows": 83040
+          }
+        },
+        "cost_components_minor": {
+          "input_tokens": 6.0,
+          "output_tokens": 6.75,
+          "shopping_api": 10.0,
+          "time": 2500.0
+        },
+        "cost_scenario": "catalog_expansion_x10",
+        "inspection_cost_minor": 2522.75,
+        "inspection_cost_usd": 25.2275
       }
     ],
-    "closed_form_vs_solver_minor": 432.3367,
-    "dispersion_ratio": 2.0,
-    "held_out_episodes": 297,
-    "merchant_count": 10,
-    "savings_captured": {
-      "accept_first": 0.0,
-      "adaptive_stopping": 0.8979,
-      "closed_form": 0.815,
-      "equal_split": -0.0233,
-      "exhaustive_oracle": 1.0,
-      "fixed_depth": 0.5847,
-      "fixed_threshold": 0.7681,
-      "myopic_voi": 0.8876,
-      "never_accept": -1.3109,
-      "secretary_37": 0.4434
-    },
-    "secretary_vs_closed_form_minor": 1936.229
+    "held_out_product_count": 1381,
+    "held_out_replay_deck_count": 2595,
+    "independent_unit": "exact_normalized_model_title",
+    "interpretation": "Multipliers scale the complete declared per-inspection cost while holding the dated provider-rate card and workload composition fixed.",
+    "market_rate_multiplier_basis_points": [
+      0,
+      100,
+      1000,
+      10000,
+      100000
+    ],
+    "permutations_are_independent": false,
+    "permutations_per_product": 32,
+    "random_seed": 20260723,
+    "schema_version": 1,
+    "status": "analyzed_registered_market_rate_multipliers"
   },
-  "rule_comparison_merchant_count": 10,
-  "secretary_costs_more_than_closed_form_minor": 1936.229,
-  "secretary_savings_captured": 0.4434,
-  "secretary_savings_captured_percent": 44.3,
-  "simulation_cells": [
-    {
-      "adaptive_loss_minor": 10949.420513,
-      "adaptive_wins": false,
-      "best_fixed_arm": "accept_first",
-      "best_fixed_loss_minor": 10949.420513,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": 0.0,
-      "ci_upper_minor": 0.0,
-      "dispersion_ratio": 1.01,
-      "held_out_episodes": 195,
-      "max_queries": 1,
-      "mean_difference_minor": 0.0,
-      "merchant_count": 2,
-      "oracle_loss_minor": 9194.753846,
-      "relative_improvement": -0.0,
-      "significant": false
+  "ucp_direct_panels": {
+    "cost_overlay": {
+      "assumption": "Every merchant probe is charged one registered scenario cost; this is a counterfactual cost allocation, not observed provider billing.",
+      "included_observation_dates": [
+        {
+          "call_count_source": "unique_observation_domains_lower_bound",
+          "merchant_probe_calls": 971,
+          "observation_date": "2026-09-03"
+        },
+        {
+          "call_count_source": "manifest.merchants_probed",
+          "merchant_probe_calls": 963,
+          "observation_date": "2026-09-04"
+        },
+        {
+          "call_count_source": "manifest.merchants_probed",
+          "merchant_probe_calls": 961,
+          "observation_date": "2026-09-05"
+        },
+        {
+          "call_count_source": "manifest.merchants_probed",
+          "merchant_probe_calls": 783,
+          "observation_date": "2026-09-06"
+        },
+        {
+          "call_count_source": "manifest.merchants_probed",
+          "merchant_probe_calls": 492,
+          "observation_date": "2026-09-08"
+        },
+        {
+          "call_count_source": "manifest.merchants_probed",
+          "merchant_probe_calls": 492,
+          "observation_date": "2026-09-09"
+        },
+        {
+          "call_count_source": "manifest.merchants_probed",
+          "merchant_probe_calls": 490,
+          "observation_date": "2026-09-10"
+        },
+        {
+          "call_count_source": "manifest.merchants_probed",
+          "merchant_probe_calls": 487,
+          "observation_date": "2026-09-11"
+        },
+        {
+          "call_count_source": "manifest.merchants_probed",
+          "merchant_probe_calls": 486,
+          "observation_date": "2026-09-14"
+        },
+        {
+          "call_count_source": "manifest.merchants_probed",
+          "merchant_probe_calls": 486,
+          "observation_date": "2026-09-15"
+        }
+      ],
+      "replay_unit": "one merchant-targeted catalog probe",
+      "scenarios": [
+        {
+          "cost_components_minor_per_probe": {
+            "input_tokens": 0.6,
+            "output_tokens": 0.675,
+            "shopping_api": 1.0,
+            "time": 250.0
+          },
+          "cost_per_merchant_probe_minor": 252.275,
+          "cost_per_merchant_probe_usd": 2.52275,
+          "cost_scenario": "catalog_expansion",
+          "total_cost_minor": 1667790.025,
+          "total_cost_usd": 16677.90025
+        },
+        {
+          "cost_components_minor_per_probe": {
+            "input_tokens": 10.0,
+            "output_tokens": 10.0,
+            "shopping_api": 1.0,
+            "time": 1000.0
+          },
+          "cost_per_merchant_probe_minor": 1021.0,
+          "cost_per_merchant_probe_usd": 10.21,
+          "cost_scenario": "agentic_review_2m",
+          "total_cost_minor": 6749831.0,
+          "total_cost_usd": 67498.31
+        },
+        {
+          "cost_components_minor_per_probe": {
+            "input_tokens": 30.0,
+            "output_tokens": 18.0,
+            "shopping_api": 7.5,
+            "time": 2500.0
+          },
+          "cost_per_merchant_probe_minor": 2555.5,
+          "cost_per_merchant_probe_usd": 25.555,
+          "cost_scenario": "long_horizon_research_5m",
+          "total_cost_minor": 16894410.5,
+          "total_cost_usd": 168944.105
+        }
+      ],
+      "status": "declared_historical_cost_overlay",
+      "total_merchant_probe_calls": 6611
     },
-    {
-      "adaptive_loss_minor": 9551.097436,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 9551.097436,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": 0.0,
-      "ci_upper_minor": 0.0,
-      "dispersion_ratio": 1.01,
-      "held_out_episodes": 195,
-      "max_queries": 2,
-      "mean_difference_minor": 0.0,
-      "merchant_count": 2,
-      "oracle_loss_minor": 9190.251282,
-      "relative_improvement": -0.0,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 10993.902564,
-      "adaptive_wins": false,
-      "best_fixed_arm": "accept_first",
-      "best_fixed_loss_minor": 10993.902564,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": 0.0,
-      "ci_upper_minor": 0.0,
-      "dispersion_ratio": 1.1,
-      "held_out_episodes": 195,
-      "max_queries": 1,
-      "mean_difference_minor": 0.0,
-      "merchant_count": 2,
-      "oracle_loss_minor": 9589.035897,
-      "relative_improvement": -0.0,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 9879.707692,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 9826.605128,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": -16.897436,
-      "ci_upper_minor": 171.630769,
-      "dispersion_ratio": 1.1,
-      "held_out_episodes": 195,
-      "max_queries": 2,
-      "mean_difference_minor": 53.102564,
-      "merchant_count": 2,
-      "oracle_loss_minor": 9552.712821,
-      "relative_improvement": -0.0054,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 12059.323077,
-      "adaptive_wins": false,
-      "best_fixed_arm": "accept_first",
-      "best_fixed_loss_minor": 12059.323077,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": 0.0,
-      "ci_upper_minor": 0.0,
-      "dispersion_ratio": 1.3,
-      "held_out_episodes": 195,
-      "max_queries": 1,
-      "mean_difference_minor": 0.0,
-      "merchant_count": 2,
-      "oracle_loss_minor": 10507.466667,
-      "relative_improvement": -0.0,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 10602.45641,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 10617.876923,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": -73.65641,
-      "ci_upper_minor": 33.964103,
-      "dispersion_ratio": 1.3,
-      "held_out_episodes": 195,
-      "max_queries": 2,
-      "mean_difference_minor": -15.420513,
-      "merchant_count": 2,
-      "oracle_loss_minor": 10337.158974,
-      "relative_improvement": 0.0015,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 15671.630769,
-      "adaptive_wins": false,
-      "best_fixed_arm": "accept_first",
-      "best_fixed_loss_minor": 15671.630769,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": 0.0,
-      "ci_upper_minor": 0.0,
-      "dispersion_ratio": 2.0,
-      "held_out_episodes": 195,
-      "max_queries": 1,
-      "mean_difference_minor": 0.0,
-      "merchant_count": 2,
-      "oracle_loss_minor": 12648.948718,
-      "relative_improvement": -0.0,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 13387.707692,
-      "adaptive_wins": true,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 13776.984615,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": -678.34359,
-      "ci_upper_minor": -102.54359,
-      "dispersion_ratio": 2.0,
-      "held_out_episodes": 195,
-      "max_queries": 2,
-      "mean_difference_minor": -389.276923,
-      "merchant_count": 2,
-      "oracle_loss_minor": 12947.071795,
-      "relative_improvement": 0.0283,
-      "significant": true
-    },
-    {
-      "adaptive_loss_minor": 10297.533333,
-      "adaptive_wins": false,
-      "best_fixed_arm": "accept_first",
-      "best_fixed_loss_minor": 10297.533333,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": 0.0,
-      "ci_upper_minor": 0.0,
-      "dispersion_ratio": 1.01,
-      "held_out_episodes": 195,
-      "max_queries": 1,
-      "mean_difference_minor": 0.0,
-      "merchant_count": 3,
-      "oracle_loss_minor": 8685.646154,
-      "relative_improvement": -0.0,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 9068.625641,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 9062.471795,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": 0.0,
-      "ci_upper_minor": 18.461538,
-      "dispersion_ratio": 1.01,
-      "held_out_episodes": 195,
-      "max_queries": 3,
-      "mean_difference_minor": 6.153846,
-      "merchant_count": 3,
-      "oracle_loss_minor": 8637.892308,
-      "relative_improvement": -0.0007,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 11464.512821,
-      "adaptive_wins": false,
-      "best_fixed_arm": "accept_first",
-      "best_fixed_loss_minor": 11464.512821,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": 0.0,
-      "ci_upper_minor": 0.0,
-      "dispersion_ratio": 1.1,
-      "held_out_episodes": 195,
-      "max_queries": 1,
-      "mean_difference_minor": 0.0,
-      "merchant_count": 3,
-      "oracle_loss_minor": 9088.338462,
-      "relative_improvement": -0.0,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 9605.789744,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 9618.05641,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": -66.666667,
-      "ci_upper_minor": 37.610256,
-      "dispersion_ratio": 1.1,
-      "held_out_episodes": 195,
-      "max_queries": 3,
-      "mean_difference_minor": -12.266667,
-      "merchant_count": 3,
-      "oracle_loss_minor": 9067.071795,
-      "relative_improvement": 0.0013,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 12031.846154,
-      "adaptive_wins": false,
-      "best_fixed_arm": "accept_first",
-      "best_fixed_loss_minor": 12031.846154,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": 0.0,
-      "ci_upper_minor": 0.0,
-      "dispersion_ratio": 1.3,
-      "held_out_episodes": 195,
-      "max_queries": 1,
-      "mean_difference_minor": 0.0,
-      "merchant_count": 3,
-      "oracle_loss_minor": 9941.676923,
-      "relative_improvement": -0.0,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 10218.620513,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 10230.241026,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": -109.984615,
-      "ci_upper_minor": 126.584615,
-      "dispersion_ratio": 1.3,
-      "held_out_episodes": 195,
-      "max_queries": 3,
-      "mean_difference_minor": -11.620513,
-      "merchant_count": 3,
-      "oracle_loss_minor": 9712.605128,
-      "relative_improvement": 0.0011,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 15553.425641,
-      "adaptive_wins": false,
-      "best_fixed_arm": "accept_first",
-      "best_fixed_loss_minor": 15553.425641,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": 0.0,
-      "ci_upper_minor": 0.0,
-      "dispersion_ratio": 2.0,
-      "held_out_episodes": 195,
-      "max_queries": 1,
-      "mean_difference_minor": 0.0,
-      "merchant_count": 3,
-      "oracle_loss_minor": 11897.092308,
-      "relative_improvement": -0.0,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 12461.225641,
-      "adaptive_wins": true,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 12770.6,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": -596.615385,
-      "ci_upper_minor": -26.502564,
-      "dispersion_ratio": 2.0,
-      "held_out_episodes": 195,
-      "max_queries": 3,
-      "mean_difference_minor": -309.374359,
-      "merchant_count": 3,
-      "oracle_loss_minor": 11903.969231,
-      "relative_improvement": 0.0242,
-      "significant": true
-    },
-    {
-      "adaptive_loss_minor": 9338.097436,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 9338.097436,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": 0.0,
-      "ci_upper_minor": 0.0,
-      "dispersion_ratio": 1.01,
-      "held_out_episodes": 195,
-      "max_queries": 2,
-      "mean_difference_minor": 0.0,
-      "merchant_count": 5,
-      "oracle_loss_minor": 8061.184615,
-      "relative_improvement": -0.0,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 8606.815385,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 8606.815385,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": 0.0,
-      "ci_upper_minor": 0.0,
-      "dispersion_ratio": 1.01,
-      "held_out_episodes": 195,
-      "max_queries": 5,
-      "mean_difference_minor": 0.0,
-      "merchant_count": 5,
-      "oracle_loss_minor": 8100.789744,
-      "relative_improvement": -0.0,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 10252.025641,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 10044.548718,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": 32.205128,
-      "ci_upper_minor": 430.061538,
-      "dispersion_ratio": 1.1,
-      "held_out_episodes": 195,
-      "max_queries": 2,
-      "mean_difference_minor": 207.476923,
-      "merchant_count": 5,
-      "oracle_loss_minor": 8591.133333,
-      "relative_improvement": -0.0207,
-      "significant": true
-    },
-    {
-      "adaptive_loss_minor": 9189.712821,
-      "adaptive_wins": true,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 9237.512821,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": -90.087179,
-      "ci_upper_minor": -13.692308,
-      "dispersion_ratio": 1.1,
-      "held_out_episodes": 195,
-      "max_queries": 5,
-      "mean_difference_minor": -47.8,
-      "merchant_count": 5,
-      "oracle_loss_minor": 8421.6,
-      "relative_improvement": 0.0052,
-      "significant": true
-    },
-    {
-      "adaptive_loss_minor": 10943.533333,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 10985.958974,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": -166.994872,
-      "ci_upper_minor": 98.271795,
-      "dispersion_ratio": 1.3,
-      "held_out_episodes": 195,
-      "max_queries": 2,
-      "mean_difference_minor": -42.425641,
-      "merchant_count": 5,
-      "oracle_loss_minor": 9166.441026,
-      "relative_improvement": 0.0039,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 9585.579487,
-      "adaptive_wins": true,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 9749.851282,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": -332.594872,
-      "ci_upper_minor": -24.492308,
-      "dispersion_ratio": 1.3,
-      "held_out_episodes": 195,
-      "max_queries": 5,
-      "mean_difference_minor": -164.271795,
-      "merchant_count": 5,
-      "oracle_loss_minor": 9130.0,
-      "relative_improvement": 0.0168,
-      "significant": true
-    },
-    {
-      "adaptive_loss_minor": 13734.4,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 13872.348718,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": -371.620513,
-      "ci_upper_minor": 109.010256,
-      "dispersion_ratio": 2.0,
-      "held_out_episodes": 195,
-      "max_queries": 2,
-      "mean_difference_minor": -137.948718,
-      "merchant_count": 5,
-      "oracle_loss_minor": 10877.692308,
-      "relative_improvement": 0.0099,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 11382.4,
-      "adaptive_wins": true,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 11871.569231,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": -772.825641,
-      "ci_upper_minor": -209.815385,
-      "dispersion_ratio": 2.0,
-      "held_out_episodes": 195,
-      "max_queries": 5,
-      "mean_difference_minor": -489.169231,
-      "merchant_count": 5,
-      "oracle_loss_minor": 10952.348718,
-      "relative_improvement": 0.0412,
-      "significant": true
-    },
-    {
-      "adaptive_loss_minor": 8801.482051,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 8801.482051,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": 0.0,
-      "ci_upper_minor": 0.0,
-      "dispersion_ratio": 1.01,
-      "held_out_episodes": 195,
-      "max_queries": 4,
-      "mean_difference_minor": 0.0,
-      "merchant_count": 8,
-      "oracle_loss_minor": 7795.810256,
-      "relative_improvement": -0.0,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 8605.14359,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 8605.14359,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": 0.0,
-      "ci_upper_minor": 0.0,
-      "dispersion_ratio": 1.01,
-      "held_out_episodes": 195,
-      "max_queries": 8,
-      "mean_difference_minor": 0.0,
-      "merchant_count": 8,
-      "oracle_loss_minor": 7862.897436,
-      "relative_improvement": -0.0,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 9358.641026,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 9345.892308,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": -35.235897,
-      "ci_upper_minor": 59.876923,
-      "dispersion_ratio": 1.1,
-      "held_out_episodes": 195,
-      "max_queries": 4,
-      "mean_difference_minor": 12.748718,
-      "merchant_count": 8,
-      "oracle_loss_minor": 8107.374359,
-      "relative_improvement": -0.0014,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 8793.482051,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 8743.415385,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": 10.953846,
-      "ci_upper_minor": 98.933333,
-      "dispersion_ratio": 1.1,
-      "held_out_episodes": 195,
-      "max_queries": 8,
-      "mean_difference_minor": 50.066667,
-      "merchant_count": 8,
-      "oracle_loss_minor": 8044.174359,
-      "relative_improvement": -0.0057,
-      "significant": true
-    },
-    {
-      "adaptive_loss_minor": 9920.112821,
-      "adaptive_wins": true,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 10048.241026,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": -299.184615,
-      "ci_upper_minor": -1.461538,
-      "dispersion_ratio": 1.3,
-      "held_out_episodes": 195,
-      "max_queries": 4,
-      "mean_difference_minor": -128.128205,
-      "merchant_count": 8,
-      "oracle_loss_minor": 8750.435897,
-      "relative_improvement": 0.0128,
-      "significant": true
-    },
-    {
-      "adaptive_loss_minor": 9287.876923,
-      "adaptive_wins": false,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 9294.851282,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": -141.630769,
-      "ci_upper_minor": 108.087179,
-      "dispersion_ratio": 1.3,
-      "held_out_episodes": 195,
-      "max_queries": 8,
-      "mean_difference_minor": -6.974359,
-      "merchant_count": 8,
-      "oracle_loss_minor": 8744.451282,
-      "relative_improvement": 0.0008,
-      "significant": false
-    },
-    {
-      "adaptive_loss_minor": 11713.071795,
-      "adaptive_wins": true,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 12040.646154,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 0.5,
-      "ci_lower_minor": -551.820513,
-      "ci_upper_minor": -125.666667,
-      "dispersion_ratio": 2.0,
-      "held_out_episodes": 195,
-      "max_queries": 4,
-      "mean_difference_minor": -327.574359,
-      "merchant_count": 8,
-      "oracle_loss_minor": 10018.328205,
-      "relative_improvement": 0.0272,
-      "significant": true
-    },
-    {
-      "adaptive_loss_minor": 10722.528205,
-      "adaptive_wins": true,
-      "best_fixed_arm": "fixed_threshold",
-      "best_fixed_loss_minor": 11436.994872,
-      "bootstrap_replicates": 2000,
-      "budget_fraction": 1.0,
-      "ci_lower_minor": -1082.507692,
-      "ci_upper_minor": -383.323077,
-      "dispersion_ratio": 2.0,
-      "held_out_episodes": 195,
-      "max_queries": 8,
-      "mean_difference_minor": -714.466667,
-      "merchant_count": 8,
-      "oracle_loss_minor": 10180.989744,
-      "relative_improvement": 0.0625,
-      "significant": true
-    }
-  ],
-  "solver_agrees_with_enumeration": true,
-  "solver_cases_verified": 5,
-  "solver_savings_captured": 0.8979,
-  "solver_savings_captured_percent": 89.8,
-  "solver_verification": {
-    "all_agree": true,
-    "case_count": 5,
-    "cases": [
-      {
-        "agrees": true,
-        "enumerated_expected_loss": 80.0,
-        "id": "two-merchants-distinct",
-        "solver_expected_loss": 80.0
-      },
-      {
-        "agrees": true,
-        "enumerated_expected_loss": 100.0,
-        "id": "two-merchants-stockout",
-        "solver_expected_loss": 100.0
-      },
-      {
-        "agrees": true,
-        "enumerated_expected_loss": 90.0,
-        "id": "three-merchants-spread",
-        "solver_expected_loss": 90.0
-      },
-      {
-        "agrees": true,
-        "enumerated_expected_loss": 115.0,
-        "id": "price-cap-binds",
-        "solver_expected_loss": 115.0
-      },
-      {
-        "agrees": true,
-        "enumerated_expected_loss": 196.66666666666666,
-        "id": "penalty-dominates",
-        "solver_expected_loss": 196.66666666666666
+    "excluded_dates": {
+      "2026-09-16": {
+        "classification": "common_mode_protocol_discontinuity",
+        "reason": "A full same-day rerun fully paginated all 486 eligible merchants but returned zero tracked offers for 276 of them. Relative to September 15, 8,126 of 9,758 comparable offers disappeared across 206 of 309 comparable domains, confirming a coordinated protocol-level retrieval change rather than independently attributable merchant delisting."
       }
-    ]
-  },
-  "study_seed": 20260723,
-  "sweep_cells": 32,
-  "sweep_cells_favoring_adaptive": 8,
-  "sweep_cells_favoring_fixed": 2,
-  "tracked_listings": 29676,
-  "unique_skus": 269875
+    },
+    "included_lifecycle_dates": [
+      "2026-09-03",
+      "2026-09-04",
+      "2026-09-05",
+      "2026-09-06",
+      "2026-09-08",
+      "2026-09-09",
+      "2026-09-10",
+      "2026-09-11",
+      "2026-09-14",
+      "2026-09-15"
+    ],
+    "offers_that_reappeared": 135,
+    "pandora_replay": {
+      "calibration_product_count": 2072,
+      "calibration_replay_deck_count": 4016,
+      "cost_results": [
+        {
+          "adaptive_continue_state_count": 261,
+          "adaptive_vs_search_all": {
+            "bootstrap_replicates": 2000,
+            "ci_lower": -0.16531100842849947,
+            "ci_upper": -0.018752811239419652,
+            "favors_treatment": true,
+            "mean_difference": -0.0847405754836319,
+            "permutations_are_independent": false,
+            "product_clusters": 1381
+          },
+          "arms": {
+            "adaptive_dynamic": {
+              "mean_normalized_item_price": 0.7227317982736742,
+              "mean_normalized_total_cost": 1.1700097001319345,
+              "mean_price_regret_minor": 706.8863921001927,
+              "mean_reveals": 2.3378131021194606,
+              "oracle_hit_rate": 0.7929552023121387,
+              "product_clusters": 1381,
+              "replay_rows": 83040
+            },
+            "search_all": {
+              "mean_normalized_item_price": 0.6176380482897312,
+              "mean_normalized_total_cost": 1.5575203933064532,
+              "mean_price_regret_minor": 0.0,
+              "mean_reveals": 3.388053949903661,
+              "oracle_hit_rate": 1.0,
+              "product_clusters": 1381,
+              "replay_rows": 83040
+            }
+          },
+          "cost_components_minor": {
+            "input_tokens": 0.6,
+            "output_tokens": 0.675,
+            "shopping_api": 1.0,
+            "time": 250.0
+          },
+          "cost_scenario": "catalog_expansion",
+          "inspection_cost_minor": 252.275,
+          "inspection_cost_usd": 2.52275
+        },
+        {
+          "adaptive_continue_state_count": 49,
+          "adaptive_vs_search_all": {
+            "bootstrap_replicates": 2000,
+            "ci_lower": -1.1296478803882541,
+            "ci_upper": -0.5235730843284544,
+            "favors_treatment": true,
+            "mean_difference": -0.7908584773088333,
+            "permutations_are_independent": false,
+            "product_clusters": 1381
+          },
+          "arms": {
+            "adaptive_dynamic": {
+              "mean_normalized_item_price": 0.7772483273671675,
+              "mean_normalized_total_cost": 2.395256351156093,
+              "mean_price_regret_minor": 1035.6309248554912,
+              "mean_reveals": 2.001974951830443,
+              "oracle_hit_rate": 0.7129455684007707,
+              "product_clusters": 1381,
+              "replay_rows": 83040
+            },
+            "search_all": {
+              "mean_normalized_item_price": 0.6176380482897312,
+              "mean_normalized_total_cost": 4.421502379920186,
+              "mean_price_regret_minor": 0.0,
+              "mean_reveals": 3.388053949903661,
+              "oracle_hit_rate": 1.0,
+              "product_clusters": 1381,
+              "replay_rows": 83040
+            }
+          },
+          "cost_components_minor": {
+            "input_tokens": 10.0,
+            "output_tokens": 10.0,
+            "shopping_api": 1.0,
+            "time": 1000.0
+          },
+          "cost_scenario": "agentic_review_2m",
+          "inspection_cost_minor": 1021.0,
+          "inspection_cost_usd": 10.21
+        },
+        {
+          "adaptive_continue_state_count": 27,
+          "adaptive_vs_search_all": {
+            "bootstrap_replicates": 2000,
+            "ci_lower": -3.032970954007137,
+            "ci_upper": -1.511684826330951,
+            "favors_treatment": true,
+            "mean_difference": -2.1914301294213865,
+            "permutations_are_independent": false,
+            "product_clusters": 1381
+          },
+          "arms": {
+            "adaptive_dynamic": {
+              "mean_normalized_item_price": 1.0148240925169538,
+              "mean_normalized_total_cost": 4.795682972566337,
+              "mean_price_regret_minor": 1968.2159079961464,
+              "mean_reveals": 1.8425578034682082,
+              "oracle_hit_rate": 0.6740125240847784,
+              "product_clusters": 1381,
+              "replay_rows": 83040
+            },
+            "search_all": {
+              "mean_normalized_item_price": 0.6176380482897312,
+              "mean_normalized_total_cost": 10.138475755911307,
+              "mean_price_regret_minor": 0.0,
+              "mean_reveals": 3.388053949903661,
+              "oracle_hit_rate": 1.0,
+              "product_clusters": 1381,
+              "replay_rows": 83040
+            }
+          },
+          "cost_components_minor": {
+            "input_tokens": 30.0,
+            "output_tokens": 18.0,
+            "shopping_api": 7.5,
+            "time": 2500.0
+          },
+          "cost_scenario": "long_horizon_research_5m",
+          "inspection_cost_minor": 2555.5,
+          "inspection_cost_usd": 25.555
+        }
+      ],
+      "deck_counts_by_date": {
+        "2026-09-03": 3445,
+        "2026-09-04": 2506,
+        "2026-09-05": 272,
+        "2026-09-06": 57,
+        "2026-09-08": 92,
+        "2026-09-09": 77,
+        "2026-09-10": 45,
+        "2026-09-11": 46,
+        "2026-09-14": 44,
+        "2026-09-15": 27
+      },
+      "held_out_product_count": 1381,
+      "held_out_replay_deck_count": 2595,
+      "independent_unit": "exact_normalized_model_title",
+      "observation_dates": [
+        "2026-09-03",
+        "2026-09-04",
+        "2026-09-05",
+        "2026-09-06",
+        "2026-09-08",
+        "2026-09-09",
+        "2026-09-10",
+        "2026-09-11",
+        "2026-09-14",
+        "2026-09-15"
+      ],
+      "permutations_are_independent": false,
+      "permutations_per_product": 32,
+      "product_deck_count": 3453,
+      "random_seed": 20260723,
+      "repeated_date_deck_count": 6611,
+      "schema_version": 1,
+      "status": "analyzed_frozen_panel_series"
+    },
+    "persistent_absence_at_horizon": 1107,
+    "reappearance_events": 260,
+    "status": "collected_observability_context"
+  }
 }

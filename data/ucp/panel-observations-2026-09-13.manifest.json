@@ -1,0 +1,12 @@
+{
+  "domain_status": {},
+  "merchants_answered": 0,
+  "merchants_fully_paginated": 0,
+  "merchants_probed": 0,
+  "observation_date": "2026-09-13",
+  "offers_checked": 0,
+  "offers_gone": 0,
+  "offers_on_fully_paginated_merchants": 0,
+  "offers_still_present": 0,
+  "panel_source": "panel-2026-09-02-expanded.jsonl.gz"
+}

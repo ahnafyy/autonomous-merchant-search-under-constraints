@@ -1,67 +1,33 @@
-\section{Robustness and Controls}
+\section{Checks and Boundaries}
 \label{sec:robustness}
 
-The result in Section~\ref{sec:results} is small, so it deserves more scrutiny than a
-large one would. This section lists the checks that could have overturned it and what
-each returned.
+The replay harness has several checks that prevent easy but misleading comparisons.
+Decks have one currency; seller and company identifiers must be unique within a deck;
+seller-order permutations are deterministic from the registered seed; and adaptive
+policy fitting is separated from evaluation by product. Search-all and adaptive
+stopping receive the same replay order and full deck horizon.
 
-\paragraph{Paired comparison.}
-All policies see the same episodes, the same merchant arrival order, and the same
-failure penalty. The bootstrap resamples whole episode pairs rather than independent
-draws per policy. An apparent ranking that came from which episodes were sampled
-would not survive this, and the interval still excludes zero.
+The free-recall edge case is also tested directly: with zero inspection cost, opening
+every feasible card is weakly optimal. This is a model check, not an empirical claim
+about a merchant's checkout system. The inspection-cost scenarios in
+Table~\ref{tab:pandora-study} and the market-rate multiplier check in
+Table~\ref{tab:ucp-cost-sensitivity} express a deployment tradeoff. The multiplier
+check changes the complete declared cost, not token, API, or time fields separately;
+it therefore distinguishes a cost-level conclusion from an arbitrary workload change.
 
-The bootstrap treats episodes as independent units. It does not cluster resampling
-by merchant or SKU, and the two-snapshot corpus is too small to support a stable
-clustered alternative; the reported interval should therefore not be read as solving
-dependence among listings that share a merchant.
+For the UCP series, the quality analysis checks comparable-domain transitions and
+flags common-mode loss. The excluded discontinuity is retained in provenance rather
+than silently removed. Repeated daily decks are clustered by SKU before the split and
+bootstrap, protecting against date-level pseudo-replication. This protects the
+interpretation of the panel, but does not turn catalog observations into a
+price-persistence or checkout experiment.
 
-\paragraph{Honestly tuned baselines.}
-Search depth and price threshold for the fixed rules are selected on calibration
-episodes and then frozen. Had we tuned them on the evaluation panels, the fixed rules
-would look better than any deployable version of themselves; had we left them
-untuned, the adaptive rule would win trivially. The reported comparison is against
-the strongest fixed rule available under the same information.
+The full August--September UCP scans form a separate month-apart robustness stratum.
+They must retain their own collection identity, matching rule, and quality checks;
+they should not be silently mixed with the daily September panel. That analysis is
+reported only after its evaluator and claim are registered.
 
-\paragraph{An offline bound.}
-The exhaustive oracle inspects every merchant in the panel, including those an online
-policy never queried, and is scored offline. It is unattainable by construction and
-present to bound the achievable range. No online policy beats it in any episode; this
-is asserted as a test rather than assumed.
-
-\paragraph{A control that should fail.}
-The \texttt{never accept} policy is scored under the same rules as the others. If
-terminal failure were mishandled, declining everything would look attractive; it does
-not, by a wide margin.
-
-\paragraph{Budget enforcement.}
-Every replayed episode is checked for hard-budget violations, of which there were
-\ResultHardBudgetViolations{}. Because permits are reserved in full before dispatch
-and censored usage is charged at the permit, overrun is prevented rather than
-detected after the fact.
-
-\paragraph{Solver agreement.}
-The stopping solver is compared against exhaustive enumeration over all deterministic
-policies on \ResultSolverCasesVerified{} small instances, in exact arithmetic. A
-discrepancy would indicate that the recurrence, not the data, produced the result.
-The values agree exactly.
-
-\paragraph{Measurement reproducibility.}
-Two full scans minutes apart returned byte-identical output. Any drift attributed to
-the passage of time is therefore not scanner nondeterminism.
-
-\subsection{What we could not check}
-
-Two intended controls are not supported by the collected corpus and we record them as
-unresolved rather than passed.
-
-A \emph{nonbinding-budget twin}, which reruns the identical policy with budgets large
-enough never to bind in order to separate the cost of the constraint from routing
-error, is only meaningful when budgets actually bind. With a median of
-\ResultMedianMerchantCount{} merchants per episode, the realistic budget already
-covers the whole panel in most episodes, so the twin is nearly the same run.
-
-A \emph{routing ablation} separating gains from choosing \emph{which} merchant to
-query from gains from choosing \emph{when} to stop requires episodes with enough
-merchants for order to matter. This corpus does not provide them. The live result
-should be read as evidence about stopping alone, with routing untested.
+The strongest remaining falsification is prospective: fix the identity rule,
+collection window, cost model, and advantage criterion before collecting additional
+seller decks. A result that changes under that exercise should stand beside this
+study as a separate registered result, not be silently pooled with it.

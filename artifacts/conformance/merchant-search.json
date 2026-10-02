@@ -254,6 +254,117 @@
       }
     }
   ],
+  "recalled_search_cases": [
+    {
+      "expected": {
+        "action": "SEARCH",
+        "cost_components_minor": {
+          "api_calls": 2.0,
+          "api_spend": 0.0,
+          "time": 0.0,
+          "tokens": 0.0
+        },
+        "current_best_minor": 100,
+        "expected_saving_minor": 7.5,
+        "feasible": true,
+        "inspection_cost_minor": 2.0,
+        "net_value_minor": 5.5,
+        "remaining_budget": {
+          "api_calls": 1.0,
+          "api_cost_minor": 0.0,
+          "time_ms": 0.0,
+          "tokens": 0.0
+        },
+        "reservation_price_minor": 88.0,
+        "resources": {
+          "api_calls": 1.0,
+          "api_cost_minor": 0.0,
+          "time_ms": 0.0,
+          "tokens": 0.0
+        },
+        "shadow_prices": {
+          "api_calls": 2.0,
+          "api_cost_minor": 0.0,
+          "time_ms": 0.0,
+          "tokens": 0.0
+        }
+      },
+      "input": {
+        "currentBestMinor": 100,
+        "priceSamplesMinor": [
+          80,
+          90,
+          110,
+          120
+        ],
+        "remainingBudget": {
+          "api_calls": 1
+        },
+        "resources": {
+          "api_calls": 1
+        },
+        "shadowPrices": {
+          "api_calls": 2
+        }
+      }
+    },
+    {
+      "expected": {
+        "action": "STOP",
+        "cost_components_minor": {
+          "api_calls": 2.0,
+          "api_spend": 0.0,
+          "time": 5.0,
+          "tokens": 0.0
+        },
+        "current_best_minor": 100,
+        "expected_saving_minor": 7.5,
+        "feasible": false,
+        "inspection_cost_minor": 7.0,
+        "net_value_minor": 0.5,
+        "remaining_budget": {
+          "api_calls": 1.0,
+          "api_cost_minor": 0.0,
+          "time_ms": 500.0,
+          "tokens": 0.0
+        },
+        "reservation_price_minor": 99.0,
+        "resources": {
+          "api_calls": 1.0,
+          "api_cost_minor": 0.0,
+          "time_ms": 1000.0,
+          "tokens": 0.0
+        },
+        "shadow_prices": {
+          "api_calls": 2.0,
+          "api_cost_minor": 0.0,
+          "time_ms": 5.0,
+          "tokens": 0.0
+        }
+      },
+      "input": {
+        "currentBestMinor": 100,
+        "priceSamplesMinor": [
+          80,
+          90,
+          110,
+          120
+        ],
+        "remainingBudget": {
+          "api_calls": 1,
+          "time_ms": 500
+        },
+        "resources": {
+          "api_calls": 1,
+          "time_ms": 1000
+        },
+        "shadowPrices": {
+          "api_calls": 2,
+          "time_ms": 5
+        }
+      }
+    }
+  ],
   "reservation_cases": [
     {
       "expected": {

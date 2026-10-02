@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "collection_id": "shopify-global-catalog-2026-09-18-deep",
+  "cli": {
+    "package": "@shopify/ucp-cli",
+    "version": "0.9.0"
+  },
+  "accepted_protocol_versions": [
+    "2026-08-25"
+  ],
+  "collection_window_utc": {
+    "start": "2026-09-18T21:40:00Z",
+    "end": "2026-09-19T08:00:00Z"
+  },
+  "registration_notes": [
+    "This is a new deep snapshot; it does not modify or extend the historical 2026-09-17 response set.",
+    "The query strings and their order match the first snapshot so added depth, rather than a changed query frame, is the primary collection change.",
+    "Collection schema version 2 measures retry-inclusive catalog-call attempts, elapsed request time, and response bytes per page. Token usage and API billing are recorded as unobserved because the UCP catalog response does not expose them."
+  ],
+  "request": {
+    "context": {
+      "address_country": "US",
+      "currency": "USD",
+      "language": "en-US"
+    },
+    "filters": {
+      "available": true,
+      "condition": [
+        "new"
+      ]
+    },
+    "server_view": "offer",
+    "pagination": {
+      "limit": 50,
+      "max_pages": 20
+    }
+  },
+  "retry": {
+    "max_attempts": 3,
+    "timeout_seconds": 60,
+    "backoff_seconds": 2.0,
+    "inter_request_seconds": 1.0
+  },
+  "queries": [
+    "running shoes",
+    "hiking boots",
+    "trail running shoes",
+    "basketball shoes",
+    "wireless earbuds",
+    "over ear headphones",
+    "mechanical keyboard",
+    "wireless mouse",
+    "computer monitor",
+    "usb c charger",
+    "portable ssd",
+    "smartwatch",
+    "fitness tracker",
+    "coffee maker",
+    "espresso machine",
+    "blender",
+    "air fryer",
+    "vacuum cleaner",
+    "electric toothbrush",
+    "hair dryer",
+    "sunscreen",
+    "face moisturizer",
+    "shampoo",
+    "protein powder",
+    "yoga mat",
+    "adjustable dumbbells",
+    "bicycle helmet",
+    "camping tent",
+    "sleeping bag",
+    "water bottle",
+    "backpack",
+    "carry on luggage",
+    "board game",
+    "building blocks",
+    "action figure",
+    "baby stroller",
+    "car seat",
+    "dog food",
+    "cat food",
+    "office chair",
+    "desk lamp",
+    "bed sheets",
+    "bath towels",
+    "cookware set",
+    "chef knife",
+    "drill driver",
+    "printer paper",
+    "calculator"
+  ]
+}

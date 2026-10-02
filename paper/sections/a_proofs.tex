@@ -17,7 +17,9 @@ weights $w_{t,p}$. Let $W_t = q_t + \sum_p w_{t,p}$.
 
 The primary policy is commit-or-continue: an available catalog offer is accepted for
 an immediate purchase attempt or the agent continues. Continuing does not reserve the
-observed offer; a later query is treated as a new observation.
+observed offer; a later query is treated as a new observation. This is a restricted
+no-reservation model, not a claim that real merchants never support recall or
+revalidation.
 
 \subsection{Recurrence}
 
@@ -61,7 +63,7 @@ binds first.
 
 The three qualitative forces described in the body follow directly. When $t = n$ or
 no further query is affordable, $V_{t+1} = \Pi$ and the threshold rises to the cap,
-so the agent accepts. Raising $u_t$ mixes more of the fallback into the continuation
+so the agent accepts. Raising $q_t$ mixes more of the fallback into the continuation
 value and raises the threshold. Making a future merchant cheaper lowers $V_{t+1}$ and
 lowers the threshold.
 

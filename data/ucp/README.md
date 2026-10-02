@@ -117,6 +117,13 @@ page cap than discovery because a merchant truncated at the cap cannot distingui
 "offer gone" from "offer beyond the cap". Consecutive runs are also
 calibration/evaluation pairs, so every day adds another set of replayable episodes.
 
+Each future panel manifest records measured elapsed milliseconds by merchant and a
+declared opportunity-cost conversion. The default is USD 5.00 per minute, matching
+the registered search-cost scenarios. This is a valuation assumption, not merchant
+API billing: direct UCP API spend is unobserved unless a provider invoice or rate card
+is recorded separately. Historical panel manifests lack elapsed telemetry and must not
+be retrospectively assigned a measured live-operation cost.
+
 The **discovery scan** finds new merchants and newly shared products; the daily probe
 cannot, since it only revisits what is already known. It deletes its own raw snapshot
 afterwards, keeping the extracted panel.

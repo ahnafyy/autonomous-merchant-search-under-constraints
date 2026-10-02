@@ -1,30 +1,16 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We set out to provide a principled, measurable decision framework for shopping
-agents under hard resource constraints: determining when adaptive sequential search
-delivers value over fixed stopping rules.
+The central question is whether one more merchant inspection earns its cost. We
+provide a replayable costly-search implementation that answers it with mathematics
+rather than an always-search shopping heuristic. Shopify seller decks quantify the value of
+another reveal inside an observed graph; UCP direct-merchant panels characterize the
+wider search surface that an agent can choose to enter.
 
-The answer has three parts. Offers in the live corpus are genuinely ephemeral, so
-stopping is a real decision rather than a formality. An adaptive reservation-price
-rule does beat the strongest tuned fixed rule on held-out live panels, with the whole
-paired interval below zero and no budget violations. And the margin is modest in our
-current snapshot, for a reason that is practically informative: when merchants charge
-nearly identical prices, there is little price variation for an optimizer to exploit,
-whereas calibrated simulations show substantial gains when dispersion and search
-horizons widen.
-
-That is why we report an explicit decision map rather than a single aggregate
-headline. Mapping where adaptive search yields significant advantage versus where
-simpler heuristics suffice provides actionable guidance for deploying autonomous
-agents in live commerce environments.
-
-The narrowness of the current two-snapshot benchmark is itself an empirical baseline.
-Cross-merchant product overlap in this early ecosystem is thin, and half of the
-observed episodes exhibit minimal price spread. Our framework establishes a rigorous
-foundation to evaluate when adaptive search pays as multi-merchant catalog networks
-expand.
-
-We release the optimizer, the permit ledger, the replay harness, the collection
-scripts, and the dated snapshots, so the measurement can be repeated on wider corpora
-and longer horizons.
+The registered held-out result is that adaptive stopping reliably beats costed
+search-all on the UCP panel at every declared real-dollar scenario and on Shopify at
+the long-horizon cost. At zero cost search-all is reliably better; at the two small
+positive-cost sensitivity levels, the policies are not reliably separated.
+That is actionable: a shopping agent should keep searching only while the prospective
+saving repays the next inspection, rather than assuming that every seller must be
+opened.

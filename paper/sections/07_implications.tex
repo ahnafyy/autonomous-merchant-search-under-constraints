@@ -1,59 +1,21 @@
-\section{What To Do In Your Agent}
+\section{Implications for Shopping Agents}
 \label{sec:implications}
 
-This section is the practical summary. It assumes nothing from
-Section~\ref{sec:model} beyond the phrase ``reservation price''.
+The practical rule is simple: search again only when its expected saving exceeds its
+cost. An agent should estimate that value from the price spread it sees, the sellers
+still reachable, and the resources another inspection consumes. If it can return to
+an earlier offer at the observed price, retain the best card in state; if it must
+revalidate or faces expiry risk, price that transition as part of the next search.
 
-\subsection{A checklist}
+An aggregator lowers search cost inside its observed product--seller graph. That is
+precisely where a decision rule can recognize that another reveal is cheap enough to
+earn its keep. A direct merchant lookup, a different aggregator, or a revalidation
+call is a higher-cost expansion step. Agents should use the same calculation to
+decide whether to take it, rather than applying one fixed search depth everywhere.
 
-Before adding a stopping optimizer, answer three questions about the situation your
-agent is actually in.
-
-\begin{enumerate}
-  \item \textbf{Do merchants charge different prices for this product?} Measure the
-    ratio of the dearest to the cheapest offer on a sample of real products. Below
-    roughly \ResultNoAdvantageDispersionAtOrBelow{}$\times$, price variation is
-    negligible, so a simpler fixed rule performs identically without dynamic
-    reservation thresholds.
-  \item \textbf{Can you afford to query available alternatives?} Check the decision
-    grid in Table~\ref{tab:decision} against your query budget. When query capacity
-    is very constrained relative to merchant count, inspect the effect size to
-    confirm that your search horizon leaves enough room to act on what an inquiry
-    reveals.
-  \item \textbf{Is more than one alternative genuinely reachable?} With a single
-    fallback, an optimal rule and a one-step lookahead coincide. Implement the simple
-    one.
-\end{enumerate}
-
-If all three point the same way, the rule is worth implementing, and
-Table~\ref{tab:decision} gives the improvement to expect.
-
-\subsection{Design guidance}
-
-\paragraph{Show the stopping rule the budget.}
-The most common failure we see is a stopping policy that knows the prices but not the
-remaining resources. Remaining budget belongs in the state that decides whether to
-continue. A merchant that cannot be afforded should disappear from the decision, not
-be scored and then rejected.
-
-\paragraph{Reserve before you dispatch, and charge pessimistically.}
-Deduct the full permit before the call, reclaim what is provably unused afterwards,
-and charge the full permit whenever the call is cancelled or truncated and the true
-usage is unknown. This makes overruns impossible rather than rare, which matters more
-than the small efficiency it costs.
-
-\paragraph{Keep forecasting separate from control.}
-The reservation price is a function of the forecast; it is not itself a forecast.
-Keeping them apart means an improved price or availability model can be swapped in
-without touching the stopping logic, and lets you attribute a regression to one or
-the other.
-
-\paragraph{Price failure explicitly.}
-An episode ending without a purchase is not a zero-cost outcome, and a policy scored
-as though it were will learn to stall. Give failure a number and use the same number
-everywhere.
-
-\paragraph{Measure your own dispersion before trusting ours.}
-The decision table is indexed by quantities you can measure in a day. Our corpus is
-one protocol at two dates and its dispersion is unusually low; yours may differ, and
-if it does, the table and not our headline number is the thing to apply.
+Our held-out result adds an operational guardrail: adaptive search can beat search-all
+when inspection cost is material because it stops before low-value remaining reveals.
+Retain a best offer, keep calibration separate from evaluation, and include inspection
+cost in total acquisition cost. At near-zero cost, search-all is not reliably worse;
+at exactly zero cost it is reliably better. As the cost rises, adaptation earns its
+complexity by stopping selectively.

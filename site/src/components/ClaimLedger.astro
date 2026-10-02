@@ -15,6 +15,11 @@ interface Props {
 }
 
 const { claims } = Astro.props;
+const executableStatuses = new Set([
+  "exact-computational",
+  "numerical",
+  "computational-pattern",
+]);
 ---
 
 <div class="claim-table-wrap" role="region" aria-label="Scrollable claim ledger" tabindex="0">
@@ -29,16 +34,18 @@ const { claims } = Astro.props;
       </tr>
     </thead>
     <tbody>
-      {claims.map((claim) => (
-        <tr>
+      {claims.map((claim) => {
+        const executable = executableStatuses.has(claim.status);
+        const checkLabel = executable ? (claim.passed ? "verified" : "review") : claim.status;
+        return <tr>
           <th scope="row">
             <span class="claim-id">{claim.id}</span>
             <span>{claim.statement}</span>
           </th>
           <td data-label="Type"><span class="status-label">{claim.status}</span></td>
           <td data-label="Check">
-            <span class:list={["check-label", { "check-label--pass": claim.passed }]}>
-              {claim.passed ? "passed" : "review"}
+            <span class:list={["check-label", { "check-label--pass": executable && claim.passed }]}>
+              {checkLabel}
             </span>
             <small>{claim.detail}</small>
           </td>
@@ -46,8 +53,8 @@ const { claims } = Astro.props;
             {claim.scope}
             {claim.limitations.length > 0 && <small>{claim.limitations.join(" ")}</small>}
           </td>
-        </tr>
-      ))}
+        </tr>;
+      })}
     </tbody>
   </table>
 </div>

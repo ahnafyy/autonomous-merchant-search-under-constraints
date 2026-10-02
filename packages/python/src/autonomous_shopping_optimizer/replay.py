@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import random
+from collections.abc import Callable
 from dataclasses import dataclass
 from fractions import Fraction
 
@@ -69,6 +71,191 @@ class LossDecomposition:
     budget_effect_minor: int
     policy_error_minor: int
     total_regret_minor: int
+
+
+@dataclass(frozen=True)
+class SellerCard:
+    seller_id: str
+    company_id: str
+    variant_id: str
+    price_minor: int
+    currency: str
+
+    def __post_init__(self) -> None:
+        for field in ("seller_id", "company_id", "variant_id", "currency"):
+            if not getattr(self, field).strip():
+                raise ValueError(f"{field} must be non-empty")
+        if isinstance(self.price_minor, bool) or self.price_minor <= 0:
+            raise ValueError("price_minor must be a positive integer")
+
+
+@dataclass(frozen=True)
+class SellerDeck:
+    deck_id: str
+    product_id: str
+    title: str | None
+    option_key: str
+    cards: tuple[SellerCard, ...]
+    source_queries: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        if not self.deck_id.strip() or not self.product_id.strip() or not self.option_key.strip():
+            raise ValueError("deck_id, product_id, and option_key must be non-empty")
+        if not self.cards:
+            raise ValueError("a seller deck requires at least one card")
+        seller_ids = [card.seller_id for card in self.cards]
+        company_ids = [card.company_id for card in self.cards]
+        if len(seller_ids) != len(set(seller_ids)):
+            raise ValueError("seller cards must have unique seller ids")
+        if len(company_ids) != len(set(company_ids)):
+            raise ValueError("seller cards must have unique company ids")
+        if len({card.currency for card in self.cards}) != 1:
+            raise ValueError("seller deck cards must use one currency")
+
+    @property
+    def currency(self) -> str:
+        return self.cards[0].currency
+
+    @property
+    def median_price_minor(self) -> Fraction:
+        prices = sorted(card.price_minor for card in self.cards)
+        midpoint = len(prices) // 2
+        if len(prices) % 2:
+            return Fraction(prices[midpoint])
+        return Fraction(prices[midpoint - 1] + prices[midpoint], 2)
+
+
+@dataclass(frozen=True)
+class HiddenCardState:
+    revealed: tuple[SellerCard, ...]
+    best: SellerCard
+    remaining_cards: int
+    reveal_budget_remaining: int
+
+
+@dataclass(frozen=True)
+class HiddenCardOutcome:
+    arm: str
+    selected_seller_id: str
+    selected_price_minor: int
+    oracle_price_minor: int
+    price_regret_minor: int
+    reveal_count: int
+    hard_budget_violation: bool
+    normalized_item_price: Fraction
+    inspection_cost: Fraction
+    normalized_total_cost: Fraction
+
+
+HiddenCardRule = Callable[[HiddenCardState], bool]
+
+
+def seller_order(deck: SellerDeck, *, seed: int, replicate: int) -> tuple[str, ...]:
+    """Return a deterministic random order scoped to one product replicate."""
+    if isinstance(replicate, bool) or replicate < 0:
+        raise ValueError("replicate must be a non-negative integer")
+    seller_ids = sorted(card.seller_id for card in deck.cards)
+    rng = random.Random(f"{seed}:{deck.deck_id}:{replicate}")
+    rng.shuffle(seller_ids)
+    return tuple(seller_ids)
+
+
+def replay_hidden_cards(
+    deck: SellerDeck,
+    order: tuple[str, ...],
+    *,
+    arm: str,
+    inspection_cost: Fraction,
+    max_reveals: int,
+    should_stop: HiddenCardRule,
+) -> HiddenCardOutcome:
+    """Replay an online stopping rule with free recall of the cheapest revealed card."""
+    if inspection_cost < 0:
+        raise ValueError("inspection_cost must be non-negative")
+    if isinstance(max_reveals, bool) or not 1 <= max_reveals <= len(deck.cards):
+        raise ValueError("max_reveals must be from 1 through the deck size")
+    expected = {card.seller_id for card in deck.cards}
+    if len(order) != len(expected) or set(order) != expected:
+        raise ValueError("order must contain every seller exactly once")
+
+    cards = {card.seller_id: card for card in deck.cards}
+    revealed: list[SellerCard] = []
+    for seller_id in order[:max_reveals]:
+        revealed.append(cards[seller_id])
+        best = min(revealed, key=lambda card: (card.price_minor, card.seller_id))
+        state = HiddenCardState(
+            revealed=tuple(revealed),
+            best=best,
+            remaining_cards=len(deck.cards) - len(revealed),
+            reveal_budget_remaining=max_reveals - len(revealed),
+        )
+        if state.reveal_budget_remaining == 0 or state.remaining_cards == 0 or should_stop(state):
+            return _hidden_card_outcome(
+                deck,
+                arm=arm,
+                selected=best,
+                reveal_count=len(revealed),
+                inspection_cost=inspection_cost,
+            )
+    raise AssertionError("a valid replay must stop by its reveal budget")
+
+
+def replay_fixed_depth(
+    deck: SellerDeck,
+    order: tuple[str, ...],
+    *,
+    depth: int,
+    inspection_cost: Fraction,
+    max_reveals: int | None = None,
+) -> HiddenCardOutcome:
+    if isinstance(depth, bool) or depth < 1:
+        raise ValueError("depth must be a positive integer")
+    budget = len(deck.cards) if max_reveals is None else max_reveals
+    target = min(depth, budget)
+    return replay_hidden_cards(
+        deck,
+        order,
+        arm=f"fixed_depth_{depth}",
+        inspection_cost=inspection_cost,
+        max_reveals=budget,
+        should_stop=lambda state: len(state.revealed) >= target,
+    )
+
+
+def hidden_card_oracle(deck: SellerDeck) -> HiddenCardOutcome:
+    selected = min(deck.cards, key=lambda card: (card.price_minor, card.seller_id))
+    return _hidden_card_outcome(
+        deck,
+        arm="exhaustive_oracle",
+        selected=selected,
+        reveal_count=0,
+        inspection_cost=Fraction(0),
+    )
+
+
+def _hidden_card_outcome(
+    deck: SellerDeck,
+    *,
+    arm: str,
+    selected: SellerCard,
+    reveal_count: int,
+    inspection_cost: Fraction,
+) -> HiddenCardOutcome:
+    oracle_price = min(card.price_minor for card in deck.cards)
+    normalized_item_price = Fraction(selected.price_minor, 1) / deck.median_price_minor
+    cumulative_cost = inspection_cost * reveal_count
+    return HiddenCardOutcome(
+        arm=arm,
+        selected_seller_id=selected.seller_id,
+        selected_price_minor=selected.price_minor,
+        oracle_price_minor=oracle_price,
+        price_regret_minor=selected.price_minor - oracle_price,
+        reveal_count=reveal_count,
+        hard_budget_violation=reveal_count > len(deck.cards),
+        normalized_item_price=normalized_item_price,
+        inspection_cost=cumulative_cost,
+        normalized_total_cost=normalized_item_price + cumulative_cost,
+    )
 
 
 def exhaustive_oracle(

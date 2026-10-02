@@ -14,46 +14,23 @@ test("renders verified research content without overflow", async ({ page }, test
   );
   const primaryResult = page.locator(".hero-result strong");
   await expect(primaryResult).toContainText(
-    "A budget-aware stopping rule beats the strongest tuned fixed alternative",
+    "expected saving can repay the next inspection cost",
   );
   await expect(primaryResult).toBeInViewport();
   await expect(page.getByText("Ahnaf Prio", { exact: true }).first()).toBeVisible();
-  await expect(page.getByRole("link", { name: "Generated artifacts" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "autonomous-shopping-optimizer" })).toHaveCount(2);
+  await expect(page.getByRole("link", { name: "Source and generated artifacts" })).toBeVisible();
   await expect(page.locator('pre[aria-label="Reproduction commands"]')).toHaveCount(0);
-  await expect(page.getByText("STOPPING-ADVANTAGE-001", { exact: true })).toBeVisible();
-  await expect(page.getByText("NO-ADVANTAGE-REGION-001", { exact: true })).toBeVisible();
+  await expect(page.getByText("PANDORA-ADVANTAGE-001", { exact: true })).toBeVisible();
+  await expect(page.getByText("SHOPIFY-SELLER-DECK-STUDY-001", { exact: true })).toBeVisible();
 
   const decisionRows = page.locator(".decision-table tbody tr");
   expect(await decisionRows.count()).toBeGreaterThan(0);
-  await expect(page.locator('.decision-table [data-verdict="use_adaptive"]').first()).toBeVisible();
+  await expect(page.getByText("No reliable improvement", { exact: true }).first()).toBeVisible();
 
-  const ruleRows = page.locator(".rule-comparison tbody tr");
-  expect(await ruleRows.count()).toBeGreaterThan(0);
-  await expect(page.getByRole("rowheader", { name: "Closed form" })).toBeVisible();
-  await expect(page.getByRole("rowheader", { name: "Secretary rule (37%)" })).toBeVisible();
-
-  const currentOffer = page.getByRole("spinbutton", { name: "Current offer" });
-  const priceCap = page.getByRole("spinbutton", { name: "Maximum purchase price" });
-  await expect(page.locator("[data-workbench-action]")).not.toHaveText("Calculating");
-  await priceCap.fill("100");
-  await currentOffer.fill("110");
-  await expect(page.locator("[data-workbench-action]")).not.toHaveText("Buy");
-  await expect(page.locator("[data-workbench-explanation]")).toContainText("hard price cap");
-
-  const scenario = page.getByRole("combobox", { name: "Operating regime" });
-  await scenario.selectOption("relaxed");
-  await expect(page.locator("[data-action]")).toHaveText("Continue");
-  await expect(page.locator("[data-readout]")).toContainText("Search again");
-  await scenario.selectOption("time-tight");
-  await expect(page.locator("[data-action]")).toHaveText("Buy");
-  await expect(page.locator("[data-readout]")).toContainText("Buy now");
-  await expect(page.locator("[data-next-merchant]")).toHaveText("M4");
-  await scenario.selectOption("token-tight");
-  await expect(page.locator("[data-next-merchant]")).toHaveText("M2");
-  await scenario.selectOption("price-capped");
-  await expect(page.locator("[data-action]")).toHaveText("Continue");
-  await expect(page.locator("[data-price-cap]")).toHaveText("$100.00");
+  const interactiveDecision = page.locator("[data-recalled-workbench]");
+  await expect(interactiveDecision.getByText("Search again", { exact: true })).toBeVisible();
+  await interactiveDecision.getByLabel("Tool/API spend").fill("10.00");
+  await expect(interactiveDecision.getByText("Buy now", { exact: true })).toBeVisible();
 
   const overflows = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
   expect(overflows).toBe(false);

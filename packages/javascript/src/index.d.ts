@@ -58,6 +58,56 @@ export interface ShoppingDecision {
   remaining_after_observation: ResourceUsage;
 }
 
+export interface RecalledSearchResources {
+  time_ms?: number;
+  tokens?: number;
+  api_calls?: number;
+  api_cost_minor?: number;
+}
+
+export interface RecalledSearchDecisionInput {
+  currentBestMinor: number;
+  priceSamplesMinor: number[];
+  resources: RecalledSearchResources;
+  shadowPrices?: RecalledSearchResources;
+  remainingBudget: RecalledSearchResources;
+}
+
+export interface RecalledSearchDecision {
+  action: "SEARCH" | "STOP";
+  feasible: boolean;
+  current_best_minor: number;
+  expected_saving_minor: number;
+  cost_components_minor: Record<"time" | "tokens" | "api_calls" | "api_spend", number>;
+  inspection_cost_minor: number;
+  net_value_minor: number;
+  reservation_price_minor: number;
+  resources: Required<RecalledSearchResources>;
+  shadow_prices: Required<RecalledSearchResources>;
+  remaining_budget: Required<RecalledSearchResources>;
+}
+
+export interface RecalledSearchHookInput {
+  currentBestMinor: number;
+  nextInspectionResources: RecalledSearchResources;
+  remainingBudget: RecalledSearchResources;
+}
+
+export function decideRecalledSearch(input: RecalledSearchDecisionInput): RecalledSearchDecision;
+export function createRecalledSearchHook(options: {
+  priceSamplesMinor: number[];
+  shadowPrices?: RecalledSearchResources;
+}): (input: RecalledSearchHookInput) => RecalledSearchDecision;
+
+export interface RecalledSearchToolSchema {
+  name: "decide_recalled_search";
+  description: string;
+  input_schema: Record<string, unknown>;
+}
+
+export function recalledSearchToolSchema(): RecalledSearchToolSchema;
+export function runRecalledSearchTool(toolInput: RecalledSearchDecisionInput): RecalledSearchDecision;
+
 export type SearchPolicy = "accept_first" | "fixed_threshold" | "resource_aware_threshold";
 
 export function simulatePolicy(

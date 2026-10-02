@@ -48,7 +48,7 @@ REQUEST_TIMEOUT_SECONDS = 15.0
 
 
 class MerchantRefused(RuntimeError):
-    """The merchant asked us to stop: 401, 403, 429, or repeated 5xx.
+    """The merchant explicitly asked us to stop: 401, 403, 405, or 429.
 
     Raised so the caller can abandon this domain immediately and remember it,
     rather than retrying into a block.
@@ -57,6 +57,10 @@ class MerchantRefused(RuntimeError):
     def __init__(self, domain_or_url: str, status: int | str) -> None:
         super().__init__(f"{domain_or_url} refused with {status}")
         self.status = status
+
+
+class MerchantUnavailable(RuntimeError):
+    """A transient or malformed endpoint response after bounded retries."""
 
 
 def _fetch_json(
@@ -91,7 +95,9 @@ def _fetch_json(
         if attempt < MAX_ATTEMPTS - 1:
             time.sleep(min(BACKOFF_SECONDS * (2**attempt), MAX_BACKOFF_SECONDS))
 
-    raise MerchantRefused(url, f"unavailable after {MAX_ATTEMPTS} attempts: {last_error}")
+    raise MerchantUnavailable(
+        f"{url} unavailable after {MAX_ATTEMPTS} attempts: {last_error}"
+    )
 
 
 def discover_mcp_endpoint(

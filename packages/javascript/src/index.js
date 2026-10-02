@@ -1,4 +1,27 @@
 const RESOURCE_FIELDS = ["time", "tokens", "api_calls", "api_cost"];
+const RECALL_RESOURCE_FIELDS = ["time_ms", "tokens", "api_calls", "api_cost_minor"];
+
+const RECALL_QUANTITY_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  properties: {
+    time_ms: { type: "integer", minimum: 0 },
+    tokens: { type: "integer", minimum: 0 },
+    api_calls: { type: "integer", minimum: 0 },
+    api_cost_minor: { type: "integer", minimum: 0 },
+  },
+};
+
+const RECALL_SHADOW_PRICE_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  properties: {
+    time_ms: { type: "number", minimum: 0 },
+    tokens: { type: "number", minimum: 0 },
+    api_calls: { type: "number", minimum: 0 },
+    api_cost_minor: { type: "number", minimum: 0 },
+  },
+};
 const POLICIES = new Set(["accept_first", "fixed_threshold", "resource_aware_threshold"]);
 
 export { PermitLedger, resourceVector } from "./permits.js";
@@ -6,6 +29,13 @@ export { PermitLedger, resourceVector } from "./permits.js";
 function nonNegativeInteger(value, name) {
   if (!Number.isInteger(value) || value < 0) {
     throw new RangeError(`${name} must be a non-negative integer`);
+  }
+  return value;
+}
+
+function nonNegativeNumber(value, name) {
+  if (!Number.isFinite(value) || value < 0) {
+    throw new RangeError(`${name} must be a non-negative number`);
   }
   return value;
 }
@@ -79,6 +109,134 @@ function positiveInteger(value, name) {
   const parsed = nonNegativeInteger(value, name);
   if (parsed === 0) throw new RangeError(`${name} must be positive`);
   return parsed;
+}
+
+function parseRecallResources(value, name, allowFraction = false) {
+  return Object.fromEntries(RECALL_RESOURCE_FIELDS.map((field) => [
+    field,
+    (allowFraction ? nonNegativeNumber : nonNegativeInteger)(
+      value?.[field] ?? 0,
+      `${name}.${field}`,
+    ),
+  ]));
+}
+
+function parsePriceSamples(values) {
+  if (!Array.isArray(values) || values.length === 0) {
+    throw new TypeError("priceSamplesMinor must be a non-empty array");
+  }
+  return values.map((value) => positiveInteger(value, "price sample"));
+}
+
+function empiricalReservationPrice(priceSamplesMinor, inspectionCostMinor) {
+  const samples = [...priceSamplesMinor].sort((left, right) => left - right);
+  let prefix = 0;
+  for (let index = 0; index < samples.length; index += 1) {
+    prefix += samples[index];
+    const candidate = (samples.length * inspectionCostMinor + prefix) / (index + 1);
+    if (index === samples.length - 1 || candidate <= samples[index + 1]) {
+      return Math.max(samples[index], candidate);
+    }
+  }
+  throw new Error("empirical reservation price is undefined");
+}
+
+/**
+ * Decide whether the next recalled seller inspection earns its declared cost.
+ * All prices and resource shadow prices are USD minor units. The host owns tool
+ * dispatch, credential handling, budget charging, and purchase execution.
+ */
+export function decideRecalledSearch({
+  currentBestMinor,
+  priceSamplesMinor,
+  resources,
+  shadowPrices = {},
+  remainingBudget,
+}) {
+  const currentBest = positiveInteger(currentBestMinor, "currentBestMinor");
+  const samples = parsePriceSamples(priceSamplesMinor);
+  const parsedResources = parseRecallResources(resources, "resources");
+  const prices = parseRecallResources(shadowPrices, "shadowPrices", true);
+  const budget = parseRecallResources(remainingBudget, "remainingBudget");
+  const feasible = RECALL_RESOURCE_FIELDS.every(
+    (field) => parsedResources[field] <= budget[field],
+  );
+  const components = {
+    time: (parsedResources.time_ms * prices.time_ms) / 1000,
+    tokens: (parsedResources.tokens * prices.tokens) / 1000,
+    api_calls: parsedResources.api_calls * prices.api_calls,
+    api_spend: parsedResources.api_cost_minor,
+  };
+  const inspectionCostMinor = Object.values(components).reduce((total, value) => total + value, 0);
+  const expectedSavingMinor = samples.reduce(
+    (total, price) => total + Math.max(0, currentBest - price), 0,
+  ) / samples.length;
+  const netValueMinor = expectedSavingMinor - inspectionCostMinor;
+  return {
+    action: feasible && netValueMinor > 0 ? "SEARCH" : "STOP",
+    feasible,
+    current_best_minor: currentBest,
+    expected_saving_minor: expectedSavingMinor,
+    cost_components_minor: components,
+    inspection_cost_minor: inspectionCostMinor,
+    net_value_minor: netValueMinor,
+    reservation_price_minor: empiricalReservationPrice(samples, inspectionCostMinor),
+    resources: parsedResources,
+    shadow_prices: prices,
+    remaining_budget: budget,
+  };
+}
+
+/** Return a narrow callback suitable for an LLM tool loop after each seller reveal. */
+export function createRecalledSearchHook({ priceSamplesMinor, shadowPrices = {} }) {
+  const samples = parsePriceSamples(priceSamplesMinor);
+  const prices = parseRecallResources(shadowPrices, "shadowPrices", true);
+  return ({ currentBestMinor, nextInspectionResources, remainingBudget }) => decideRecalledSearch({
+    currentBestMinor,
+    priceSamplesMinor: samples,
+    resources: nextInspectionResources,
+    shadowPrices: prices,
+    remainingBudget,
+  });
+}
+
+/** Return a JSON-schema tool definition usable by OpenAI- and Anthropic-style hosts. */
+export function recalledSearchToolSchema() {
+  return {
+    name: "decide_recalled_search",
+    description: "Decide SEARCH or STOP after retaining the best seller offer. "
+      + "Never dispatches a merchant tool or executes a purchase. Monetary values are USD minor units.",
+    input_schema: {
+      type: "object",
+      additionalProperties: false,
+      required: ["currentBestMinor", "priceSamplesMinor", "resources", "remainingBudget"],
+      properties: {
+        currentBestMinor: { type: "integer", minimum: 1 },
+        priceSamplesMinor: {
+          type: "array",
+          minItems: 1,
+          items: { type: "integer", minimum: 1 },
+        },
+        resources: RECALL_QUANTITY_SCHEMA,
+        shadowPrices: RECALL_SHADOW_PRICE_SCHEMA,
+        remainingBudget: RECALL_QUANTITY_SCHEMA,
+      },
+    },
+  };
+}
+
+/** Execute a JSON-tool payload without taking any host-side action. */
+export function runRecalledSearchTool(toolInput) {
+  if (toolInput === null || typeof toolInput !== "object" || Array.isArray(toolInput)) {
+    throw new TypeError("tool input must be an object");
+  }
+  const allowed = new Set([
+    "currentBestMinor", "priceSamplesMinor", "resources", "shadowPrices", "remainingBudget",
+  ]);
+  for (const key of Object.keys(toolInput)) {
+    if (!allowed.has(key)) throw new RangeError(`unexpected tool field: ${key}`);
+  }
+  return decideRecalledSearch(toolInput);
 }
 
 export function planShoppingDecision({

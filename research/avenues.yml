@@ -1,31 +1,29 @@
 schema_version: 1
 avenues:
   - id: "AVENUE-001"
-    title: "Joint merchant routing and enforceable permit allocation"
+    title: "Recall-aware Pandora search over incomplete seller graphs"
     status: selected
     mechanism: >-
-      Before each UCP merchant call, the optimizer jointly chooses a merchant and
-      enforceable limits for time, tokens, calls, and genuine API spend. The runtime
-      atomically reserves the permit, conservatively reconciles censored usage, and
-      reclaims known unused capacity. Conserving resources preserves later search,
-      while overly strict permits can cause truncation, timeout, and purchase failure.
+      A shopping agent retains the best observed seller offer while choosing whether
+      another seller inspection has enough expected option value to justify its cost.
+      An aggregator exposes a covered seller graph, while direct merchant discovery
+      may expose additional costly cards outside that graph.
     minimal_model: >-
-      A finite no-recall merchant-search episode with stochastic correlated query
-      usage, enforceable per-call permits, a hard total resource vector, and a hard
-      purchase-price cap.
+      A finite Pandora-search episode with a retained best offer, single-currency
+      seller cards, scalarized inspection costs, and an optional hard inspection
+      budget. Stopping purchases the retained best offer.
     novelty_hypothesis: >-
-      Treating the merchant and its enforceable observation limit as one online action
-      under censored multi-resource feedback may improve purchase quality or success
-      over fixed splitting and myopic feasible policies without hard-limit violations.
+      Recall-aware dynamic search may reduce normalized total acquisition cost versus
+      fixed search depths or thresholds when the expected improvement from unopened
+      seller cards exceeds their inspection cost.
     decisive_calculation: >-
-      On frozen held-out UCP panels, compare constrained ARVP, the same policy with
-      nonbinding budgets, equal split, greedy feasible, fixed-depth, worst-case reserve,
-      routing and permit ablations, and an exhaustive panel oracle. Reject the avenue
-      if adaptive allocation does not improve the preregistered outcome at zero
-      violations after planner overhead and forecast error are included.
+      On frozen seller decks, fit the Pandora and fixed policies on disjoint
+      calibration products and compare them on held-out products under a declared
+      inspection-cost grid. Reject a positive advantage claim if the product-clustered
+      interval includes zero.
     expected_value: >-
-      The result would give deployable guidance for timeout, max-token, call, and spend
-      limits around autonomous shopping tool loops.
+      The result would tell an agent whether to inspect another seller after an
+      aggregator has revealed only part of the relevant product graph.
     rejection_reason: null
   - id: "AVENUE-002"
     title: "Distribution-free stopping guarantees for ephemeral offers"
@@ -74,3 +72,30 @@ avenues:
       Deferred, not rejected. Shipping and tax are not consistently observable in the
       collected snapshots, so landed price cannot be computed for most episodes and a
       multi-attribute extension would rest on imputed components.
+  - id: "AVENUE-004"
+    title: "Revalidation after recalled seller search"
+    status: deferred
+    mechanism: >-
+      After retaining a seller offer, an agent may need to revalidate price or
+      availability before purchase. The state must include the retained offer age and
+      revalidation transition model.
+    minimal_model: >-
+      A finite merchant-search episode with a best retained offer, explicit free
+      recall or paid revalidation actions, hard resource budgets, and stochastic
+      price and availability transitions.
+    novelty_hypothesis: >-
+      The relative value of commit-or-continue stopping may reverse when retained
+      offers are available, especially under high short-delay catalog survival. No
+      empirical effect is assumed before a transition model and benchmark are built.
+    decisive_calculation: >-
+      Compare the current commit-or-continue policy with retained-best and
+      revalidation policies on common frozen panels under declared transition
+      scenarios. Reject the avenue if recall changes neither policy ordering nor the
+      decision regions beyond the stated tolerance.
+    expected_value: >-
+      The extension would distinguish the current no-reservation decision rule from
+      a deployable shopping agent that can return to or re-check a prior offer.
+    rejection_reason: >-
+      Deferred, not rejected. The short daily series establishes neither checkout
+      persistence nor a stable price-and-availability transition law for
+      revalidation.

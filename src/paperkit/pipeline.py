@@ -14,13 +14,13 @@ from paperkit import __version__
 from paperkit.claims import evaluate_claims, load_claims
 from paperkit.config import ProjectConfig, load_yaml
 from paperkit.publication import (
-    render_arm_table,
     render_bibliography,
     render_claim_table,
-    render_decision_table,
-    render_episode_feature_table,
+    render_pandora_study_table,
     render_project_metadata,
-    render_rule_table,
+    render_source_table,
+    render_ucp_cost_sensitivity_table,
+    render_ucp_pandora_study_table,
 )
 
 
@@ -75,7 +75,7 @@ def _load_module(root: Path, import_name: str, module: str) -> Any:
     return import_module(f"{import_name}.{module}")
 
 
-def _conformance_vectors(analysis: Any) -> dict[str, Any]:
+def _conformance_vectors(analysis: Any, pandora: Any) -> dict[str, Any]:
     inputs = [
         {
             "offers": [{"available": True, "price": 7, "api_calls": 1}],
@@ -206,12 +206,40 @@ def _conformance_vectors(analysis: Any) -> dict[str, Any]:
         )
         reservation_cases.append({"input": value, "expected": exact})
 
+    recalled_search_inputs = [
+        {
+            "currentBestMinor": 100,
+            "priceSamplesMinor": [80, 90, 110, 120],
+            "resources": {"api_calls": 1},
+            "shadowPrices": {"api_calls": 2},
+            "remainingBudget": {"api_calls": 1},
+        },
+        {
+            "currentBestMinor": 100,
+            "priceSamplesMinor": [80, 90, 110, 120],
+            "resources": {"time_ms": 1_000, "api_calls": 1},
+            "shadowPrices": {"time_ms": 5, "api_calls": 2},
+            "remainingBudget": {"time_ms": 500, "api_calls": 1},
+        },
+    ]
+    recalled_search_cases = []
+    for value in recalled_search_inputs:
+        expected = pandora.pandora_decision(
+            current_best_minor=value["currentBestMinor"],
+            price_samples=value["priceSamplesMinor"],
+            resources=value["resources"],
+            shadow_prices=value["shadowPrices"],
+            remaining_budget=value["remainingBudget"],
+        )
+        recalled_search_cases.append({"input": value, "expected": expected})
+
     return {
         "schema_version": 2,
         "operation": "simulate_policy",
         "cases": cases,
         "planner_cases": planner_cases,
         "reservation_cases": reservation_cases,
+        "recalled_search_cases": recalled_search_cases,
         "reservation_tolerance": 1e-9,
         "errors": [
             {
@@ -236,6 +264,7 @@ def build(root: Path, output_dir: Path | None = None) -> Path:
     claims = load_claims(root / "research" / "claims.yml")
     analysis = _load_analysis(root, config.python_import_name)
     closed_form = _load_module(root, config.python_import_name, "closed_form")
+    pandora = _load_module(root, config.python_import_name, "pandora")
     results = analysis.run_analysis(seed=config.random_seed)
     evaluations = evaluate_claims(results, claims)
 
@@ -246,7 +275,7 @@ def build(root: Path, output_dir: Path | None = None) -> Path:
         _write_json(staging / "claim-results.json", {"claims": evaluations})
         _write_json(
             staging / "conformance" / "merchant-search.json",
-            _conformance_vectors(analysis),
+            _conformance_vectors(analysis, pandora),
         )
         _write_json(
             staging / "conformance" / "closed-form.json",
@@ -285,22 +314,21 @@ def build(root: Path, output_dir: Path | None = None) -> Path:
         (staging / "tables" / "claim_status.tex").write_text(
             render_claim_table(claims), encoding="utf-8"
         )
-        (staging / "tables" / "decision_table.tex").write_text(
-            render_decision_table(results), encoding="utf-8"
+        (staging / "tables" / "pandora_study.tex").write_text(
+            render_pandora_study_table(results), encoding="utf-8"
         )
-        (staging / "tables" / "arm_comparison.tex").write_text(
-            render_arm_table(results), encoding="utf-8"
+        (staging / "tables" / "ucp_pandora_study.tex").write_text(
+            render_ucp_pandora_study_table(results), encoding="utf-8"
         )
-        (staging / "tables" / "episode_features.tex").write_text(
-            render_episode_feature_table(results), encoding="utf-8"
+        (staging / "tables" / "ucp_cost_sensitivity.tex").write_text(
+            render_ucp_cost_sensitivity_table(results), encoding="utf-8"
         )
-        (staging / "tables" / "rule_comparison.tex").write_text(
-            render_rule_table(results), encoding="utf-8"
+        (staging / "tables" / "source_context.tex").write_text(
+            render_source_table(results), encoding="utf-8"
         )
         (staging / "tables" / "references.bib").write_text(
             render_bibliography(root / "research" / "literature.yml"), encoding="utf-8"
         )
-
         files = sorted(path for path in staging.rglob("*") if path.is_file())
         manifest = {
             "schema_version": 1,

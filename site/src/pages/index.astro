@@ -1,67 +1,28 @@
 ---
 import ClaimLedger from "../components/ClaimLedger.astro";
-import DecisionTable from "../components/DecisionTable.astro";
-import HardConstraintDemo from "../components/HardConstraintDemo.astro";
-import PlanningWorkbench from "../components/PlanningWorkbench.astro";
-import ResultStrip from "../components/ResultStrip.astro";
-import RuleComparison from "../components/RuleComparison.astro";
+import RecalledSearchWorkbench from "../components/RecalledSearchWorkbench.astro";
 import ResearchLayout from "../layouts/ResearchLayout.astro";
 import data from "../generated/site-data.json";
 
-const { project, authors, links, licenses, release, packages, results, claims } = data;
+const { authors, claims, links, licenses, packages, project, release, results } = data;
 const authorNames = authors.map((author) => author.name).join(", ");
-const affiliations = [...new Set(authors.flatMap((author) => author.affiliations))].join(" · ");
-const constraintSurface = results.hard_constraint_surface.map((row) => ({
-  ...row,
-  action: row.action as "buy" | "continue" | "reject_without_feasible_query",
-}));
-const displayedClaims = claims.filter((claim) => claim.site_visible);
-const percent = (value: number) => `${(value * 100).toFixed(1)}%`;
-const resultStrip = [
-  {
-    label: "Merchants measured",
-    value: results.merchants_targeted.toLocaleString(),
-    note: `${results.catalog_rows.toLocaleString()} live catalog listings`,
-    tone: "gold" as const,
-  },
-  {
-    label: "Listings that moved",
-    value: percent(results.delisting_rate + results.price_change_rate),
-    note: `${percent(results.delisting_rate)} delisted, ${percent(results.price_change_rate)} repriced in one month`,
-    tone: "teal" as const,
-  },
-  {
-    label: "Adaptive stopping wins",
-    value: `${results.sweep_cells_favoring_adaptive}/${results.sweep_cells}`,
-    note: `only above ${results.advantage_min_dispersion_ratio}× price spread`,
-    tone: "coral" as const,
-  },
-];
-const decisionTable = results.criteria.decision_table.map((row) => ({
-  ...row,
-  verdict: row.verdict as "use_adaptive" | "use_fixed" | "no_difference",
-}));
-const ruleComparison = results.rule_comparison;
-const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
-  let u = 1;
-  for (let step = 0; step < k; step += 1) u -= (u * u) / 2;
-  return { k, u };
-});
-
+const shopify = results.shopify_global_catalog;
+const ucp = results.ucp_direct_panels;
+const visibleClaims = claims.filter((claim) => claim.site_visible);
+const studyRows = shopify.cost_results ?? [];
 ---
 
 <ResearchLayout title={project.title} description={project.abstract}>
   <header class="topbar">
     <div class="journal-mark">
       <a class="wordmark" href="#top" aria-label={`${project.title}, back to top`}>{project.slug}</a>
-      <span>Open algorithm and software release</span>
+      <span>Research evidence release</span>
     </div>
     <nav aria-label="Primary navigation">
-      <a href="#rule">Rule</a>
-      <a href="#claims">Results</a>
-      <a href="#workbench">Try it</a>
-      <a href="#benchmark">Method</a>
-      <a href="#reproduce">Materials</a>
+      <a href="#model">Model</a>
+      <a href="#results">Results</a>
+      <a href="#sources">Sources</a>
+      <a href="#claims">Claims</a>
     </nav>
   </header>
 
@@ -71,243 +32,93 @@ const acceptanceFractions = [1, 2, 3, 4, 5, 6].map((k) => {
         <div class="article-kicker">
           <span>Computational research</span>
           <span>Version {release.version}</span>
-          <span>Open-source Python + npm</span>
+          <span>Exploratory analysis</span>
         </div>
         <h1 id="paper-title">{project.title}</h1>
-        <p class="subtitle">
-          Is there a rule for knowing when to buy and when to keep looking? Yes: turn the remaining search
-          budget into a reservation price, then buy only when the offer clears that threshold.
-        </p>
+        <p class="subtitle">{project.subtitle}</p>
         <p class="hero-result">
-          <span>Measured on live merchants</span>
-          <strong>
-            A budget-aware stopping rule beats the strongest tuned fixed alternative on held-out panels, and a
-            calibrated decision map shows when the extra search is worth taking
-          </strong>
+          <span>Primary result</span>
+          <strong>Use math to search again only when the expected saving can repay the next inspection cost.</strong>
         </p>
         <p class="collection-status">
           <span>Study status</span>
-          Daily panel observations and weekly discovery runs are ongoing. This release reports the verified
-          two-snapshot analysis; later observations will measure how catalog offers change across minutes, hours, and days.
+          Two complementary datasets make the decision measurable. Shopify seller decks quantify the value of another
+          reveal inside an observed product graph; UCP direct-merchant panels characterize the wider search surface
+          an agent may choose to enter.
         </p>
         <div class="author-block">
           <p class="byline">{authorNames}</p>
-          <p class="affiliations">{affiliations}</p>
         </div>
         <div class="abstract-block">
           <p class="abstract-label">Abstract</p>
           <p class="abstract">{project.abstract}</p>
         </div>
-        <div class="paper-links" aria-label="Paper resources">
-          <a href="#workbench">Try the optimizer</a>
-          <a href="#reproduce">Python + npm packages</a>
-          <a href={links.repository}>Source and evidence</a>
-          <a href="#reproduce">Reproduction record</a>
-        </div>
       </div>
-      <ResultStrip results={resultStrip} />
     </section>
 
-    <section class="section section--rule" id="benchmark" aria-labelledby="benchmark-title">
+    <section class="section section--rule" id="model" aria-labelledby="model-title">
       <div class="section__heading">
         <p class="section-number">1</p>
-        <div>
-          <span class="eyebrow">Why the rule changes</span>
-          <h2 id="benchmark-title">Every extra store has a cost</h2>
-        </div>
+        <div><span class="eyebrow">Decision model</span><h2 id="model-title">Is another merchant inspection worth its cost?</h2></div>
       </div>
-      <div class="prose-grid">
-        <div class="prose">
-          <p>
-            Checking another store can save money, but it also uses time, calls, and budget. The agent tracks what is
-            left of each limit and can only keep searching when the next check still fits. It never buys above the
-            shopper's maximum price.
-          </p>
-          <div class="equation">
-            <p aria-label="Buy at time t when price is no greater than both the price cap and continuation value under the remaining budget">
-              buy ⇔ p<sub>t</sub> ≤ min(P<sub>max</sub>, V<sub>t+1</sub>(b − c<sub>t</sub>))
-            </p>
-            <span aria-hidden="true">(1)</span>
-          </div>
-          <p>
-            With all budgets relaxed, the planner keeps looking rather than buying the observed
-            <strong>${results.observed_price}</strong> offer. It buys the same offer only when the deadline, token budget,
-            call count, API-spend limit, or combined capacity blocks enough future search. Under a
-            <strong>$100 hard purchase cap</strong>, the price is inadmissible even when the merchant is available.
-          </p>
-        </div>
-        <figure class="research-figure">
-          <HardConstraintDemo
-            surface={constraintSurface}
-            observedPrice={results.observed_price}
-          />
-          <figcaption>
-            <strong>Figure 1.</strong> Exact hard-constraint action map. The selector reads generated evidence rows;
-            no scientific computation occurs in the browser.
-          </figcaption>
-        </figure>
+      <div class="prose">
+        <p>A seller card reveals a price. The agent keeps its best observed offer and either buys it or pays to inspect another feasible card.</p>
+        <div class="equation"><p aria-label="Search when expected retained-price improvement exceeds inspection cost">search iff E[max(best retained price minus next price, 0)] &gt; inspection cost</p></div>
+        <p>With free recall and zero inspection cost, every feasible card should be opened. The inspection-cost grid is therefore a declared sensitivity analysis, not measured Shopify billing.</p>
       </div>
     </section>
 
-    <section class="section section--rule" id="rule" aria-labelledby="rule-title">
+    <section class="section" id="results" aria-labelledby="results-title">
       <div class="section__heading">
         <p class="section-number">2</p>
-        <div>
-          <span class="eyebrow">The decision rule</span>
-          <h2 id="rule-title">Calculate the price that tells the agent to stop</h2>
-        </div>
+        <div><span class="eyebrow">Held-out results</span><h2 id="results-title">Know when extra search earns its cost</h2></div>
       </div>
-      <div class="prose-grid">
-        <div class="prose">
-          <p>
-            <strong>Step one.</strong> Collapse your budget into a single remaining horizon. Every query burns a fixed
-            amount of time, tokens, calls, and spend, so the relevant quantity is the minimum remaining number of
-            affordable queries. The binding resource is the one that runs out first.
-          </p>
-          <div class="equation">
-            <p aria-label="k equals the minimum over resources of the floor of remaining divided by cost per query">
-              k = min<sub>r</sub> ⌊ B<sub>r</sub> / c<sub>r</sub> ⌋
-            </p>
-            <span aria-hidden="true">(2)</span>
-          </div>
-          <p>
-            <strong>Step two.</strong> Accept when the current offer is cheap enough relative to the remaining price range.
-            This is the adaptive reservation-price rule: a threshold that moves as the search horizon shrinks.
-          </p>
-          <div class="equation">
-            <p aria-label="Buy when the price is at most the price floor plus u sub k times the price range">
-              buy ⇔ p ≤ p<sub>min</sub> + u<sub>k</sub>(p<sub>max</sub> − p<sub>min</sub>)
-            </p>
-            <span aria-hidden="true">(3)</span>
-          </div>
-          <p>
-            The fractions follow u<sub>0</sub> = 1 and u<sub>k+1</sub> = u<sub>k</sub> −
-            u<sub>k</sub><sup>2</sup>/2:
-            {acceptanceFractions.map(({ k, u }, index) => (
-              <span>{index > 0 ? ", " : ""}u<sub>{k}</sub> = {u.toFixed(3)}</span>
-            ))}. With one query left, you buy near the midpoint of the price range; with six left, only the cheapest
-            fifth is acceptable. The threshold rises as the budget drains because a costly miss is more expensive than a
-            mild overpay.
-          </p>
-          <p class="note">
-            This recursion is the Cayley–Moser rule, not a new invention. We reproduce it in a price-minimisation form
-            and then measure how valuable it is under the real merchant data in this study.
-          </p>
-        </div>
-        <figure class="research-figure">
-          <RuleComparison
-            arms={ruleComparison.arms}
-            savingsCaptured={ruleComparison.savings_captured}
-            merchantCount={ruleComparison.merchant_count}
-          />
-          <figcaption>
-            <strong>Figure 2.</strong> The closed form captures
-            {(results.closed_form_savings_captured * 100).toFixed(1)}% of the achievable saving
-            against the exact solver&rsquo;s {(results.solver_savings_captured * 100).toFixed(1)}%.
-            The famous 37% rule captures {(results.secretary_savings_captured * 100).toFixed(1)}%
-            while spending more queries than any other online rule: it hunts for the single
-            cheapest merchant, when the objective only rewarded the expected price paid.
-          </figcaption>
-        </figure>
+      <p class="section-intro">The held-out comparison is adaptive stopping versus costed search-all. At material inspection costs, adaptive stopping lowers total acquisition cost by avoiding remaining searches whose expected saving cannot repay them. At zero cost, search-all is reliably better; two small positive-cost sensitivity levels are inconclusive.</p>
+      <div class="exact-table-wrap" tabindex="0" role="region" aria-label="Held-out search policy evaluation results by inspection cost scenario">
+        <table class="decision-table">
+          <thead><tr><th>Cost</th><th>Comparator</th><th>Difference</th><th>95% interval</th><th>Products</th><th>Status</th></tr></thead>
+          <tbody>
+            {studyRows.map((row) => (
+              <tr><td>${row.inspection_cost_usd.toFixed(2)}</td><td>search all</td><td>{row.adaptive_vs_search_all.mean_difference.toFixed(4)}</td><td>[{row.adaptive_vs_search_all.ci_lower.toFixed(4)}, {row.adaptive_vs_search_all.ci_upper.toFixed(4)}]</td><td>{row.adaptive_vs_search_all.product_clusters}</td><td>{row.adaptive_vs_search_all.favors_treatment ? "Adaptive improvement" : row.adaptive_vs_search_all.ci_lower > 0 ? "Search-all improvement" : "No reliable improvement"}</td></tr>
+            ))}
+          </tbody>
+        </table>
       </div>
+      <RecalledSearchWorkbench />
     </section>
 
-    <section class="section section--claims" id="claims" aria-labelledby="claims-title">
+    <section class="section" id="sources" aria-labelledby="sources-title">
       <div class="section__heading">
         <p class="section-number">3</p>
-        <div>
-          <span class="eyebrow">Evidence from live panels</span>
-          <h2 id="claims-title">When should an agent keep looking?</h2>
-        </div>
+        <div><span class="eyebrow">Evidence design</span><h2 id="sources-title">Two sources, separate roles</h2></div>
       </div>
-      <p class="section-intro">
-        On {results.held_out_episode_count} held-out episodes built from live merchants, the adaptive rule lowered
-        failure-penalized purchase loss against the strongest tuned fixed rule, with the entire bootstrap interval
-        below zero and {results.hard_budget_violations} budget violations. The gain is real, but not universal: the median
-        episode has only {results.median_merchant_count} merchants and a price ratio of
-        {results.median_price_dispersion_ratio}, which is exactly why the advantage is modest in practice. The table below
-        reports calibrated simulation evidence; it does not make a universal shopping recommendation.
-      </p>
-      <p class="decision-context">
-        Calibrated from the live dataset, not a universal retail rule.
-      </p>
-      <div class="decision-spotlight" aria-label="Adaptive stopping decision summary">
-        <div class="spotlight-card spotlight-card--win">
-          <span class="spotlight-kicker">Cells favoring adaptive</span>
-          <strong>Prices differ by 1.1× or more</strong>
-          <small>When another store could offer a meaningfully different price, searching can pay.</small>
-        </div>
-        <div class="spotlight-card spotlight-card--flat">
-          <span class="spotlight-kicker">No adaptive advantage</span>
-          <strong>Prices differ by 1.01× or less</strong>
-          <small>When stores offer nearly the same price, a simple fixed rule is usually enough.</small>
-        </div>
-        <div class="spotlight-card spotlight-card--tight">
-          <span class="spotlight-kicker">Fixed-rule counterexamples</span>
-          <strong>Some modest-spread cells favor fixed</strong>
-          <small>They occur at both constrained and full budgets, so the grid does not establish one mechanism.</small>
-        </div>
+      <div class="prose-grid">
+        <div class="prose"><h3>Shopify Global Catalog</h3><p>{shopify.product_deck_count} title-normalized USD seller decks and {shopify.seller_card_count} seller cards support the held-out study: {shopify.calibration_product_count} decks calibrate policies and {shopify.held_out_product_count} product clusters are held out. The evidence is a recovered complete prefix of {shopify.completed_query_count} of {shopify.planned_query_count} registered deep queries. Title identity was revised after collection, and shop domains do not prove independent companies or checkout equivalence.</p></div>
+        <div class="prose"><h3>UCP Direct Merchant Panels</h3><p>{ucp.included_lifecycle_dates.length} lifecycle dates are retained, while {Object.keys(ucp.excluded_dates).length} common-mode discontinuity is excluded. These observations document catalog surface quality, not Pandora policy performance.</p></div>
       </div>
-      <figure class="research-figure">
-        <DecisionTable rows={decisionTable} />
-        <figcaption>
-          <strong>Table 1.</strong> Decision table over {results.sweep_cells} calibrated cells. Adaptive
-          stopping never wins at or below a {results.no_advantage_dispersion_at_or_below}× price spread, and
-          loses outright in {results.sweep_cells_favoring_fixed} cells. Each row reports its paired interval,
-          held-out simulations, and bootstrap replicates; the evidence label is not a shopping recommendation.
-        </figcaption>
-      </figure>
-      <ClaimLedger claims={displayedClaims} />
     </section>
 
-    <section class="section section--rule" id="workbench" aria-labelledby="workbench-title">
+    <section class="section" id="claims" aria-labelledby="claims-title">
       <div class="section__heading">
         <p class="section-number">4</p>
-        <div>
-          <span class="eyebrow">Try the rule</span>
-          <h2 id="workbench-title">Give your agent the limits of this shopping task</h2>
-        </div>
+        <div><span class="eyebrow">Executable ledger</span><h2 id="claims-title">Claims stay tied to evidence</h2></div>
       </div>
-      <p class="section-intro">
-        Set the current offer, the shopper's maximum price, and what the agent can still spend on checking other stores.
-        The planner shows the buy-now price and whether searching again is worthwhile.
-      </p>
-      <PlanningWorkbench
-        merchantForecasts={results.merchant_forecasts}
-        observedPrice={results.observed_price}
-        failurePenalty={results.failure_penalty}
-      />
+      <ClaimLedger claims={visibleClaims} />
     </section>
 
-    <section class="section section--materials" id="reproduce" aria-labelledby="reproduce-title">
+    <section class="section" aria-labelledby="materials-title">
       <div class="section__heading">
         <p class="section-number">5</p>
-        <div>
-          <span class="eyebrow">Open-source rule and evidence</span>
-          <h2 id="reproduce-title">Use the rule in your shopping agent</h2>
-        </div>
+        <div><span class="eyebrow">Materials</span><h2 id="materials-title">Reproducible collection and replay</h2></div>
       </div>
-      <p class="section-intro">
-        The Python and npm packages provide reusable implementations of the current exact planner. Python additionally
-        supports atomic reservation receipts and censored-usage reconciliation; npm currently covers planner and
-        completed-call behavior. One deterministic build produces shared conformance vectors, the evidence ledger,
-        manuscript inputs, and this explainer from the canonical Python package.
-      </p>
       <dl class="artifact-list">
-        <div><dt>Evidence</dt><dd><a href={`${links.repository}/tree/main/artifacts`}>Generated artifacts</a></dd></div>
-        <div><dt>Python</dt><dd><a href={`${links.repository}/tree/main/packages/python`}>{packages.python.distribution}</a></dd></div>
-        <div><dt>npm</dt><dd><a href={`${links.repository}/tree/main/packages/javascript`}>{packages.javascript.name}</a></dd></div>
+        <div><dt>Repository</dt><dd><a href={links.repository}>Source and generated artifacts</a></dd></div>
+        <div><dt>Python</dt><dd>{packages.python.distribution}</dd></div>
+        <div><dt>JavaScript</dt><dd>{packages.javascript.name}</dd></div>
         <div><dt>Licenses</dt><dd>{licenses.code} · {licenses.content}</dd></div>
-        <div><dt>Seed</dt><dd>{results.random_seed}</dd></div>
       </dl>
     </section>
   </main>
 
-  <footer>
-    <div>
-      <p class="footer-title">{project.title}</p>
-      <p>{authorNames} · Version {release.version}</p>
-    </div>
-    <p><a href={links.repository}>Repository</a> · <a href="#claims">Claim ledger</a></p>
-  </footer>
+  <footer><div><p class="footer-title">{project.title}</p><p>{authorNames} · Version {release.version}</p></div><p><a href={links.repository}>Repository</a></p></footer>
 </ResearchLayout>

@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "registration_status": "post_collection_identity_revision",
+  "revision_note": "Exact normalized model-title matching was added after the original UPID-plus-option rule yielded zero decks; collection bytes, seed, policy grid, and resampling choices were not changed.",
+  "random_seed": 20260723,
+  "target_currency": "USD",
+  "minimum_independent_sellers": 3,
+  "product_identity": {
+    "strategy": "exact_normalized_model_title_or_catalog_product_option",
+    "minimum_informative_title_tokens": 3,
+    "require_digit_bearing_title_token": true,
+    "excluded_title_phrases": ["multiple weight ranges"],
+    "generic_titles_fall_back_to_catalog_product_option": true
+  },
+  "independent_unit": "exact_normalized_model_title",
+  "maximum_reveals": 14,
+  "calibration_fraction": 0.6,
+  "permutations_per_product": 32,
+  "cost_rate_card": "research/cost-rate-card-2026-09.json",
+  "ucp_pandora_observation_dates": [
+    "2026-09-03",
+    "2026-09-04",
+    "2026-09-05",
+    "2026-09-06",
+    "2026-09-08",
+    "2026-09-09",
+    "2026-09-10",
+    "2026-09-11",
+    "2026-09-14",
+    "2026-09-15"
+  ],
+  "cost_scenarios": [
+    {
+      "id": "catalog_expansion",
+      "model_rate_id": "openai-gpt-5-4-mini-standard",
+      "shopping_api_rate_id": "openai-web-search",
+      "assumption_status": "declared_not_observed",
+      "time_ms": 30000,
+      "time_value_minor_per_minute": 500,
+      "input_tokens": 8000,
+      "input_cost_minor_per_million": 75,
+      "output_tokens": 1500,
+      "output_cost_minor_per_million": 450,
+      "shopping_api_calls": 1,
+      "shopping_api_cost_minor_numerator_per_call": 1,
+      "shopping_api_cost_minor_denominator_per_call": 1
+    },
+    {
+      "id": "agentic_review_2m",
+      "model_rate_id": "anthropic-claude-sonnet-5-standard",
+      "shopping_api_rate_id": "openai-web-search",
+      "assumption_status": "declared_not_observed",
+      "time_ms": 120000,
+      "time_value_minor_per_minute": 500,
+      "input_tokens": 50000,
+      "input_cost_minor_per_million": 200,
+      "output_tokens": 10000,
+      "output_cost_minor_per_million": 1000,
+      "shopping_api_calls": 1,
+      "shopping_api_cost_minor_numerator_per_call": 1,
+      "shopping_api_cost_minor_denominator_per_call": 1
+    },
+    {
+      "id": "long_horizon_research_5m",
+      "model_rate_id": "xai-grok-4-7-short-context",
+      "shopping_api_rate_id": "serpapi-starter-amortized",
+      "assumption_status": "declared_not_observed",
+      "time_ms": 300000,
+      "time_value_minor_per_minute": 500,
+      "input_tokens": 150000,
+      "input_cost_minor_per_million": 200,
+      "output_tokens": 30000,
+      "output_cost_minor_per_million": 600,
+      "shopping_api_calls": 3,
+      "shopping_api_cost_minor_numerator_per_call": 5,
+      "shopping_api_cost_minor_denominator_per_call": 2
+    }
+  ],
+  "ucp_cost_sensitivity": {
+    "base_scenario_id": "catalog_expansion",
+    "multipliers_basis_points": [0, 100, 1000, 10000, 100000]
+  },
+  "threshold_basis_points": [7000, 8000, 8500, 9000, 9500, 9750, 10000],
+  "relative_price_bin_basis_points": 500,
+  "bootstrap_replicates": 2000
+}

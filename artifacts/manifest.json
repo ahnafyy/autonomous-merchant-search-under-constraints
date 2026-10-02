@@ -1,30 +1,27 @@
 {
   "all_executable_claims_passed": true,
   "claims": [
-    "OFFER-EPHEMERALITY-001",
-    "SOLVER-AGREEMENT-001",
-    "STOPPING-ADVANTAGE-001",
-    "NO-ADVANTAGE-REGION-001",
-    "CLOSED-FORM-RULE-001",
-    "SECRETARY-RULE-001",
-    "OVERLAP-SPARSITY-001",
-    "PERMIT-SAFETY-001"
+    "SHOPIFY-SELLER-DECK-STUDY-001",
+    "UCP-OBSERVATION-QUALITY-001",
+    "UCP-PANDORA-REPLAY-001",
+    "UCP-MARKET-RATE-SENSITIVITY-001",
+    "PANDORA-ADVANTAGE-001"
   ],
   "files": {
-    "claim-results.json": "ae3c0ef6ba95bd3947b99a7b795a8d63401b2616ef97eac54990864a6d521ae2",
+    "claim-results.json": "cdee0440f14532bd5a29b415b3d7408eaa09af57188b38e8ee9c3ee3bb7ef0c8",
     "conformance/closed-form.json": "e74707bef1d61443e8f023eecccb5429f2c87f5054a9f9d5cf8876560db8d670",
-    "conformance/merchant-search.json": "8d42ae2a7c254fd1a64d1757ba30a67f93a065a79c307081586ae44170375a1e",
-    "data/summary.csv": "b08df8c1a830db0346ef64d69ee7d858f55e464b18275b1eec496390b919e273",
-    "results.json": "6cb8539ebd389d4ad286a900dd5bc72204090af4940b257daa9459caeafdf60d",
-    "site-data.json": "e3bfd29570667fbe86b315d51adb83bb5faba96d71eb77e6c0eff77055fdb327",
-    "tables/arm_comparison.tex": "254728850f7e769f5105eb73e6cc4d5f13d4cd854f6b22d65319408c1faf7f60",
-    "tables/claim_status.tex": "7580b491681f77d2e724a2a1fc9dbf32be3ef49591e90e4bf30aba17621cc364",
-    "tables/decision_table.tex": "c0ca8515a3a57f5cfd098893f8e2749e2b5854dfc40a4944b25f1d1dfc86e000",
-    "tables/episode_features.tex": "582d06f1996fdd0b7b7d0e30fd60000556575d97b34240bce65987829013f172",
-    "tables/project_metadata.tex": "3e8fb4a18489a3058e29b80270f08c601254456467fd348fbcf639a2c80c5f74",
+    "conformance/merchant-search.json": "45df9253be3382e2fd79a666ab717d17aa68c7e21c8c908cd9a051990a4e68a7",
+    "data/summary.csv": "bdaf4a9985d8e610ac380457e467e52b5a2bdba5536014109f965febdd0387d6",
+    "results.json": "c98242abd7efeca19bdb1622c5c9e202e2d8f8551b89bcb29e5e0b35d7eba52e",
+    "site-data.json": "dfac9ed8574edb31a3cad0aef5181b18ab5bce8a8e59743d52d1c3defc4af774",
+    "tables/claim_status.tex": "c477f81d1684db1126133503528e156996a1382f84e2f34b8543a38bc095722a",
+    "tables/pandora_study.tex": "ad00d5e65e556c07df88aa168289f3dba233bf1f54979515982ebe3c0ee1f430",
+    "tables/project_metadata.tex": "173f9a6acd75efab2e9b022ac6d06b078f87a77b40982acefa8a03a25ff4ec48",
     "tables/references.bib": "986366bf5f8496263da317d2d62724690081f71ac15be82ffc2eb3d9a81899f7",
-    "tables/result_macros.tex": "69bf0b80ab66208ca044682de5f7ea2ad8f36e059b25f2269c4eab281efcc895",
-    "tables/rule_comparison.tex": "7d623f87fce282feb5b5fb8a697acc28ee297c051ed8c85211932d2de1b60ee2"
+    "tables/result_macros.tex": "c29e8ea6f06d4f1c80606050c50451710d6365eea7cb0b516f1d2f61f0fb8875",
+    "tables/source_context.tex": "bbdab549eb06920f6b2a3e4b89e2b2ff537d2b2cf18480f62af2ff3d33f2b3af",
+    "tables/ucp_cost_sensitivity.tex": "ed06949d112125afb52d2dafaa9994077cfb8589754a6fc9c0bbd2b8854148c5",
+    "tables/ucp_pandora_study.tex": "0f944a5744ec92eeb94d03a9103f8334875617a4691074d1562c2a576a80ea1f"
   },
   "generator": {
     "name": "paperkit",
